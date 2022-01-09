@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 09:34:32 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/09 12:12:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,10 @@ int main (int argc, char **argv)
 		if (argc == 1)
 		{
 			WebServer p;
-			p.print();
 		}
 		else if (argc == 2)
 		{
-			WebServer p((std::string(argv[1])));
-			p.print();
+			WebServer p(194);
 		}
 		else
 			throw std::runtime_error("Invalid number of arguments");
@@ -37,4 +35,5 @@ int main (int argc, char **argv)
 		Debug(std::string(e.what()));
 		return (1);
 	}
+	(void)(argv);
 }

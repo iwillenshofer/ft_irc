@@ -3,149 +3,111 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 09:45:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/09 17:30:15 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILEDESCRIPTORS_HPP
 # define FILEDESCRIPTORS_HPP
 
+# include "Debug.hpp"
+# include "Client.hpp"
 # include <poll.h>
 # include <fcntl.h>
  #include <sys/ioctl.h>
 
 # define BUFFERSIZE 1024
 
-class Bind;
-
 class FileDescriptors
 {
 	public:
-		FileDescriptors(): _fds(0x0), _size(0), _capacity(0) { }
+		FileDescriptors() { }
 		FileDescriptors(FileDescriptors const &cp) { *this = cp; }
 		FileDescriptors &operator=(FileDescriptors const &cp)
 		{
-			_size = cp._size;
-			_capacity = cp._capacity;
-			_attributes = cp._attributes;
-			_fds = new pollfd[_capacity];
-			memcpy(_fds, cp._fds, sizeof(pollfd) * _size);
+			_fds = cp._fds;
 			return (*this);
 		}
-		virtual ~FileDescriptors() { clear(); };
+		virtual ~FileDescriptors() { _fds.clear(); };
+		std::map<int, Client>		clients;
 
 	private:
-		pollfd										*_fds;
-		size_t										_size;
-		size_t										_capacity;
-//		std::vector<FileDescriptorAttributes>		_attributes;
-		char										_buffer[BUFFERSIZE + 1];
-		void	_reserve(size_t n)
-		{
-			pollfd		*tmp;
-			if (n > _capacity)
-			{
-				tmp = new pollfd[n];
-				memcpy(tmp, _fds, sizeof(pollfd) * _size);
-				_capacity = n;
-				delete [] _fds;
-				_fds = tmp;
-			}
-		}
+		std::vector<pollfd>			_fds;
+		
+		char						_buffer[BUFFERSIZE + 1];
 
 	public:
-		pollfd &operator[](size_t idx) { return _fds[idx]; }
-		void push_back(int fd, Bind *listenfd = NULL, int kind = FDKIND_SOCKET)
+		size_t size() { return (_fds.size()); }
+
+		void add(int fd)
 		{
-			if (_capacity < _size + 1)
-				_reserve(_size ? _size * 2 : 1);
-			_fds[_size].fd = fd;
-			_fds[_size].events = POLLIN;
-			_fds[_size].revents = 0x0;
+			pollfd tmp;
+
 			fcntl(fd, F_SETFL, O_NONBLOCK);
-			_size++;
-//			_attributes.push_back(FileDescriptorAttributes(listenfd, kind));
+			tmp.fd = fd;
+			tmp.events = POLLIN;
+			tmp.revents = 0x0;
+			clients[fd].set_fd(fd);
+			clients[fd].set_hangup(false);
+			_fds.push_back(tmp);
 		}
 
-		size_t size() { return (_size); }
-
-		void clear()
+		void remove(int fd)
 		{
-			_size = 0;
-			_capacity = 0;
-			delete [] _fds;
+			std::vector<pollfd>::iterator it = _fds.begin();
+
+			while (it != _fds.end())
+			{
+				if (it->fd == fd)
+				{
+					it = _fds.erase(it);
+					return ;
+				}
+				it++;
+			}
 		}
-		void clearBuffer()
+
+		pollfd *list(void)
 		{
-			bzero(_buffer, BUFFERSIZE + 1);
+			for (std::vector<pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
+			{
+				if (clients[it->fd].get_send_queue_size())
+					it->events = POLLOUT;
+				else
+					it->events = POLLIN;
+			}
+			if (_fds.size())
+				return (&(_fds.at(0)));
+			return (0x0);
 		}
 
-		void erase(int fd)
-		{
-			size_t i = 0;
-		
-			while(i < _size)
-			{
-				if (_fds[i].fd == fd)
-					break;
-				i++;
-			}
-			if (i < _size)
-			{
-				Debug("Connection [" + ft::to_string(fd) + "] destroyed.", DBG_DEV);
-//				_attributes.erase(_attributes.begin() + i);
-				_size--;
-			}
-			while(i < _size)
-			{
-				_fds[i].fd = _fds[i + 1].fd;
-				_fds[i].events = _fds[i + 1].events;
-				_fds[i].revents = _fds[i + 1].revents;
-				i++;
-			}
-		}
+		int	get_fd(size_t idx) { return (_fds[idx].fd); }
+		int	get_revents(size_t idx) { return (_fds[idx].revents); }
+		int	get_events(size_t idx) { return (_fds[idx].events); }
+		void set_events(size_t idx, int events) { _fds[idx].events = events; }
 
-		pollfd *findFd(int fd)
-		{ 
-			size_t i = 0;
-			while(i < _size)
-			{
-				if (_fds[i].fd == fd)
-					return(&_fds[i]);
-				i++;
-			}
-			return (NULL);
-		}
-		
-		short getEvent(int fd)
-		{ 
-			return(findFd(fd)->events);
-		}
-
-		pollfd *getFds() { return (_fds); }
-		void print()
-		{ 
-			for (size_t i = 0; i < _size; i++)
-			{
-				std::cout << "FD: " << _fds[i].fd <<  " Events: " << _fds[i].events <<  " REvents: " << _fds[i].revents << std::endl;
-			}
-		}
-
-		char *getBuffer()
+		char *get_buffer()
 		{
 			return ( _buffer );
 		}
 
-		int getAvailable(int fd)
+		void remove_queued()
 		{
-			int i;
-
-			if (ioctl(fd, FIONREAD, &i) == -1)
-				return ( -1 );
-			return (i);
+			std::map<int,Client>::iterator prev;
+            for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); )
+			{
+				if (it->second.get_hangup())
+				{
+					prev = it++;
+					remove(prev->second.get_fd());
+					clients.erase(prev);
+				}
+				else
+					it++;
+			}
 		}
 };
 

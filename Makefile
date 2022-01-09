@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/09 09:32:55 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/09 15:34:18 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ircserv
 
 CC = clang++
-CCFLAGS = -Wall -Werror -Wextra -g -std=c++98 -pedantic
+CCFLAGS = -Wall -Werror -Wextra -g -std=c++98 -pedantic -fsanitize=address
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./build
@@ -24,7 +24,8 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Debug.cpp \
 			${SRC_DIR}/Socket.cpp \
 			${SRC_DIR}/FileDescriptors.cpp \
-			${SRC_DIR}/utilities.cpp
+			${SRC_DIR}/utilities.cpp \
+			${SRC_DIR}/WebServer.cpp
 
 OBJECTS = $(patsubst ${SRC_DIR}/%.cpp, ${OBJ_DIR}/%.o, ${SRCS})
 DEPENDENCIES = $(patsubst %.o, %.d, ${OBJECTS})

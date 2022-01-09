@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/09 09:30:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/09 17:44:02 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,20 @@ std::vector<std::string> ft::split(const std::string &s, char separator)
 		start = end + 1;
 	}
 	items.push_back(s.substr(start));
+	return items;
+}
+
+std::vector<std::string> ft::split(std::string &s, std::string separator)
+{
+	std::string item;
+	std::vector<std::string> items;
+	std::string::size_type pos = 0;
+	
+	while ((pos = s.find(separator)) != std::string::npos)
+	{
+		items.push_back(s.substr(0, pos));
+		s.erase(0, pos + separator.length());
+	}
 	return items;
 }
 
