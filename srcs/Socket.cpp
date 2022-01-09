@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Socket.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:36:18 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/09 09:18:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/09 19:43:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Socket.hpp"
+#include "Debug.hpp"
 
 Socket::Socket( void )
 {
@@ -83,6 +84,7 @@ void	Socket::_bind_socket( void )
 	ret = bind(_server_socket, (struct sockaddr *)&_server_address, sizeof(_server_address));
 	if (ret == -1)
 	{
+		Debug(ft::to_string(ret), DBG_ERROR);
 		return ;
 		// TO DO: Print Error, Errno is set appropriately.
 	}	
@@ -95,6 +97,7 @@ void	Socket::_listen_socket( void )
 	ret = listen(_server_socket, SOMAXCONN);
 	if (ret == -1)
 	{
+		Debug(ft::to_string(ret), DBG_ERROR);
 		return ;
 		// TO DO: Print Error, Errno is set appropriately.
 	}	

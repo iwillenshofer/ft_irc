@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 17:55:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/09 19:39:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ class Client
 		void read(void)
 		{
 			std::vector<std::string> tmp;
-
+			Debug("Read", DBG_DEV);
 			bzero(_buffer, BUFFERSIZE + 1);
 			ssize_t rc = recv( _fd, _buffer, BUFFERSIZE, 0);
 			if (rc > 0)
@@ -69,6 +69,12 @@ class Client
 				Debug("Tmp Size:" + ft::to_string(tmp.size()) + " Recv Size:" + ft::to_string(_receive_queue.size()));
 				for (std::vector<std::string>::iterator it = _receive_queue.begin(); it != _receive_queue.end(); it++)
 					Debug(*it + "\n");
+		
+				//just a test
+				_send_queue.push_back(":localhost 001 asdasds : Olá\r\n");
+///				_send_queue.push_back("PONG asdasds\r\n");
+	///			_send_queue.push_back("PING asdasds\r\n");
+
 			}
 			else if (rc <= 0)
 			{ 
@@ -79,17 +85,21 @@ class Client
 
 		void write(void)
 		{
-			
-			//	int rc;
-			//
-			//	rc = send(_clients[fd_idx].fd, _clients.getContent(fd_idx), _clients.getContentSize(fd_idx), 0);
-			//	if (rc == -1)
-			//		std::cerr << "Error send" << std::endl;
-			//	_clients.getAttr(fd_idx).shouldClose(true);
+			int rc;
+			Debug("Write", DBG_DEV);
+			if (!(_send_queue.size()))
+				return;
+			rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), 0);
+			if (rc)
+			{
+				_send_queue.at(0).erase(0, rc);
+				if (!(_send_queue.at(0).size()))
+					_send_queue.erase(_send_queue.begin());
+				Debug("Size: " + ft::to_string(_send_queue.size()), DBG_WARNING);
+			}
+			if (rc == -1)
+				std::cerr << "Error send" << std::endl;
 		}
-
-
-
 };
 
 #endif
