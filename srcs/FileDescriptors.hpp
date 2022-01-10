@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/10 19:21:04 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/10 19:52:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,13 @@ class FileDescriptors
 			** setting any channel/user property and adding any
 			** return message into the clients' queue.
 			** it will be a loop going through all of the client's received messages.
+			**
+			** Maybe we could create a Commands class, which would receive a pointer to
+			** the classes Channel, User and Client, to do the appropriate changes in any of them.
+			** The Commands class would be also a parser.
+			** if the command is invalid, it adds a message to the client's send queue.
+			** if the command is valid, it process it and also adds the returning message to the clients' queue.
+			** I'm not sure if we need a User class yet, as the client class may be enough.
 			*/
 		}
 
