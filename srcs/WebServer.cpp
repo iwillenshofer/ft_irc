@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 17:19:42 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/10 07:14:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ WebServer::WebServer(WebServer const &cp)
 WebServer &WebServer::operator=(WebServer const &cp)
 {
 	this->_socket = cp._socket;
-	this->_clients = cp._clients;
+	this->_connections = cp._connections;
 	return (*this);
 }
 
@@ -46,19 +46,19 @@ WebServer::~WebServer(void)
 void WebServer::_init(int port)
 {
 	_socket = Socket(port);
-	_clients.add(_socket.get_server_socket());
+	_connections.add(_socket.get_server_socket());
 	Debug("Listening [" + ft::to_string(_socket.get_server_socket()) + "] on " + ft::to_string(port) + ".", DBG_INFO);
 	RunServer();
 }
 
-void WebServer::_accept_clients(int fd)
+void WebServer::_accept_connections(int fd)
 {
 	Debug("Accept FD?", DBG_DEV);
 	int acc_fd;
 	while ((acc_fd = accept(fd, NULL, NULL)) > 0 )
 	{
 		Debug("Accepting connection [" + ft::to_string(acc_fd) + "] on [" + ft::to_string(fd) + "]", DBG_INFO);
-		_clients.add(acc_fd);
+		_connections.add(acc_fd);
 	}
 }
 
@@ -69,30 +69,30 @@ void WebServer::RunServer(void)
 	{
 		int rc = 0;
 		int fd = 0;
-    	rc = poll(_clients.list(), _clients.size(), 1000);
+    	rc = poll(_connections.list(), _connections.size(), 1000);
 		if (rc)
 		{
-			for (size_t idx = 0; idx < _clients.size(); idx++)
+			for (size_t idx = 0; idx < _connections.size(); idx++)
 			{
-				fd = _clients.get_fd(idx);
-				if (_clients.get_revents(idx) & POLLHUP)
-					_clients.clients[fd].set_hangup(true);
-				else if (_clients.get_revents(idx) & POLLIN)
+				fd = _connections.get_fd(idx);
+				if (_connections.get_revents(idx) & POLLHUP)
+					_connections.clients[fd].set_hangup(true);
+				else if (_connections.get_revents(idx) & POLLIN)
 				{
 					if (idx == 0)
-						_accept_clients(fd);
+						_accept_connections(fd);
 					else
-						_clients.clients[fd].read();
+						_connections.clients[fd].read();
 				}
-				else if (_clients.get_revents(idx) & POLLOUT)
-					_clients.clients[fd].write();
+				else if (_connections.get_revents(idx) & POLLOUT)
+					_connections.clients[fd].write();
 			}
 		}
 		else
 		{
 			Debug("Poll timed out", DBG_DEV);
 		}
-		_clients.remove_queued();
+		_connections.remove_queued();
 	}
 }
 
@@ -106,7 +106,7 @@ void WebServer::_signalHandler( int signal )
 
 void WebServer::_close_all_connections(void)
 {
-	pollfd *lst = _clients.list();
-	for (size_t idx = 0; idx < _clients.size(); idx++)
+	pollfd *lst = _connections.list();
+	for (size_t idx = 0; idx < _connections.size(); idx++)
 		close(lst[idx].fd);
 }

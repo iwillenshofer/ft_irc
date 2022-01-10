@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 17:20:11 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/10 07:14:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class WebServer
 			** private member functions and variables
 			*/
 			Socket							_socket;
-			FileDescriptors		 			_clients;
+			FileDescriptors		 			_connections;
 			void							_init(int port);
 
 			/*
@@ -54,7 +54,7 @@ class WebServer
 			static void 	_signalHandler( int signal );
 
 		public:
-			void _accept_clients(int fd);
+			void _accept_connections(int fd);
 			void _close_all_connections(void);
 			void RunServer(void);
 			void print(void);
