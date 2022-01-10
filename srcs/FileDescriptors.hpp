@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 17:30:15 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/10 19:21:04 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,28 @@ class FileDescriptors
 		char						_buffer[BUFFERSIZE + 1];
 
 	public:
+
+		/*
+		** getters & setters
+		*/
+
+		int	get_fd(size_t idx) { return (_fds[idx].fd); }
+		int	get_revents(size_t idx) { return (_fds[idx].revents); }
+		int	get_events(size_t idx) { return (_fds[idx].events); }
+		void set_events(size_t idx, int events) { _fds[idx].events = events; }
+
+		char *get_buffer()
+		{
+			return ( _buffer );
+		}
+		
 		size_t size() { return (_fds.size()); }
+
+		/*
+		** adds an element (fd) to the pollfd.
+		** element 0 is always the Socket.
+		** non blocking fd is set here.
+		*/
 
 		void add(int fd)
 		{
@@ -54,6 +75,10 @@ class FileDescriptors
 			clients[fd].set_hangup(false);
 			_fds.push_back(tmp);
 		}
+
+		/*
+		** removes an fd from the poll.
+		*/
 
 		void remove(int fd)
 		{
@@ -70,6 +95,12 @@ class FileDescriptors
 			}
 		}
 
+		/*
+		** returns a list of the polled fds, to be used by poll().
+		** before returning, checks if there's anything to be written to a client
+		** and, if there is, sets POLLOUT.
+		*/
+	
 		pollfd *list(void)
 		{
 			for (std::vector<pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
@@ -84,15 +115,9 @@ class FileDescriptors
 			return (0x0);
 		}
 
-		int	get_fd(size_t idx) { return (_fds[idx].fd); }
-		int	get_revents(size_t idx) { return (_fds[idx].revents); }
-		int	get_events(size_t idx) { return (_fds[idx].events); }
-		void set_events(size_t idx, int events) { _fds[idx].events = events; }
-
-		char *get_buffer()
-		{
-			return ( _buffer );
-		}
+		/*
+		** removes any fd that has been queued for removal.
+		*/
 
 		void remove_queued()
 		{
@@ -108,6 +133,25 @@ class FileDescriptors
 				else
 					it++;
 			}
+		}
+		
+		void process_commands(void)
+		{
+			/*
+			** here all the commands (inputs) will be processed
+			** setting any channel/user property and adding any
+			** return message into the clients' queue.
+			** it will be a loop going through all of the client's received messages.
+			*/
+		}
+
+		void pingpong(void)
+		{
+			/*
+			** here we will check ping commands sent to the clients when idle
+			** to make sure it is active.
+			** if not, it will close the connection (by marking the client.hangup = true)
+			*/
 		}
 };
 

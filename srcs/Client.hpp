@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 19:39:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/10 19:37:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,20 @@ class Client
 		bool						_hangup;
 	
 	public:
+		/*
+		** setters and getters.
+		*/
+
 		size_t get_send_queue_size(void) { return (_send_queue.size()); }
 		bool get_hangup(void) { return (_hangup); }
 		void set_hangup(bool v) { _hangup = v; }
 		int get_fd(void) { return (_fd); }
 		void set_fd(int fd) { _fd = fd; }
-		void print()
-		{
-			Debug("Fd: " + ft::to_string(_fd) + " HUP:" + (_hangup == true?"true":"false"), DBG_WARNING);
-		}
+		
+		/*
+		** reads messages from the client. If message is incomplete,
+		** it is kept on buffer to be read on the next poll loop.
+		*/
 
 		void read(void)
 		{
@@ -72,17 +77,27 @@ class Client
 		
 				//just a test
 				_send_queue.push_back(":localhost 001 asdasds : Olá\r\n");
-///				_send_queue.push_back("PONG asdasds\r\n");
-	///			_send_queue.push_back("PING asdasds\r\n");
 
 			}
 			else if (rc <= 0)
 			{ 
 				// rc == 0 other side closed socket 
 				// rc == -1 error;
+				/*
+				** kept for comments only, we will remove this.
+				** We don't care for sending errors or client hangup:
+				** if there's an error, the message is still there to be sent.
+				** if the client hungup, it will be catched by the ping pong loop.
+				*/
 			}
 		}
 
+		/*
+		** writes any queued message to client.
+		** if message if not fully sent, its remaining is kept on queue to be sent on
+		** the next loop.
+		*/
+	
 		void write(void)
 		{
 			int rc;
@@ -90,15 +105,12 @@ class Client
 			if (!(_send_queue.size()))
 				return;
 			rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), 0);
-			if (rc)
+			if (rc > 0)
 			{
 				_send_queue.at(0).erase(0, rc);
 				if (!(_send_queue.at(0).size()))
 					_send_queue.erase(_send_queue.begin());
-				Debug("Size: " + ft::to_string(_send_queue.size()), DBG_WARNING);
 			}
-			if (rc == -1)
-				std::cerr << "Error send" << std::endl;
 		}
 };
 
