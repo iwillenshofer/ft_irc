@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/10 07:14:11 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/10 19:31:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ WebServer::~WebServer(void)
 	WebServer::_instances.erase(std::remove(WebServer::_instances.begin(), WebServer::_instances.end(), this), WebServer::_instances.end());
 }
 
+/*
+** initializes Socket and adds it as the first elements on _connections list.
+*/
+
 void WebServer::_init(int port)
 {
 	_socket = Socket(port);
@@ -50,6 +54,10 @@ void WebServer::_init(int port)
 	Debug("Listening [" + ft::to_string(_socket.get_server_socket()) + "] on " + ft::to_string(port) + ".", DBG_INFO);
 	RunServer();
 }
+
+/*
+** Accepts a new connections if POLLIN triggered on Socket 
+*/
 
 void WebServer::_accept_connections(int fd)
 {
@@ -61,6 +69,13 @@ void WebServer::_accept_connections(int fd)
 		_connections.add(acc_fd);
 	}
 }
+
+/*
+** main server loop.
+** read, writes from/to client or accepts new connection.
+** then, checks if connection is alive, removes any queued clients
+** and process queued messages.
+*/
 
 void WebServer::RunServer(void)
 {
@@ -86,15 +101,23 @@ void WebServer::RunServer(void)
 				}
 				else if (_connections.get_revents(idx) & POLLOUT)
 					_connections.clients[fd].write();
+				if (_connections.get_revents(idx) & (POLLIN | POLLOUT))
+					break; /* so we dont read/write multiple times on the same poll loop */
 			}
 		}
 		else
 		{
 			Debug("Poll timed out", DBG_DEV);
 		}
+		_connections.pingpong();
 		_connections.remove_queued();
+		_connections.process_commands();
 	}
 }
+
+/*
+** _signalHandler and _close_all_connections are called upon CTRL+C, CTRL+\, CTRL+Z
+*/
 
 void WebServer::_signalHandler( int signal )
 {
