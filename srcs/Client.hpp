@@ -6,19 +6,35 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 21:06:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/11 22:23:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
+# include <cstring>
+
 # define BUFFERSIZE 1024
+
+/*
+** user modes. currently a struct, but will be converted into a class so it can initialize itself.
+*/
+typedef struct s_usermode
+{
+	bool a;
+	bool i;
+	bool w;
+	bool r;
+	bool o;
+	bool O;
+	bool S;
+} t_usermode;
 
 class Client
 {
 	public:
-		Client(int fd = 0): _fd(fd), _hangup(false) { }
+		Client(int fd = 0): _fd(fd), _hangup(false) { bzero(&mode, sizeof(mode)); }
 		Client(Client const &cp) { *this = cp; }
 		Client &operator=(Client const &cp)
 		{
@@ -40,8 +56,12 @@ class Client
 		std::vector<std::string> 	_receive_queue;
 		std::vector<std::string> 	_send_queue;
 		bool						_hangup;
-	
+
 	public:
+		std::string nickname;
+		std::string realname;
+		t_usermode 	mode;
+
 		/*
 		** setters and getters.
 		*/
@@ -72,7 +92,7 @@ class Client
 					Debug(*it + "\n");
 		
 				//just a test
-				_send_queue.push_back(":localhost 001 asdasds : Olá\r\n");
+				_send_queue.push_back("433\r\n");
 			}
 			else if (rc <= 0)
 			{ 

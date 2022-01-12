@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 21:05:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/11 22:31:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 # include "Client.hpp"
 # include <poll.h>
 # include <fcntl.h>
- #include <sys/ioctl.h>
-
-# define BUFFERSIZE 1024
+# include <sys/ioctl.h>
+# include "Commands.hpp"
 
 class FileDescriptors
 {
