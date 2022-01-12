@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 23:24:19 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 13:44:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <vector>
 # include <string>
-
+# include <algorithm>
 /*
 ** channel modes. currently a struct, but will be converted into a class so it can initialize itself.
 */
@@ -42,7 +42,7 @@ typedef struct s_channelmode
 class Channel
 {
 	public:
-		Channel(void) { }
+		Channel(void): user_limit(0) { bzero(&mode, sizeof(t_channelmode));} 
 		Channel(Channel const &cp) { *this = cp; }
 		Channel &operator=(Channel const &cp)
 		{
@@ -52,7 +52,7 @@ class Channel
 		}
 		virtual ~Channel() { };
 	
-	private:
+	public:
 		t_channelmode 				mode;
 		std::string 				creator;
 		std::vector<std::string> 	users;
@@ -73,7 +73,7 @@ class Channel
 			return (false);
 		}
 		
-		bool add_user(std::string nick) { users.push_back(nick); }
+		void add_user(std::string nick) { users.push_back(nick); }
 
 		void remove_user(std::string nick)
 		{
@@ -86,6 +86,7 @@ class Channel
 				}
 			}
 		}
+		
 
 };
 

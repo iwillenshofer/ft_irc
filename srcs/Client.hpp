@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 22:23:09 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 13:47:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class Client
 		*/
 
 		size_t get_send_queue_size(void) { return (_send_queue.size()); }
+		std::vector<std::string> &get_send_queue(void) { return (_send_queue); }
 		bool get_hangup(void) { return (_hangup); }
 		void set_hangup(bool v) { _hangup = v; }
 		int get_fd(void) { return (_fd); }
@@ -90,12 +91,12 @@ class Client
 				_receive_queue.insert(_receive_queue.end(), tmp.begin(), tmp.end());
 				for (std::vector<std::string>::iterator it = _receive_queue.begin(); it != _receive_queue.end(); it++)
 					Debug(*it + "\n");
-		
-				//just a test
-				_send_queue.push_back("433\r\n");
 			}
 			else if (rc <= 0)
-			{ 
+			{
+				Debug("Read Error", (rc == 0 ? DBG_WARNING: DBG_ERROR));
+				if (rc == 0)
+					set_hangup(true);
 				// rc == 0 other side closed socket 
 				// rc == -1 error;
 				/*

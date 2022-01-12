@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 22:31:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 13:38:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,21 @@ class FileDescriptors
 			** if the command is valid, it process it and also adds the returning message to the clients' queue.
 			** I'm not sure if we need a User class yet, as the client class may be enough.
 			*/
+			std::vector<std::string>::iterator prev;
+		    for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); it++)
+			{
+				for (std::vector<std::string>::iterator msg_it = it->second.get_send_queue().begin(); msg_it != it->second.get_send_queue().end();)
+				{
+					if (it->second.get_hangup())
+					{
+						prev = msg_it++;
+						Commands(*prev, it->second, clients);
+						it->second.get_send_queue().erase(prev);
+					}
+					else
+						msg_it++;
+				}
+			}
 		}
 
 		void pingpong(void)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 22:47:32 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 15:04:02 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <map>
 # include <string>
 # include "Client.hpp"
-
+# include "Channel.hpp"
 /*
 ** the command Class parses the command, creates a response, and sends it to the appropriate clients.
 */
@@ -41,7 +41,14 @@ class Commands
 		std::string						_command;
 		Client							&_sender;
 		std::map<int, Client>			&_clients;
-		std::map<std::string, Channel>	&_channels;
+//		std::map<std::string, Channel>	&_channels;
+
+		void	_process()
+		{
+			std::vector<std::string> cmd = ft::split(_command, " ");
+			if (cmd.front() == "NICK")
+				_sender.get_send_queue().push_back("");
+		}
 
 		Client *_get_client_by_nickname(std::string nick)
 		{
