@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/13 13:31:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/13 13:33:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ class Commands
 		typedef  void (Commands::*cmd_type)(void);
 		static std::map<std::string, cmd_type> initFunction(void);
 		static std::map<std::string, cmd_type> _commands;
-
-
 
 		void	_process()
 		{
