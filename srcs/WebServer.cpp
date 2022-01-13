@@ -40,7 +40,7 @@ WebServer &WebServer::operator=(WebServer const &cp)
 
 WebServer::~WebServer(void)
 {
-	WebServer::_instances.erase(std::remove(WebServer::_instances.begin(), WebServer::_instances.end(), this), WebServer::_instances.end());
+	//WebServer::_instances.erase(std::remove(WebServer::_instances.begin(), WebServer::_instances.end(), this), WebServer::_instances.end());
 }
 
 /*

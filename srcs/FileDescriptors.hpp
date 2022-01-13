@@ -155,6 +155,11 @@ class FileDescriptors
 
 		void pingpong(void)
 		{
+			for (size_t i = 1; i < size(); i++)
+			{
+				Debug(ft::to_string(i), DBG_INFO);
+			}
+			
 			/*
 			** here we will check ping commands sent to the clients when idle
 			** to make sure it is active.
