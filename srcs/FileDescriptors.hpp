@@ -155,9 +155,9 @@ class FileDescriptors
 
 		void pingpong(void)
 		{
-			for (size_t i = 1; i < size(); i++)
+		    for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); it++)
 			{
-				Debug(ft::to_string(i), DBG_INFO);
+				it->second.
 			}
 			
 			/*
