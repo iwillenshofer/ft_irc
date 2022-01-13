@@ -6,19 +6,35 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 21:06:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 21:34:25 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
+# include <cstring>
+
 # define BUFFERSIZE 1024
+
+/*
+** user modes. currently a struct, but will be converted into a class so it can initialize itself.
+*/
+typedef struct s_usermode
+{
+	bool a;
+	bool i;
+	bool w;
+	bool r;
+	bool o;
+	bool O;
+	bool S;
+} t_usermode;
 
 class Client
 {
 	public:
-		Client(int fd = 0): _fd(fd), _hangup(false) { }
+		Client(int fd = 0): _fd(fd), _hangup(false), registered(false) { bzero(&mode, sizeof(mode)); }
 		Client(Client const &cp) { *this = cp; }
 		Client &operator=(Client const &cp)
 		{
@@ -40,13 +56,27 @@ class Client
 		std::vector<std::string> 	_receive_queue;
 		std::vector<std::string> 	_send_queue;
 		bool						_hangup;
-	
+
 	public:
+		/*
+		** User properties. maybe could become a class...
+		** We would also want to set Server Properties, as a static variable
+		** (also possibly a class), so it replicates to all clients,
+		** allowing us to send just the client to the Commands class,
+		** instead of also sending the User and Server properties separately.
+		*/
+		std::string nickname;
+		std::string realname;
+		bool		registered;
+		t_usermode	mode;
+
 		/*
 		** setters and getters.
 		*/
 
 		size_t get_send_queue_size(void) { return (_send_queue.size()); }
+		std::vector<std::string> &get_send_queue(void) { return (_send_queue); }
+		std::vector<std::string> &get_receive_queue(void) { return (_receive_queue); }
 		bool get_hangup(void) { return (_hangup); }
 		void set_hangup(bool v) { _hangup = v; }
 		int get_fd(void) { return (_fd); }
@@ -70,12 +100,12 @@ class Client
 				_receive_queue.insert(_receive_queue.end(), tmp.begin(), tmp.end());
 				for (std::vector<std::string>::iterator it = _receive_queue.begin(); it != _receive_queue.end(); it++)
 					Debug(*it + "\n");
-		
-				//just a test
-				_send_queue.push_back(":localhost 001 asdasds : Olá\r\n");
 			}
 			else if (rc <= 0)
-			{ 
+			{
+				Debug("Read Error", (rc == 0 ? DBG_WARNING: DBG_ERROR));
+				if (rc == 0)
+					set_hangup(true);
 				// rc == 0 other side closed socket 
 				// rc == -1 error;
 				/*
@@ -101,11 +131,9 @@ class Client
 				return;
 			rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), 0);
 			if (rc > 0)
-			{
 				_send_queue.at(0).erase(0, rc);
-				if (!(_send_queue.at(0).size()))
-					_send_queue.erase(_send_queue.begin());
-			}
+			if (_send_queue.size() && !(_send_queue.at(0).size()))
+				_send_queue.erase(_send_queue.begin());
 		}
 };
 

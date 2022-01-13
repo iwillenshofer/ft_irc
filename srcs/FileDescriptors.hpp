@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/11 21:05:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 21:42:42 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 # include "Client.hpp"
 # include <poll.h>
 # include <fcntl.h>
- #include <sys/ioctl.h>
-
-# define BUFFERSIZE 1024
+# include <sys/ioctl.h>
+# include "Commands.hpp"
 
 class FileDescriptors
 {
@@ -151,6 +150,14 @@ class FileDescriptors
 			** if the command is valid, it process it and also adds the returning message to the clients' queue.
 			** I'm not sure if we need a User class yet, as the client class may be enough.
 			*/
+		    for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); it++)
+			{
+				for (std::vector<std::string>::iterator msg_it = it->second.get_receive_queue().begin(); msg_it != it->second.get_receive_queue().end();)
+				{
+					Commands(*msg_it, it->second, clients);
+					msg_it = it->second.get_receive_queue().erase(msg_it);
+				}
+			}
 		}
 
 		void pingpong(void)

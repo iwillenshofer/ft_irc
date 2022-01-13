@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/09 17:44:02 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/13 13:31:39 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,10 @@ std::string	ft::get_current_date( void )
 	strftime(output, 30, "%a, %d %b %Y %X %Z", timeinfo);
 	
 	return std::string(output);
+}
+
+void ft::uppercase(std::string &s)
+{
+	for (std::string::iterator it = s.begin(); it != s.end(); it++)
+		*it = std::toupper(*it);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/09 15:34:18 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/13 13:05:26 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Socket.cpp \
 			${SRC_DIR}/FileDescriptors.cpp \
 			${SRC_DIR}/utilities.cpp \
-			${SRC_DIR}/WebServer.cpp
+			${SRC_DIR}/WebServer.cpp \
+			${SRC_DIR}/Commands.cpp
 
 OBJECTS = $(patsubst ${SRC_DIR}/%.cpp, ${OBJ_DIR}/%.o, ${SRCS})
 DEPENDENCIES = $(patsubst %.o, %.d, ${OBJECTS})
