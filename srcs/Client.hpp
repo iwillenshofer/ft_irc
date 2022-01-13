@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/12 13:47:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/12 21:34:25 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_usermode
 class Client
 {
 	public:
-		Client(int fd = 0): _fd(fd), _hangup(false) { bzero(&mode, sizeof(mode)); }
+		Client(int fd = 0): _fd(fd), _hangup(false), registered(false) { bzero(&mode, sizeof(mode)); }
 		Client(Client const &cp) { *this = cp; }
 		Client &operator=(Client const &cp)
 		{
@@ -58,9 +58,17 @@ class Client
 		bool						_hangup;
 
 	public:
+		/*
+		** User properties. maybe could become a class...
+		** We would also want to set Server Properties, as a static variable
+		** (also possibly a class), so it replicates to all clients,
+		** allowing us to send just the client to the Commands class,
+		** instead of also sending the User and Server properties separately.
+		*/
 		std::string nickname;
 		std::string realname;
-		t_usermode 	mode;
+		bool		registered;
+		t_usermode	mode;
 
 		/*
 		** setters and getters.
@@ -68,6 +76,7 @@ class Client
 
 		size_t get_send_queue_size(void) { return (_send_queue.size()); }
 		std::vector<std::string> &get_send_queue(void) { return (_send_queue); }
+		std::vector<std::string> &get_receive_queue(void) { return (_receive_queue); }
 		bool get_hangup(void) { return (_hangup); }
 		void set_hangup(bool v) { _hangup = v; }
 		int get_fd(void) { return (_fd); }
@@ -122,11 +131,9 @@ class Client
 				return;
 			rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), 0);
 			if (rc > 0)
-			{
 				_send_queue.at(0).erase(0, rc);
-				if (!(_send_queue.at(0).size()))
-					_send_queue.erase(_send_queue.begin());
-			}
+			if (_send_queue.size() && !(_send_queue.at(0).size()))
+				_send_queue.erase(_send_queue.begin());
 		}
 };
 
