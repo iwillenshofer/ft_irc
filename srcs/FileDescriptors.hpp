@@ -157,7 +157,8 @@ class FileDescriptors
 		{
 		    for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); it++)
 			{
-				it->second.
+				std::string nick = it->second.nickname;
+				Debug(nick, DBG_INFO);
 			}
 			
 			/*
