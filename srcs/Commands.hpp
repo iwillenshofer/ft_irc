@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/13 13:33:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/13 20:20:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,21 @@ class Commands
 		static std::map<std::string, cmd_type> initFunction(void);
 		static std::map<std::string, cmd_type> _commands;
 
+		/*
+		** command helpers
+		*/
+		Client *_get_client_by_nickname(std::string nick)
+		{
+			for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++ )
+				if (it->second.nickname == nick)
+					return (&(it->second));
+			return (NULL);
+		}
+
+		/*
+		** command parsing and processing
+		*/
+
 		void	_process()
 		{
 			_parsed_command = ft::split(_command, " ");
@@ -61,18 +76,6 @@ class Commands
 			_run_command(_parsed_command.front());
 		}
 
-		Client *_get_client_by_nickname(std::string nick)
-		{
-			for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++ )
-				if (it->second.nickname == nick)
-					return (&(it->second));
-			return (NULL);
-		}
-		
-		/*
-		** IRC Commands
-		*/
-		
 		void _run_command(std::string &cmd_name)
 		{
 			std::map<std::string, cmd_type>::iterator cmd_it;
@@ -84,6 +87,10 @@ class Commands
 			else
 				(*this.*(cmd_it->second))();
 		}
+
+		/*
+		** IRC Commands
+		*/
 
 		void _cmd_nick(void)
 		{
@@ -117,6 +124,13 @@ class Commands
 		}
 
 		void _cmd_motd(void)
+		{
+			_sender.get_send_queue().push_back(":server 375  " + _sender.nickname + " :- Message of the day - \r\n"); // PERFORM WELCOME
+			_sender.get_send_queue().push_back(":server 372  " + _sender.nickname + " :THIS IS THE MESSAGE OF THE DAY\r\n"); // 
+			_sender.get_send_queue().push_back(":server 376  " + _sender.nickname + " :End of /MOTD command\r\n"); // 	
+		}
+
+		void _cmd_pong(void)
 		{
 			_sender.get_send_queue().push_back(":server 375  " + _sender.nickname + " :- Message of the day - \r\n"); // PERFORM WELCOME
 			_sender.get_send_queue().push_back(":server 372  " + _sender.nickname + " :THIS IS THE MESSAGE OF THE DAY\r\n"); // 
