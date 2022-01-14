@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/12 21:34:25 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 20:13:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ class Client
 			ssize_t rc = recv( _fd, _buffer, BUFFERSIZE, 0);
 			if (rc > 0)
 			{
+				is_ping = false;
+				last_ping = time(NULL);
 				_receive_buffer += _buffer;
 				tmp = ft::split(_receive_buffer, "\r\n");
 				_receive_queue.insert(_receive_queue.end(), tmp.begin(), tmp.end());

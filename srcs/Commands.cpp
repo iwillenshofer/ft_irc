@@ -6,13 +6,13 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 19:21:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 19:56:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
-std::map<std::string, Commands::cmd_type> Commands::initFunction(void)
+std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 {
 	std::map<std::string, Commands::cmd_type> cmd;
 
@@ -24,4 +24,4 @@ std::map<std::string, Commands::cmd_type> Commands::initFunction(void)
 	return (cmd);
 }
 
-std::map<std::string, Commands::cmd_type> Commands::_commands = initFunction();
+std::map<std::string, Commands::cmd_type> Commands::_commands = init_commands();

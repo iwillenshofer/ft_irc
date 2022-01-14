@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 19:16:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 20:07:21 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ class Commands
 		std::map<int, Client>			&_clients;
 
 		typedef  void (Commands::*cmd_type)(void);
-		static std::map<std::string, cmd_type> initFunction(void);
+		static std::map<std::string, cmd_type> init_commands(void);
 		static std::map<std::string, cmd_type> _commands;
 
+		static std::map<int, std::string> init_replies(void);
+		static std::map<int, std::string> _replies;
 		/*
 		** command helpers
 		*/

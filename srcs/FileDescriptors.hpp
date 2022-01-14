@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/12 21:42:42 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 20:23:38 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "Client.hpp"
 # include <poll.h>
 # include <fcntl.h>
+# include <unistd.h>
 # include <sys/ioctl.h>
 # include "Commands.hpp"
 
@@ -84,6 +85,7 @@ class FileDescriptors
 		{
 			std::vector<pollfd>::iterator it = _fds.begin();
 
+			close(fd);
 			while (it != _fds.end())
 			{
 				if (it->fd == fd)
@@ -127,8 +129,10 @@ class FileDescriptors
 				if (it->second.get_hangup())
 				{
 					prev = it++;
+					Debug("FD to Remove: " + ft::to_string(prev->second.get_fd()), DBG_ERROR);
 					remove(prev->second.get_fd());
 					clients.erase(prev);
+					Debug("Clients size: " + ft::to_string(clients.size()) + "FDS size: " + ft::to_string(_fds.size()), DBG_ERROR);
 				}
 				else
 					it++;
@@ -166,13 +170,12 @@ class FileDescriptors
 
 		   	for (std::map<int,Client>::iterator it = ++clients.begin(); it != clients.end(); it++)
 			{
-				if (it->second.is_ping == false && now - it->second.last_ping > 30)
+				if (it->second.is_ping == false && now - it->second.last_ping > 7)
 				{
 					it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
-					it->second.last_ping = time(NULL);
 					it->second.is_ping = true;
 				}
-				else if (it->second.is_ping == true && now - it->second.last_ping > 35)
+				else if (it->second.is_ping == true && now - it->second.last_ping > 10)
 				{
 					Debug("HANGUP", DBG_WARNING);
 					it->second.set_hangup(true);
