@@ -50,8 +50,11 @@ class Client
 			_receive_queue = cp._receive_queue;
 			_send_queue = cp._send_queue;
 			_hangup = cp._hangup;
-			last_ping = cp.last_ping;
 			nickname = cp.nickname;
+			realname = cp.realname;
+			registered = cp.registered;
+			mode = cp.mode;
+			last_ping = cp.last_ping;
 			is_ping = cp.is_ping;
 			return (*this);
 		}
