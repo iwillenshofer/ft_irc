@@ -14,6 +14,7 @@
 # define CLIENT_HPP
 
 # include <cstring>
+# include <ctime>
 
 # define BUFFERSIZE 1024
 
@@ -34,7 +35,12 @@ typedef struct s_usermode
 class Client
 {
 	public:
-		Client(int fd = 0): _fd(fd), _hangup(false), registered(false) { bzero(&mode, sizeof(mode)); }
+		Client(int fd = 0): _fd(fd), _hangup(false), registered(false), is_ping(false)
+		{
+			bzero(&mode, sizeof(mode));
+			last_ping = time(NULL);
+		}
+
 		Client(Client const &cp) { *this = cp; }
 		Client &operator=(Client const &cp)
 		{
@@ -44,6 +50,12 @@ class Client
 			_receive_queue = cp._receive_queue;
 			_send_queue = cp._send_queue;
 			_hangup = cp._hangup;
+			nickname = cp.nickname;
+			realname = cp.realname;
+			registered = cp.registered;
+			mode = cp.mode;
+			last_ping = cp.last_ping;
+			is_ping = cp.is_ping;
 			return (*this);
 		}
 		virtual ~Client() { };
@@ -56,6 +68,7 @@ class Client
 		std::vector<std::string> 	_receive_queue;
 		std::vector<std::string> 	_send_queue;
 		bool						_hangup;
+		
 
 	public:
 		/*
@@ -69,6 +82,8 @@ class Client
 		std::string realname;
 		bool		registered;
 		t_usermode	mode;
+		time_t		last_ping;
+		bool		is_ping;
 
 		/*
 		** setters and getters.

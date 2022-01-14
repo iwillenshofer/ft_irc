@@ -162,6 +162,23 @@ class FileDescriptors
 
 		void pingpong(void)
 		{
+			time_t now = time(NULL);
+
+		   	for (std::map<int,Client>::iterator it = ++clients.begin(); it != clients.end(); it++)
+			{
+				if (it->second.is_ping == false && now - it->second.last_ping > 30)
+				{
+					it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
+					it->second.last_ping = time(NULL);
+					it->second.is_ping = true;
+				}
+				else if (it->second.is_ping == true && now - it->second.last_ping > 35)
+				{
+					Debug("HANGUP", DBG_WARNING);
+					it->second.set_hangup(true);
+				}			
+			}
+			
 			/*
 			** here we will check ping commands sent to the clients when idle
 			** to make sure it is active.
