@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/13 13:14:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 19:21:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ std::map<std::string, Commands::cmd_type> Commands::initFunction(void)
 	cmd["NICK"] = &Commands::_cmd_nick;
 	cmd["USER"] = &Commands::_cmd_user;
 	cmd["MOTD"] = &Commands::_cmd_motd;
+	cmd["PONG"] = &Commands::_cmd_pong;
+
 	return (cmd);
 }
 

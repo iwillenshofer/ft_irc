@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/13 20:20:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 19:16:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,8 @@ class Commands
 
 		void _cmd_pong(void)
 		{
-			_sender.get_send_queue().push_back(":server 375  " + _sender.nickname + " :- Message of the day - \r\n"); // PERFORM WELCOME
-			_sender.get_send_queue().push_back(":server 372  " + _sender.nickname + " :THIS IS THE MESSAGE OF THE DAY\r\n"); // 
-			_sender.get_send_queue().push_back(":server 376  " + _sender.nickname + " :End of /MOTD command\r\n"); // 	
+			_sender.is_ping = false;
+			_sender.last_ping = time(NULL);
 		}
 
 		void _cmd_unknown(void)
