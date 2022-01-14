@@ -162,10 +162,22 @@ class FileDescriptors
 
 		void pingpong(void)
 		{
-		    for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); it++)
+			time_t now = time(NULL);
+
+		   	for (std::map<int,Client>::iterator it = ++clients.begin(); it != clients.end(); it++)
 			{
-				std::string nick = it->second.nickname;
-				Debug(nick, DBG_INFO);
+				if (now - it->second.last_ping > 30 && it->second.is_ping == false)
+				{
+					it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n");
+					it->second.last_ping = time(NULL);
+					it->second.is_ping = true;
+					Debug("Ping sent", DBG_WARNING);
+				}
+				else if (it->second.is_ping == true && now - it->second.last_ping > 35)
+				{
+					Debug("Shut down client", DBG_WARNING);
+					it->second.set_hangup(true);
+				}			
 			}
 			
 			/*
