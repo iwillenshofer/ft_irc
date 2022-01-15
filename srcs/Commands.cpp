@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 21:04:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 23:10:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["USER"] = &Commands::_cmd_user;
 	cmd["MOTD"] = &Commands::_cmd_motd;
 	cmd["PONG"] = &Commands::_cmd_pong;
+	cmd["PRIVMSG"] = &Commands::_cmd_privmsg;
 
 	return (cmd);
 }
@@ -40,18 +41,18 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_AWAY] = "<nick> :<away message>";
 	replies[RPL_UNAWAY] = ":You are no longer marked as being away";
 	replies[RPL_NOWAWAY] = ":You have been marked as being away";
-	replies[RPL_WHOISUSER] = "<nick> <user> <host> * :<real name>";
+	replies[RPL_WHOISUSER] = "<nick> <user> <host> * :<real_name>";
 	replies[RPL_WHOISSERVER] = "<nick> <server> :<server info>";
 	replies[RPL_WHOISOPERATOR] = "<nick> :is an IRC operator";
 	replies[RPL_WHOISIDLE] = "<nick> <integer> :seconds idle";
 	replies[RPL_ENDOFWHOIS] = "<nick> :End of WHOIS list";
 //	replies[RPL_WHOISCHANNELS] = "<nick> :*( ( "@" / "+" ) <channel> " " )";
-	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real name>";
+	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real_name>";
 	replies[RPL_ENDOFWHOWAS] = "<nick> :End of WHOWAS";
 	replies[RPL_LIST] = "<channel> <# visible> :<topic>";
 	replies[RPL_LISTEND] = ":End of LIST";
 	replies[RPL_UNIQOPIS] = "<channel> <nickname>";
-	replies[RPL_CHANNELMODEIS] = "<channel> <mode> <mode params>";
+	replies[RPL_CHANNELMODEIS] = "<channel> <mode> <mode_params>";
 	replies[RPL_NOTOPIC] = "<channel> :No topic is set";
 	replies[RPL_TOPIC] = "<channel> :<topic>";
 	replies[RPL_INVITING] = "<channel> <nick>";
@@ -61,7 +62,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_EXCEPTLIST] = "<channel> <exceptionmask>";
 	replies[RPL_ENDOFEXCEPTLIST] = "<channel> :End of channel exception list";
 	replies[RPL_VERSION] = "<version>.<debuglevel> <server> :<comments>";
-//	replies[RPL_WHOREPLY] = "<channel> <user> <host> <server> <nick>( "H" / "G" > ["*"] [ ( "@" / "+" ) ]:<hopcount> <real name>";
+//	replies[RPL_WHOREPLY] = "<channel> <user> <host> <server> <nick>( "H" / "G" > ["*"] [ ( "@" / "+" ) ]:<hopcount> <real_name>";
 	replies[RPL_ENDOFWHO] = "<name> :End of WHO list";
 //	replies[RPL_NAMREPLY] = "( "=" / "*" / "@" ) <channel>:[ "@" / "+" ] <nick> *( " " [ "@" / "+" ] <nick> )";
 	replies[RPL_ENDOFNAMES] = "<channel> :End of NAMES list";
@@ -166,6 +167,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_NOOPERHOST] = ":No O-lines for your host";
 	replies[ERR_UMODEUNKNOWNFLAG] = ":Unknown MODE flag";
 	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";
+	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
 	return (replies);
 }
 

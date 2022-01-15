@@ -6,12 +6,15 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 21:08:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 23:09:59 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_DEFAULTS_HPP
 # define SERVER_DEFAULTS_HPP
+
+
+# define	MSG_ENDLINE				"\r\n"
 
 /*
 ** Reply message
@@ -153,5 +156,6 @@
 # define    ERR_NOOPERHOST			491
 # define    ERR_UMODEUNKNOWNFLAG	501
 # define    ERR_USERSDONTMATCH		502
+# define    PRIVMSG					999
 
 #endif
