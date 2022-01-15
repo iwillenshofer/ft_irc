@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 20:07:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/14 21:08:03 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "utilities.hpp"
+# include "server_defaults.hpp"
 
 /*
-** the command Class parses the command, creates a response, and sends it to the appropriate clients.
+** the command Class parses the command, creates a response,
+** and adds it to the appropriate clients send queue.
 */
 
 class Commands
@@ -52,7 +54,6 @@ class Commands
 		typedef  void (Commands::*cmd_type)(void);
 		static std::map<std::string, cmd_type> init_commands(void);
 		static std::map<std::string, cmd_type> _commands;
-
 		static std::map<int, std::string> init_replies(void);
 		static std::map<int, std::string> _replies;
 		/*
