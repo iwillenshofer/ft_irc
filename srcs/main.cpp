@@ -37,17 +37,44 @@ bool	check_password(std::string password)
 	return true;
 }
 
+bool	check_optional(char *optional, std::string &host)
+{
+	std::string str = optional;
+	std::stringstream ss(str);
+	std::string token;
+	std::vector<std::string> vector_args;
+
+	while (std::getline(ss, token, ':'))
+		vector_args.push_back(token);
+	if (std::count(str.begin(), str.end(), ':') != 2)
+		return false;
+	for (std::string::iterator it = vector_args.at(0).begin(); it != vector_args.at(0).end(); it++)
+	{
+		if (isprint(*it) == 0)
+			return false;
+	}
+	host = vector_args.at(0);
+	if (host.empty())
+		host = "*";
+	return true;
+}
+
 std::vector<std::string>	parse_args(int argc, char **argv)
 {
 	std::vector<std::string> args;
+	std::string host;
 
 	if (argc == 2)
 	{
+		args.push_back("ft_irc.42network.com");
 		args.push_back(argv[0]);
 		args.push_back(argv[1]);
 	}
 	else if (argc == 3)
 	{
+		if (check_optional(argv[0], host) == false)
+			throw std::runtime_error("Invalid optional argument");
+		args.push_back(host);
 		args.push_back(argv[1]);
 		args.push_back(argv[2]);
 	}
@@ -55,9 +82,9 @@ std::vector<std::string>	parse_args(int argc, char **argv)
 	{
 		throw std::runtime_error("Invalid number of arguments");
 	}
-	if (check_port(args.at(0)) == false)
+	if (check_port(args.at(1)) == false)
 		throw std::runtime_error("Invalid port number");
-	if (check_password(args.at(1)) == false)
+	if (check_password(args.at(2)) == false)
 		throw std::runtime_error("Invalid password format");
 	return args;
 }
@@ -69,7 +96,7 @@ int main (int argc, char **argv)
 	try
 	{
 		std::vector<std::string> args = parse_args(argc - 1, argv + 1);
-		WebServer p(atoi(args.at(0).c_str()));
+		WebServer p(args.at(0), atoi(args.at(1).c_str()), args.at(2));
 	}
 	catch(const std::runtime_error& e)
 	{
