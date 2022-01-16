@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 20:23:38 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/15 20:25:46 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ class FileDescriptors
 			return (*this);
 		}
 		virtual ~FileDescriptors() { _fds.clear(); };
-		std::map<int, Client>		clients;
-
+		std::map<int, Client>				clients;
+		std::map<std::string, Channel>		channels;
 
 	private:
-		std::vector<pollfd>			_fds;
+		std::vector<pollfd>					_fds;
 		
 //		char						_buffer[BUFFERSIZE + 1];
 
@@ -158,7 +158,7 @@ class FileDescriptors
 			{
 				for (std::vector<std::string>::iterator msg_it = it->second.get_receive_queue().begin(); msg_it != it->second.get_receive_queue().end();)
 				{
-					Commands(*msg_it, it->second, clients);
+					Commands(*msg_it, it->second, clients, channels);
 					msg_it = it->second.get_receive_queue().erase(msg_it);
 				}
 			}

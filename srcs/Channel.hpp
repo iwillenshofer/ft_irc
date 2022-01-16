@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/12 13:44:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/15 22:43:19 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class Channel
 		virtual ~Channel() { };
 	
 	public:
+		std::string					name;
 		t_channelmode 				mode;
 		std::string 				creator;
 		std::vector<std::string> 	users;
@@ -73,7 +74,13 @@ class Channel
 			return (false);
 		}
 		
-		void add_user(std::string nick) { users.push_back(nick); }
+		void add_user(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+				if (*it == nick)
+					return ;
+			users.push_back(nick);
+		}
 
 		void remove_user(std::string nick)
 		{
@@ -86,8 +93,6 @@ class Channel
 				}
 			}
 		}
-		
-
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 23:10:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/15 20:59:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["MOTD"] = &Commands::_cmd_motd;
 	cmd["PONG"] = &Commands::_cmd_pong;
 	cmd["PRIVMSG"] = &Commands::_cmd_privmsg;
+	cmd["JOIN"] = &Commands::_cmd_join;
 
 	return (cmd);
 }

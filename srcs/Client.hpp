@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 20:13:43 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/15 20:45:48 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ class Client
 		** instead of also sending the User and Server properties separately.
 		*/
 		std::string nickname;
+		std::string username;
+		std::string hostname;
 		std::string realname;
 		bool		registered;
 		t_usermode	mode;
@@ -88,7 +90,7 @@ class Client
 		/*
 		** setters and getters.
 		*/
-
+		std::string get_prefix(void) { return (std::string(":") + nickname + "!~" + username + "@" + hostname); }
 		size_t get_send_queue_size(void) { return (_send_queue.size()); }
 		std::vector<std::string> &get_send_queue(void) { return (_send_queue); }
 		std::vector<std::string> &get_receive_queue(void) { return (_receive_queue); }
