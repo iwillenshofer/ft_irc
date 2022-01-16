@@ -32,7 +32,7 @@ class WebServer
 			/*
 			** Coplien Form
 			*/
-			WebServer(int port = 194);
+			WebServer(std::string host, int port, std::string password);
 			WebServer(WebServer const &cp);
 			WebServer &operator=(WebServer const &cp);
 			virtual ~WebServer();
@@ -44,6 +44,8 @@ class WebServer
 			*/
 			Socket							_socket;
 			FileDescriptors		 			_connections;
+			std::string						_host;
+			std::string						_password;
 			void							_init(int port);
 
 			/*

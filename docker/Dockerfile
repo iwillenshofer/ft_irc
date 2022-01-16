@@ -7,7 +7,7 @@ WORKDIR /home
 RUN git clone https://github.com/UndernetIRC/ircu2.git
 WORKDIR /home/ircu2
 RUN cd /home/ircu2 && \
-	./configure --prefix=/ircu  --enable-debug --with-maxcon=10000 --with-cpath=/ircu/lib/ircd.conf --with-lpath=/ircu/ircd.debug 
+	./configure --prefix=/ircu  --enable-debug --with-maxcon=1024 --with-cpath=/ircu/lib/ircd.conf --with-lpath=/ircu/ircd.debug 
 RUN make install
 
 #ADD ./ircu.tar.gz /

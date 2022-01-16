@@ -16,7 +16,8 @@
 std::vector<WebServer *> WebServer::_instances; //static members must be defined
 bool WebServer::_stop_server = false;
 
-WebServer::WebServer(int port)
+WebServer::WebServer(std::string host, int port, std::string password) :
+	_host(host), _password(password)
 {
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 
