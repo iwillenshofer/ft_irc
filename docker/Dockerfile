@@ -14,3 +14,6 @@ RUN make install
 RUN adduser -D -g '' ircd
 RUN chown -R ircd /ircu
 RUN chgrp -R ircd /ircu
+
+COPY ./entrypoint.sh /tmp/run.sh
+RUN chmod +x /tmp/run.sh
