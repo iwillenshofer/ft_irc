@@ -176,7 +176,7 @@ class Commands
 		*/
 		std::string _numeric_reply(int reply)
 		{
-			std::string nb = std::to_string(reply);
+			std::string nb = ft::to_string(reply);
 
 			while (nb.size() < 3)
 				nb.insert(nb.begin(), '0');
@@ -342,7 +342,7 @@ class Commands
 			std::string destination = _message.arguments().front();
 			std::string msg = _sender.get_prefix() + " PRIVMSG " + _message.arguments().front() + " " + _message.arguments().back() + MSG_ENDLINE;
 
-			if (destination.front() == '#')
+			if (destination.at(0) == '#')
 				_message_channel(msg, _message.arguments().front(), false);
 			else
 				_message_user(msg, _message.arguments().front());
@@ -384,7 +384,7 @@ class Commands
 			for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
 				users += "@" + *it + ' ';
 			if (users.size())
-				users.pop_back();
+				users.erase(users.length() - 1);
 			arguments["channel"] = _message.arguments()[0];
 			arguments["name"] = _message.arguments()[0];
 			arguments["names_list"] = users;
