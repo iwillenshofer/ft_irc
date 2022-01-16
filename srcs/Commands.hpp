@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/15 22:51:40 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 13:53:17 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 
 # include <map>
+# include <set>
 # include <vector>
 # include <string>
 # include <algorithm>
@@ -184,39 +185,53 @@ class Commands
 
 		std::string _generate_reply(int reply, std::map<std::string, std::string> v = std::map<std::string, std::string>())
 		{
-			std::string message = _numeric_reply(reply) + " " + _sender.nickname + " ";
+			std::string message = ":localhost " + _numeric_reply(reply) + " " + _sender.nickname + " ";
 			if (v.size())
 				message += _replace_tags(_replies[reply], v);
 			else
 				message += _replies[reply];
 			message += MSG_ENDLINE;
 			return (message);
-			(void)v;
 		}
 
 		std::string _replace_tags(std::string msg, std::map<std::string, std::string> v)
 		{
+
+			size_t find_pos;
+			
 			for (std::map<std::string, std::string>::iterator it = v.begin(); it != v.end(); it++)
 			{
-				std::string findstr("<" + it->first + ">");
-				msg.replace(msg.find(findstr), findstr.size(), it->second);
+				std::string str_tofind("<" + it->first + ">");
+				find_pos = msg.find(str_tofind);
+				if (find_pos != std::string::npos)
+					msg.replace(find_pos, str_tofind.size(), it->second);
 			}
 			return (msg);
 		}
 
 
 		/*
-		** sends a message to all channels _sender is in
+		** sends a message to everyone that is in a channel the _sender is.
 		*/
-		void _message_all_channels(std::string &msg, bool sender_too)
+
+		void _message_all_channels(std::string const &msg, bool sender_too)
 		{
-			(void)msg;(void)sender_too;			
+			std::set<std::string> users;
+			for (std::map<std::string, Channel>::iterator it = _channels.begin(); it !=_channels.end(); it++)
+			{
+				if (std::find(it->second.users.begin(), it->second.users.end(), _sender.nickname) != it->second.users.end())
+					users.insert(it->second.users.begin(), it->second.users.end());
+			}
+			if (!sender_too)
+				users.erase(_sender.nickname);
+			for (std::set<std::string>::iterator it = users.begin(); it!= users.end(); it++)
+				_message_user(msg, *it);
 		}
 
 		/*
 		** sends a message to a specific channel
 		*/
-		void _message_channel(std::string &msg, std::string &channel, bool sender_too)
+		void _message_channel(std::string const &msg, std::string const &channel, bool sender_too)
 		{
 			for (std::vector<std::string>::iterator it = _channels[channel].users.begin(); it !=_channels[channel].users.end(); it++)
 				if (*it != _sender.nickname || sender_too)
@@ -226,7 +241,7 @@ class Commands
 		/*
 		** sends a message to a specific user
 		*/
-		void _message_user(std::string msg, std::string &nickname)
+		void _message_user(std::string msg, std::string const &nickname)
 		{
 			Client *client = _get_client_by_nickname(nickname);
 
@@ -253,6 +268,9 @@ class Commands
 			_message_user(_generate_reply(RPL_CREATED), _sender);
 			_message_user(_generate_reply(RPL_MYINFO), _sender);
 			_cmd_motd();
+			std::string msg = _sender.get_prefix() + " MODE " + _sender.nickname + " :+iw" + MSG_ENDLINE;
+			_message_user(msg, _sender);
+
 		}
 		
 		bool _validate_nick(std::string const &nickname) const
@@ -274,8 +292,10 @@ class Commands
 			else
 			{
 				Debug("USER");
-				_sender.realname = _message.arguments()[3];
-				_sender.username = _message.arguments()[0];
+				_sender.realname = ft::trim(_message.arguments()[3]);
+				if (_sender.realname.size() && _sender.realname[0] == ':')
+					_sender.realname.erase(_sender.realname.begin());
+				_sender.username = ft::trim(_message.arguments()[0]);
 				_message.print();
 				if (!(_sender.nickname.empty()))
 					_register_user();
@@ -330,11 +350,100 @@ class Commands
 
 		void _cmd_join(void)
 		{
+			if (std::find(_channels[_message.arguments()[0]].users.begin(), _channels[_message.arguments()[0]].users.end(), _sender.nickname) != _channels[_message.arguments()[0]].users.end())
+				return ; // user is already in channel.
 			_channels[_message.arguments()[0]].add_user(_sender.nickname);
 			std::string msg = _sender.get_prefix() + " JOIN " + _message.arguments()[0] + MSG_ENDLINE;
 			_message_channel(msg, _message.arguments()[0], true);
 		}
+
+		void _cmd_part(void)
+		{
+			std::string msg = _sender.get_prefix() + " PART " + _message.arguments()[0] + MSG_ENDLINE;
+			_message_channel(msg, _message.arguments()[0], true);
+			_channels[_message.arguments()[0]].remove_user(_sender.nickname);
+		}
 	
+		void _cmd_quit(void)
+		{
+			std::string msg = _sender.get_prefix() + " QUIT " + _message.arguments().back() + MSG_ENDLINE;
+			_message_all_channels(msg, false);
+			for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
+				it->second.remove_user(_sender.nickname);
+			_sender.set_hangup(true);
+		}
+
+		void _cmd_mode(void)
+		{
+//			":ircu2.example.irc.com 353 iwillens2 = #brasil :@iwillens2"
+//			353 iwillens2 #brasil :iwillens2
+			_message.print();
+			std::string users;
+			std::map<std::string, std::string> arguments;
+	
+			for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
+				users += "@" + *it + ' ';
+			if (users.size())
+				users.pop_back();
+			arguments["channel"] = _message.arguments()[0];
+			arguments["name"] = _message.arguments()[0];
+			arguments["names_list"] = users;
+			arguments["mode"] = "+";
+			arguments["mode_params"] = "";
+			arguments["creation"] = "1642347646";
+			_message_user(_generate_reply(RPL_NAMREPLY, arguments), _sender);
+			_message_user(_generate_reply(RPL_ENDOFNAMES, arguments), _sender);
+			_message_user(_generate_reply(RPL_CHANNELMODEIS, arguments), _sender);
+			_message_user(_generate_reply(329, arguments), _sender);
+		}
+		
+		/*
+		**
+		> JOIN #hello2
+		< :iwillens3!~iwillens3@172.17.0.1 JOIN #hello2
+		> MODE #hello2
+		> WHO #hello2
+		< :ircu2.example.irc.com 353 iwillens3 = #hello2 :@iwillens3
+		< :ircu2.example.irc.com 366 iwillens3 #hello2 :End of /NAMES list.
+		< :ircu2.example.irc.com 324 iwillens3 #hello2 + 
+		< :ircu2.example.irc.com 329 iwillens3 #hello2 1642351658
+		< :ircu2.example.irc.com 352 iwillens3 #hello2 ~iwillens3 172.17.0.1 *.undernet.org iwillens3 H@ :0 Igor Willenshofer
+		< :ircu2.example.irc.com 315 iwillens3 #hello2 :End of /WHO list.
+
+
+		> JOIN #hello2
+		< :iwillens3!~iwillens3@254.127.0.0 JOIN #hello2
+		> MODE #hello2
+		> WHO #hello2
+		< localhost: 353 iwillens3 = #hello2 :@iwillens3
+		< localhost: 366 iwillens3 #hello2 :End of /NAMES list
+		< localhost: 324 iwillens3 #hello2 + 
+		< localhost: 329 iwillens3 #hello2 1642347646
+		< localhost: 352 iwillens3 #hello2 ~iwillens3 254.127.0.0 *.localhost iwillens3 H@ :0 Igor Willenshofer
+		< localhost: 315 iwillens3 #hello2 :End of /WHO list
+
+		**
+		*/
+		void _cmd_who(void)
+		{
+			std::map<std::string, std::string> arguments;
+			Client *client;
+			arguments["channel"] = _message.arguments()[0];
+			arguments["name"] = _message.arguments()[0];
+			arguments["server"] = "*.localhost";
+
+			for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
+			{
+				client = _get_client_by_nickname(*it);
+				arguments["user"] = client->username;
+				arguments["host"] = client->hostname.size() ? client->hostname : "hostname";
+				arguments["nick"] = client->nickname;
+				arguments["real_name"] = client->realname;
+				_message_user(_generate_reply(RPL_WHOREPLY, arguments), _sender);
+			}
+			_message_user(_generate_reply(RPL_ENDOFWHO, arguments), _sender);
+		}
+
 		void _cmd_unknown(void)
 		{
 			Debug("User " + _sender.nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);

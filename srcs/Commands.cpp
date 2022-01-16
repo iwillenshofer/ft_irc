@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/15 20:59:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 13:26:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["PONG"] = &Commands::_cmd_pong;
 	cmd["PRIVMSG"] = &Commands::_cmd_privmsg;
 	cmd["JOIN"] = &Commands::_cmd_join;
-
+	cmd["PART"] = &Commands::_cmd_part;
+	cmd["QUIT"] = &Commands::_cmd_quit;
+	cmd["MODE"] = &Commands::_cmd_mode;
+	cmd["WHO"] = &Commands::_cmd_who;
 	return (cmd);
 }
 
@@ -63,10 +66,10 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_EXCEPTLIST] = "<channel> <exceptionmask>";
 	replies[RPL_ENDOFEXCEPTLIST] = "<channel> :End of channel exception list";
 	replies[RPL_VERSION] = "<version>.<debuglevel> <server> :<comments>";
-//	replies[RPL_WHOREPLY] = "<channel> <user> <host> <server> <nick>( "H" / "G" > ["*"] [ ( "@" / "+" ) ]:<hopcount> <real_name>";
-	replies[RPL_ENDOFWHO] = "<name> :End of WHO list";
-//	replies[RPL_NAMREPLY] = "( "=" / "*" / "@" ) <channel>:[ "@" / "+" ] <nick> *( " " [ "@" / "+" ] <nick> )";
-	replies[RPL_ENDOFNAMES] = "<channel> :End of NAMES list";
+	replies[RPL_WHOREPLY] = "<channel> ~<user> <host> <server> <nick> H@ :0 <real_name>";
+	replies[RPL_ENDOFWHO] = "<name> :End of /WHO list";
+	replies[RPL_NAMREPLY] = "= <channel> :<names_list>";
+	replies[RPL_ENDOFNAMES] = "<channel> :End of /NAMES list";
 	replies[RPL_LINKS] = "<mask> <server> :<hopcount> <server info>";
 	replies[RPL_ENDOFLINKS] = "<mask> :End of LINKS list";
 	replies[RPL_BANLIST] = "<channel> <banmask>";
@@ -168,7 +171,11 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_NOOPERHOST] = ":No O-lines for your host";
 	replies[ERR_UMODEUNKNOWNFLAG] = ":Unknown MODE flag";
 	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";
+	
+	
 	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
+
+	replies[329] = "<channel> <creation>"; // creation time
 	return (replies);
 }
 

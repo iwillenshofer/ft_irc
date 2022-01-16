@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/15 20:25:46 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 09:48:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ class FileDescriptors
 					msg_it = it->second.get_receive_queue().erase(msg_it);
 				}
 			}
+			remove_queued(); // calls remove queue again in case anyone was added for hangup during commands processing.
 		}
 
 		void pingpong(void)

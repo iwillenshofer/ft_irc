@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/15 22:43:19 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 11:27:02 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,16 @@ class Channel
 		Channel(Channel const &cp) { *this = cp; }
 		Channel &operator=(Channel const &cp)
 		{
+			name = cp.name;
 			mode = cp.mode;
-
+			creator = cp.creator;
+			users = cp.users;
+			operators = cp.operators;
+			voices = cp.voices;
+			user_limit = cp.user_limit;
+			channel_key = cp.channel_key;
+			bans = cp.bans;
+			invitations = cp.invitations;
 			return (*this);
 		}
 		virtual ~Channel() { };
@@ -63,7 +71,6 @@ class Channel
 		std::string					channel_key;
 		std::vector<std::string>	bans;
 		std::vector<std::string>	invitations;
-
 
 	public:
 		bool find_user(std::string nick)

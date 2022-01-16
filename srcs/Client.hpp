@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/15 20:45:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 13:16:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Client
 		{
 			bzero(&mode, sizeof(mode));
 			last_ping = time(NULL);
+			hostname = _get_address();
 		}
 
 		Client(Client const &cp) { *this = cp; }
@@ -153,6 +154,15 @@ class Client
 				_send_queue.at(0).erase(0, rc);
 			if (_send_queue.size() && !(_send_queue.at(0).size()))
 				_send_queue.erase(_send_queue.begin());
+		}
+
+		std::string _get_address(void)
+		{
+			struct sockaddr_in sockinfo;
+			socklen_t sockinfo_len = sizeof(sockinfo);
+
+			getsockname(_fd, (struct sockaddr*)&sockinfo, &sockinfo_len);
+			return (ft::to_string(inet_ntoa(sockinfo.sin_addr)));
 		}
 };
 
