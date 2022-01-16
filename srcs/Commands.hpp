@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 13:53:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 17:16:59 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,34 +396,7 @@ class Commands
 			_message_user(_generate_reply(RPL_CHANNELMODEIS, arguments), _sender);
 			_message_user(_generate_reply(329, arguments), _sender);
 		}
-		
-		/*
-		**
-		> JOIN #hello2
-		< :iwillens3!~iwillens3@172.17.0.1 JOIN #hello2
-		> MODE #hello2
-		> WHO #hello2
-		< :ircu2.example.irc.com 353 iwillens3 = #hello2 :@iwillens3
-		< :ircu2.example.irc.com 366 iwillens3 #hello2 :End of /NAMES list.
-		< :ircu2.example.irc.com 324 iwillens3 #hello2 + 
-		< :ircu2.example.irc.com 329 iwillens3 #hello2 1642351658
-		< :ircu2.example.irc.com 352 iwillens3 #hello2 ~iwillens3 172.17.0.1 *.undernet.org iwillens3 H@ :0 Igor Willenshofer
-		< :ircu2.example.irc.com 315 iwillens3 #hello2 :End of /WHO list.
 
-
-		> JOIN #hello2
-		< :iwillens3!~iwillens3@254.127.0.0 JOIN #hello2
-		> MODE #hello2
-		> WHO #hello2
-		< localhost: 353 iwillens3 = #hello2 :@iwillens3
-		< localhost: 366 iwillens3 #hello2 :End of /NAMES list
-		< localhost: 324 iwillens3 #hello2 + 
-		< localhost: 329 iwillens3 #hello2 1642347646
-		< localhost: 352 iwillens3 #hello2 ~iwillens3 254.127.0.0 *.localhost iwillens3 H@ :0 Igor Willenshofer
-		< localhost: 315 iwillens3 #hello2 :End of /WHO list
-
-		**
-		*/
 		void _cmd_who(void)
 		{
 			std::map<std::string, std::string> arguments;
