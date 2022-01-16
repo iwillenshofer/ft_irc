@@ -17,3 +17,4 @@ RUN chgrp -R ircd /ircu
 
 COPY ./entrypoint.sh /tmp/run.sh
 RUN chmod +x /tmp/run.sh
+COPY ./ircd.conf /ircu/lib/ircd.conf
