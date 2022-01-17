@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 13:26:31 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 20:32:06 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,38 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 {
 	std::map<std::string, Commands::cmd_type> cmd;
 
+	cmd["PASS"] = &Commands::_cmd_pass;
 	cmd["NICK"] = &Commands::_cmd_nick;
 	cmd["USER"] = &Commands::_cmd_user;
-	cmd["MOTD"] = &Commands::_cmd_motd;
-	cmd["PONG"] = &Commands::_cmd_pong;
-	cmd["PRIVMSG"] = &Commands::_cmd_privmsg;
+	cmd["OPER"] = &Commands::_cmd_oper;
+	cmd["MODE"] = &Commands::_cmd_mode;
+	cmd["QUIT"] = &Commands::_cmd_quit;
 	cmd["JOIN"] = &Commands::_cmd_join;
 	cmd["PART"] = &Commands::_cmd_part;
-	cmd["QUIT"] = &Commands::_cmd_quit;
 	cmd["MODE"] = &Commands::_cmd_mode;
+	cmd["TOPIC"] = &Commands::_cmd_topic;
+	cmd["NAMES"] = &Commands::_cmd_names;
+	cmd["LIST"] = &Commands::_cmd_list;
+	cmd["INVITE"] = &Commands::_cmd_invite;
+	cmd["KICK"] = &Commands::_cmd_kick;
+	cmd["PRIVMSG"] = &Commands::_cmd_privmsg;
+	cmd["NOTICE"] = &Commands::_cmd_notice;
+	cmd["MOTD"] = &Commands::_cmd_motd;
+	cmd["LUSERS"] = &Commands::_cmd_lusers;
+	cmd["VERSION"] = &Commands::_cmd_version;
+	cmd["STATS"] = &Commands::_cmd_stats;
+	cmd["LINKS"] = &Commands::_cmd_links;
+	cmd["TIME"] = &Commands::_cmd_time;
+	cmd["TRACE"] = &Commands::_cmd_trace;
+	cmd["ADMIN"] = &Commands::_cmd_admin;
+	cmd["INFO"] = &Commands::_cmd_info;
 	cmd["WHO"] = &Commands::_cmd_who;
+	cmd["WHOIS"] = &Commands::_cmd_whois;
+	cmd["WHOWAS"] = &Commands::_cmd_whowas;
+	cmd["KILL"] = &Commands::_cmd_kill;
+	cmd["PING"] = &Commands::_cmd_ping;
+	cmd["PONG"] = &Commands::_cmd_pong;
+	cmd["ERROR"] = &Commands::_cmd_error;
 	return (cmd);
 }
 

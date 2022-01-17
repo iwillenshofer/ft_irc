@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 13:53:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/16 20:31:36 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,71 @@ class Commands
 		static std::map<std::string, cmd_type> _commands;
 		static std::map<int, std::string> init_replies(void);
 		static std::map<int, std::string> _replies;
+		
+		/*
+		** IRC Commands
+		** Connection Registration
+		** RFC 2821 Section 3.1
+		*/
+		void _cmd_pass(void);
+		void _cmd_nick(void);
+		void _cmd_user(void);
+		void _cmd_mode(void);
+		void _cmd_oper(void);
+		void _cmd_quit(void);
+
+		/*
+		** Channel Operations
+		** RFC 2821 Section 3.2
+		*/
+		void _cmd_join(void);
+		void _cmd_part(void);
+		void _cmd_mode_channel(void);
+		void _cmd_topic(void);
+		void _cmd_names(void);
+		void _cmd_list(void);
+		void _cmd_invite(void);
+		void _cmd_kick(void);
+
+		/*
+		** Channel Operations
+		** RFC 2821 Section 3.3
+		*/
+		void _cmd_privmsg(void);
+		void _cmd_notice(void);
+
+		/*
+		** Server Queries and Commands
+		** RFC 2821 Section 3.4
+		*/
+		void _cmd_motd(void);
+		void _cmd_lusers(void);
+		void _cmd_version(void);
+		void _cmd_stats(void);
+		void _cmd_links(void);
+		void _cmd_time(void);
+		void _cmd_trace(void);
+		void _cmd_admin(void);
+		void _cmd_info(void);
+
+		/*
+		** User based queries
+		** RFC 2821 Section 3.6
+		*/
+		void _cmd_who(void);
+		void _cmd_whois(void);
+		void _cmd_whowas(void);
+
+		/*
+		** Miscellaneous messages
+		** RFC 2821 Section 3.7
+		*/
+		void _cmd_kill(void);
+		void _cmd_ping(void);
+		void _cmd_pong(void);
+		void _cmd_error(void);
+		
+		
 		/*
 		** command helpers
 		*/
@@ -279,177 +344,33 @@ class Commands
 			return (true);
 		}
 
-		/*
-		** IRC Commands
-		*/
-
-		void _cmd_user(void)
-		{
-			if (_sender.registered)
-				_message_user(_generate_reply(ERR_ALREADYREGISTRED), _sender);
-			else if (_message.arguments().size() < 4)
-				_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
-			else
-			{
-				Debug("USER");
-				_sender.realname = ft::trim(_message.arguments()[3]);
-				if (_sender.realname.size() && _sender.realname[0] == ':')
-					_sender.realname.erase(_sender.realname.begin());
-				_sender.username = ft::trim(_message.arguments()[0]);
-				_message.print();
-				if (!(_sender.nickname.empty()))
-					_register_user();
-				else
-					Debug(_sender.nickname, DBG_ERROR);
-			}
-		}
-
-		void _cmd_nick(void)
-		{
-			std::string old_nick = _sender.nickname;
-			if (_message.arguments().size() == 0 || _message.arguments()[0].empty())
-				_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
-			else if (_get_client_by_nickname(_message.arguments()[0]) != NULL && _sender.nickname != _message.arguments()[0])
-				_message_user(_generate_reply(ERR_NICKNAMEINUSE), _sender);
-			else if (!(_validate_nick(_message.arguments()[0])))
-				_message_user(_generate_reply(ERR_ERRONEUSNICKNAME), _sender);
-			else
-			{
-				Debug("NICK");
-				_sender.nickname = _message.arguments()[0];
-				if (_sender.registered)
-					_message_user(":" + old_nick + " NICK " + _sender.nickname + "\r\n", _sender); // send message that user changed nickname.
-				else if (!(_sender.username.empty()))
-					_register_user();
-			}
-		}
-		
-		void _cmd_motd(void)
-		{
-			_message_user(_generate_reply(RPL_MOTDSTART), _sender);
-			_message_user(_generate_reply(RPL_MOTD), _sender);
-			_message_user(_generate_reply(RPL_ENDOFMOTD), _sender);
-		}
-
-		void _cmd_pong(void)
-		{
-			_sender.is_ping = false;
-			_sender.last_ping = time(NULL);
-		}
-
-		void _cmd_privmsg(void)
-		{
-			std::string destination = _message.arguments().front();
-			std::string msg = _sender.get_prefix() + " PRIVMSG " + _message.arguments().front() + " " + _message.arguments().back() + MSG_ENDLINE;
-
-			if (destination.at(0) == '#')
-				_message_channel(msg, _message.arguments().front(), false);
-			else
-				_message_user(msg, _message.arguments().front());
-		}
-
-		void _cmd_join(void)
-		{
-			if (std::find(_channels[_message.arguments()[0]].users.begin(), _channels[_message.arguments()[0]].users.end(), _sender.nickname) != _channels[_message.arguments()[0]].users.end())
-				return ; // user is already in channel.
-			_channels[_message.arguments()[0]].add_user(_sender.nickname);
-			std::string msg = _sender.get_prefix() + " JOIN " + _message.arguments()[0] + MSG_ENDLINE;
-			_message_channel(msg, _message.arguments()[0], true);
-		}
-
-		void _cmd_part(void)
-		{
-			std::string msg = _sender.get_prefix() + " PART " + _message.arguments()[0] + MSG_ENDLINE;
-			_message_channel(msg, _message.arguments()[0], true);
-			_channels[_message.arguments()[0]].remove_user(_sender.nickname);
-		}
-	
-		void _cmd_quit(void)
-		{
-			std::string msg = _sender.get_prefix() + " QUIT " + _message.arguments().back() + MSG_ENDLINE;
-			_message_all_channels(msg, false);
-			for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
-				it->second.remove_user(_sender.nickname);
-			_sender.set_hangup(true);
-		}
-
-		void _cmd_mode(void)
-		{
-//			":ircu2.example.irc.com 353 iwillens2 = #brasil :@iwillens2"
-//			353 iwillens2 #brasil :iwillens2
-			_message.print();
-			std::string users;
-			std::map<std::string, std::string> arguments;
-	
-			for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
-				users += "@" + *it + ' ';
-			if (users.size())
-				users.erase(users.length() - 1);
-			arguments["channel"] = _message.arguments()[0];
-			arguments["name"] = _message.arguments()[0];
-			arguments["names_list"] = users;
-			arguments["mode"] = "+";
-			arguments["mode_params"] = "";
-			arguments["creation"] = "1642347646";
-			_message_user(_generate_reply(RPL_NAMREPLY, arguments), _sender);
-			_message_user(_generate_reply(RPL_ENDOFNAMES, arguments), _sender);
-			_message_user(_generate_reply(RPL_CHANNELMODEIS, arguments), _sender);
-			_message_user(_generate_reply(329, arguments), _sender);
-		}
-		
-		/*
-		**
-		> JOIN #hello2
-		< :iwillens3!~iwillens3@172.17.0.1 JOIN #hello2
-		> MODE #hello2
-		> WHO #hello2
-		< :ircu2.example.irc.com 353 iwillens3 = #hello2 :@iwillens3
-		< :ircu2.example.irc.com 366 iwillens3 #hello2 :End of /NAMES list.
-		< :ircu2.example.irc.com 324 iwillens3 #hello2 + 
-		< :ircu2.example.irc.com 329 iwillens3 #hello2 1642351658
-		< :ircu2.example.irc.com 352 iwillens3 #hello2 ~iwillens3 172.17.0.1 *.undernet.org iwillens3 H@ :0 Igor Willenshofer
-		< :ircu2.example.irc.com 315 iwillens3 #hello2 :End of /WHO list.
-
-
-		> JOIN #hello2
-		< :iwillens3!~iwillens3@254.127.0.0 JOIN #hello2
-		> MODE #hello2
-		> WHO #hello2
-		< localhost: 353 iwillens3 = #hello2 :@iwillens3
-		< localhost: 366 iwillens3 #hello2 :End of /NAMES list
-		< localhost: 324 iwillens3 #hello2 + 
-		< localhost: 329 iwillens3 #hello2 1642347646
-		< localhost: 352 iwillens3 #hello2 ~iwillens3 254.127.0.0 *.localhost iwillens3 H@ :0 Igor Willenshofer
-		< localhost: 315 iwillens3 #hello2 :End of /WHO list
-
-		**
-		*/
-		void _cmd_who(void)
-		{
-			std::map<std::string, std::string> arguments;
-			Client *client;
-			arguments["channel"] = _message.arguments()[0];
-			arguments["name"] = _message.arguments()[0];
-			arguments["server"] = "*.localhost";
-
-			for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
-			{
-				client = _get_client_by_nickname(*it);
-				arguments["user"] = client->username;
-				arguments["host"] = client->hostname.size() ? client->hostname : "hostname";
-				arguments["nick"] = client->nickname;
-				arguments["real_name"] = client->realname;
-				_message_user(_generate_reply(RPL_WHOREPLY, arguments), _sender);
-			}
-			_message_user(_generate_reply(RPL_ENDOFWHO, arguments), _sender);
-		}
-
 		void _cmd_unknown(void)
 		{
 			Debug("User " + _sender.nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);
-			_message_user(":server 421  " + _message.command() + " :Unknown command\r\n", _sender); // 	
+			_message_user(":server 421  " + _message.command() + " :Unknown command\r\n", _sender);
 		}
 
+
+
+		/*
+		** Commands not Implemented:
+		** 3.1.6 Service
+		** 3.1.8 Squit
+		** 3.4.7 Connect
+		** 3.5.1 Servlist
+		** 3.5.2 Squery
+		**
+		** Optional Commands
+		** 4.1 Away
+		** 4.2 Rehash
+		** 4.3 Die
+		** 4.4 Restart
+		** 4.5 Summon
+		** 4.6 Users
+		** 4.7 Operwall
+		** 4.8 Userhost
+		** 4.9 Ison
+		*/
 };
 
 #endif
