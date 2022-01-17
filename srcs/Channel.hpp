@@ -100,6 +100,12 @@ class Channel
 				}
 			}
 		}
+
+		void	set_name(std::string name)
+		{
+			
+		}
+
 };
 
 #endif
