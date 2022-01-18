@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:32 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:36:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@
 
 void	Commands::_cmd_join(void)
 {
-	if (std::find(_channels[_message.arguments()[0]].users.begin(), _channels[_message.arguments()[0]].users.end(), _sender.nickname) != _channels[_message.arguments()[0]].users.end())
+	if (std::find((*_channels)[_message.arguments()[0]].users.begin(), (*_channels)[_message.arguments()[0]].users.end(), _sender->nickname) != (*_channels)[_message.arguments()[0]].users.end())
 			return ; // user is already in channel.
-		_channels[_message.arguments()[0]].add_user(_sender.nickname);
-		std::string msg = _sender.get_prefix() + " JOIN " + _message.arguments()[0] + MSG_ENDLINE;
+		(*_channels)[_message.arguments()[0]].add_user(_sender->nickname);
+		std::string msg = _sender->get_prefix() + " JOIN " + _message.arguments()[0] + MSG_ENDLINE;
 		_message_channel(msg, _message.arguments()[0], true);
 }

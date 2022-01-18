@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 13:16:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:42:59 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 
 # include <cstring>
 # include <ctime>
+# include "server_defaults.hpp"
+# include "Commands.hpp"
 
-# define BUFFERSIZE 1024
+class Commands;
 
 /*
 ** user modes. currently a struct, but will be converted into a class so it can initialize itself.
@@ -117,9 +119,12 @@ class Client
 				last_ping = time(NULL);
 				_receive_buffer += _buffer;
 				tmp = ft::split(_receive_buffer, "\r\n");
+				if (_receive_buffer.size() > MSG_MAXMSGSIZE)
+				{
+					Commands command(ERR_INPUTTOOLONG, this);
+					_receive_buffer.clear();
+				}
 				_receive_queue.insert(_receive_queue.end(), tmp.begin(), tmp.end());
-				for (std::vector<std::string>::iterator it = _receive_queue.begin(); it != _receive_queue.end(); it++)
-					Debug(*it + "\n");
 			}
 			else if (rc <= 0)
 			{

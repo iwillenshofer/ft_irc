@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:59 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:33:54 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@
 
 void	Commands::_cmd_nick(void)
 {
-	std::string old_nick = _sender.nickname;
+	std::string old_nick = _sender->nickname;
 	if (_message.arguments().size() == 0 || _message.arguments()[0].empty())
 		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
-	else if (_get_client_by_nickname(_message.arguments()[0]) != NULL && _sender.nickname != _message.arguments()[0])
+	else if (_get_client_by_nickname(_message.arguments()[0]) != NULL && _sender->nickname != _message.arguments()[0])
 		_message_user(_generate_reply(ERR_NICKNAMEINUSE), _sender);
 	else if (!(_validate_nick(_message.arguments()[0])))
 		_message_user(_generate_reply(ERR_ERRONEUSNICKNAME), _sender);
 	else
 	{
 		Debug("NICK");
-		_sender.nickname = _message.arguments()[0];
-		if (_sender.registered)
-			_message_user(":" + old_nick + " NICK " + _sender.nickname + "\r\n", _sender); // send message that user changed nickname.
-		else if (!(_sender.username.empty()))
+		_sender->nickname = _message.arguments()[0];
+		if (_sender->registered)
+			_message_user(":" + old_nick + " NICK " + _sender->nickname + "\r\n", _sender); // send message that user changed nickname.
+		else if (!(_sender->username.empty()))
 			_register_user();
 	}
 }

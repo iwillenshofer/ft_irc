@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:31:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:44:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,24 @@
 # include <vector>
 # include <string>
 # include <algorithm>
+# include <exception>
 # include "Debug.hpp"
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "utilities.hpp"
 # include "server_defaults.hpp"
 
+//class Client;
+
 class Message
 {
 	public:
 		Message(void) {};
-		Message(std::string message): _message(message) { _disassemble(); }
+		Message(std::string message): _message(message)
+		{
+			_disassemble();
+			_validate();
+		}
 		Message(Message const &cp) { *this = cp; }
 		Message &operator=(Message const &cp)
 		{
@@ -59,35 +66,45 @@ class Message
 		
 	private:
 		/*
-		** 
+		** disassembles _message into _prefix, _command and [_arguments]
 		*/
 		void _disassemble(void)
 		{
 			std::string user_message;
+			std::string msg = _message;
 
-			if (!_message.size())
+			_message = ft::trim(_message);
+			if (!msg.size())
 				return;
-			if (_message[0] == ':')
+			if (msg[0] == ':')
 			{
-				_prefix = _message.substr(0, _message.find(' '));
-				_message.erase(0, _prefix.size());
+				_prefix = msg.substr(0, msg.find(' '));
+				msg.erase(0, _prefix.size());
 				_prefix.erase(_prefix.begin());
-				_message = ft::trim(_message);
+				msg = ft::trim(msg);
 			}
-			if (_message.find(" :") != _message.npos)
+			if (msg.find(" :") != msg.npos)
 			{
-				user_message = _message.substr(_message.find(" :"), _message.size());
-				_message.erase(_message.size() - user_message.size());
+				user_message = ft::trim(msg.substr(msg.find(" :"), msg.size()));
+				msg.erase(msg.size() - user_message.size());
 				user_message.erase(0, 1);
 			}
-			_message = ft::trim(_message);
-			_arguments = ft::split(_message, ' ');
+			msg = ft::trim(msg);
+			_arguments = ft::split(msg, ' ');
 			if (_arguments.size())
 			{
 				_command = _arguments[0];
 				_arguments.erase(_arguments.begin());
 			}
 			_arguments.push_back(user_message);
+		}
+
+		void _validate(void)
+		{
+			if (_message.size() > MSG_MAXMSGSIZE)
+				throw InputLineTooLong();
+			if (!(_message.size()) || !(_command.size()))
+				throw EmptyMessage();
 		}
 	
 	public:
@@ -103,6 +120,16 @@ class Message
 			Debug("_command: " + _command);
 			Debug("_arguments: [" + args + "]");
 		}
+
+		struct InputLineTooLong : public std::exception
+		{
+				virtual const char*	what() const throw() { return ("417: Input line was too long."); }
+		};
+
+		struct EmptyMessage : public std::exception
+		{
+				virtual const char*	what() const throw() { return ("Empty Message."); }
+		};
 };
 
 /*
@@ -113,8 +140,28 @@ class Message
 class Commands
 {
 	public:
-		Commands(std::string message, Client &sender, std::map<int, Client> &clients, std::map<std::string, Channel> &channels): _message(message), _sender(sender), _clients(clients), _channels(channels)
-		{ _process(); }
+		Commands(int message, Client *sender): _sender(sender), _clients(0x0), _channels(0x0)
+		{
+			_message_user(_generate_reply(message), _sender);
+		}
+
+		Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels): _sender(sender), _clients(clients), _channels(channels)
+		{ 
+			try
+			{
+				_message = Message(message);
+			}
+			catch (const Message::EmptyMessage &e)
+			{
+				return;
+			}
+			catch (const Message::InputLineTooLong &e)
+			{
+				_message_user(_generate_reply(ERR_INPUTTOOLONG), _sender);
+				return ;
+			}
+			_process();
+		}
 		Commands(Commands const &cp): _sender(cp._sender), _clients(cp._clients), _channels(cp._channels) { *this = cp; }
 		Commands &operator=(Commands const &cp)
 		{
@@ -129,9 +176,9 @@ class Commands
 	private:
 		Commands(void);
 		Message							_message; // parsed command
-		Client							&_sender;
-		std::map<int, Client>			&_clients;
-		std::map<std::string, Channel>	&_channels;
+		Client							*_sender;
+		std::map<int, Client>			*_clients;
+		std::map<std::string, Channel>	*_channels;
 
 
 		typedef  void (Commands::*cmd_type)(void);
@@ -209,7 +256,7 @@ class Commands
 		*/
 		Client *_get_client_by_nickname(std::string nick)
 		{
-			for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); it++ )
+			for (std::map<int, Client>::iterator it = _clients->begin(); it != _clients->end(); it++ )
 				if (it->second.nickname == nick)
 					return (&(it->second));
 			return (NULL);
@@ -250,7 +297,7 @@ class Commands
 
 		std::string _generate_reply(int reply, std::map<std::string, std::string> v = std::map<std::string, std::string>())
 		{
-			std::string message = ":localhost " + _numeric_reply(reply) + " " + _sender.nickname + " ";
+			std::string message = ":localhost " + _numeric_reply(reply) + " " + _sender->nickname + " ";
 			if (v.size())
 				message += _replace_tags(_replies[reply], v);
 			else
@@ -282,13 +329,13 @@ class Commands
 		void _message_all_channels(std::string const &msg, bool sender_too)
 		{
 			std::set<std::string> users;
-			for (std::map<std::string, Channel>::iterator it = _channels.begin(); it !=_channels.end(); it++)
+			for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++)
 			{
-				if (std::find(it->second.users.begin(), it->second.users.end(), _sender.nickname) != it->second.users.end())
+				if (std::find(it->second.users.begin(), it->second.users.end(), _sender->nickname) != it->second.users.end())
 					users.insert(it->second.users.begin(), it->second.users.end());
 			}
 			if (!sender_too)
-				users.erase(_sender.nickname);
+				users.erase(_sender->nickname);
 			for (std::set<std::string>::iterator it = users.begin(); it!= users.end(); it++)
 				_message_user(msg, *it);
 		}
@@ -298,8 +345,8 @@ class Commands
 		*/
 		void _message_channel(std::string const &msg, std::string const &channel, bool sender_too)
 		{
-			for (std::vector<std::string>::iterator it = _channels[channel].users.begin(); it !=_channels[channel].users.end(); it++)
-				if (*it != _sender.nickname || sender_too)
+			for (std::vector<std::string>::iterator it = (*_channels)[channel].users.begin(); it != (*_channels)[channel].users.end(); it++)
+				if (*it != _sender->nickname || sender_too)
 					_message_user(msg, *it);
 		}
 
@@ -313,12 +360,12 @@ class Commands
 			if (!(client))
 				_message_user(_generate_reply(ERR_NOSUCHNICK), _sender);
 			else
-				_message_user(msg, *client);
+				_message_user(msg, client);
 		}
 
-		void _message_user(std::string msg, Client &client)
+		void _message_user(std::string msg, Client *client)
 		{
-			client.get_send_queue().push_back(msg);
+			client->get_send_queue().push_back(msg);
 		}
 
 		/*
@@ -327,13 +374,13 @@ class Commands
 		void _register_user(void)
 		{
 			Debug("User Registered", DBG_ERROR);
-			_sender.registered = true;
+			_sender->registered = true;
 			_message_user(_generate_reply(RPL_WELCOME), _sender);
 			_message_user(_generate_reply(RPL_YOURHOST), _sender);
 			_message_user(_generate_reply(RPL_CREATED), _sender);
 			_message_user(_generate_reply(RPL_MYINFO), _sender);
 			_cmd_motd();
-			std::string msg = _sender.get_prefix() + " MODE " + _sender.nickname + " :+iw" + MSG_ENDLINE;
+			std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
 			_message_user(msg, _sender);
 
 		}
@@ -346,11 +393,9 @@ class Commands
 
 		void _cmd_unknown(void)
 		{
-			Debug("User " + _sender.nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);
+			Debug("User " + _sender->nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);
 			_message_user(":server 421  " + _message.command() + " :Unknown command\r\n", _sender);
 		}
-
-
 
 		/*
 		** Commands not Implemented:

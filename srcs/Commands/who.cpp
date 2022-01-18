@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:39 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:38:06 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	Commands::_cmd_who(void)
 	arguments["name"] = _message.arguments()[0];
 	arguments["server"] = "*.localhost";
 
-	for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
+	for (std::vector<std::string>::iterator it = (*_channels)[_message.arguments()[0]].users.begin(); it != (*_channels)[_message.arguments()[0]].users.end(); it++ )
 	{
 		client = _get_client_by_nickname(*it);
 		arguments["user"] = client->username;

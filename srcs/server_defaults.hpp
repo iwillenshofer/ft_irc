@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 23:09:59 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:04:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,18 @@
 # define SERVER_DEFAULTS_HPP
 
 
+/*
+** Message Defaults
+*/
 # define	MSG_ENDLINE				"\r\n"
+# define	MSG_MAXMSGSIZE			510
+
+/*
+** Server Defaults
+*/
+# define	SRV_PINGWAIT			15
+# define	SRV_PONGWAIT			10
+# define 	BUFFERSIZE 				1024
 
 /*
 ** Reply message
@@ -156,6 +167,13 @@
 # define    ERR_NOOPERHOST			491
 # define    ERR_UMODEUNKNOWNFLAG	501
 # define    ERR_USERSDONTMATCH		502
+
+/*
+** Implementation defined messages
+*/
+
+# define	ERR_INPUTTOOLONG		417
 # define    PRIVMSG					999
+
 
 #endif

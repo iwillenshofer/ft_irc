@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:12 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:45 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:35:07 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	Commands::_cmd_mode(void)
 	std::string users;
 	std::map<std::string, std::string> arguments;
 
-	for (std::vector<std::string>::iterator it = _channels[_message.arguments()[0]].users.begin(); it != _channels[_message.arguments()[0]].users.end(); it++ )
+	for (std::vector<std::string>::iterator it = (*_channels)[_message.arguments()[0]].users.begin(); it != (*_channels)[_message.arguments()[0]].users.end(); it++ )
 		users += "@" + *it + ' ';
 	if (users.size())
 		users.erase(users.length() - 1);

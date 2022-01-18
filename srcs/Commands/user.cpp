@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:17 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:34:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,21 @@
 
 void	Commands::_cmd_user(void)
 {
-	if (_sender.registered)
+	if (_sender->registered)
 		_message_user(_generate_reply(ERR_ALREADYREGISTRED), _sender);
 	else if (_message.arguments().size() < 4)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
 	else
 	{
 		Debug("USER");
-		_sender.realname = ft::trim(_message.arguments()[3]);
-		if (_sender.realname.size() && _sender.realname[0] == ':')
-			_sender.realname.erase(_sender.realname.begin());
-		_sender.username = ft::trim(_message.arguments()[0]);
+		_sender->realname = ft::trim(_message.arguments()[3]);
+		if (_sender->realname.size() && _sender->realname[0] == ':')
+			_sender->realname.erase(_sender->realname.begin());
+		_sender->username = ft::trim(_message.arguments()[0]);
 		_message.print();
-		if (!(_sender.nickname.empty()))
+		if (!(_sender->nickname.empty()))
 			_register_user();
 		else
-			Debug(_sender.nickname, DBG_ERROR);
+			Debug(_sender->nickname, DBG_ERROR);
 	}
 }

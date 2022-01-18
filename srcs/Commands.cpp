@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:32:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 22:37:22 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_UMODEUNKNOWNFLAG] = ":Unknown MODE flag";
 	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";
 	
-	
+	replies[ERR_INPUTTOOLONG] = ":Input line was too long";
 	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
 
 	replies[329] = "<channel> <creation>"; // creation time
