@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 18:04:40 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/18 20:09:38 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void Client::read(void)
 		last_ping = time(NULL);
 		_receive_buffer += _buffer;
 		tmp = ft::split(_receive_buffer, "\r\n");
-		if (_receive_buffer.size() > MSG_MAXMSGSIZE)
+		if (_receive_buffer.size() > MSG_MAXMSGSIZE * 2)
 		{
 			Commands commands(ERR_INPUTTOOLONG, this);
-			_receive_buffer.clear();
+			_receive_buffer.erase(_receive_buffer.begin(), _receive_buffer.begin() + MSG_MAXMSGSIZE);
 		}
 		_receive_queue.insert(_receive_queue.end(), tmp.begin(), tmp.end());
 	}
