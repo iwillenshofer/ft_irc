@@ -42,8 +42,17 @@ typedef struct s_channelmode
 class Channel
 {
 	public:
-		Channel(void): user_limit(0) { bzero(&mode, sizeof(t_channelmode));} 
+
+		Channel(std::string name, std::string creator): user_limit(0)
+		{
+			set_name(name);
+			users.push_back(creator);
+			operators.push_back(creator);
+			bzero(&mode, sizeof(t_channelmode));
+		} 
+
 		Channel(Channel const &cp) { *this = cp; }
+
 		Channel &operator=(Channel const &cp)
 		{
 			name = cp.name;
@@ -71,21 +80,31 @@ class Channel
 		std::string					channel_key;
 		std::vector<std::string>	bans;
 		std::vector<std::string>	invitations;
+		std::string					password;
+		std::string					_topic;
 
 	public:
-		bool find_user(std::string nick)
+		bool is_user(std::string nick)
 		{
 			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+			{
 				if (*it == nick)
 					return true;
-			return (false);
+			}
+			return false;
 		}
 		
 		void add_user(std::string nick)
 		{
+			if (user_limit != 0 && users.size() >= user_limit)
+				throw std::runtime_error("Cannot join channel (+l): Code 471");
+			if (is_banned(nick) == true)
+				throw std::runtime_error("Cannot join channel (+b): Code 471");
 			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+			{
 				if (*it == nick)
-					return ;
+				break ;
+			}		
 			users.push_back(nick);
 		}
 
@@ -103,7 +122,179 @@ class Channel
 
 		void	set_name(std::string name)
 		{
-			
+			if (name.at(0) != '&' || name.at(0) != '#' || name.at(0) != '+' || name.at(0) != '!')
+				throw std::runtime_error("Invalid channel name : Code 476");
+			if (name.size() > 50)
+				throw std::runtime_error("Invalid channel name: Code 476");
+			for (std::string::iterator it = name.begin(); it != name.end(); it++)
+			{
+				if (*it == ' ' || *it == 7 || *it == ',' || *it == ':')
+					throw std::runtime_error("Invalid channel name: Code 476");
+			}
+		}
+
+		void	activate_mode(std::string nick, char flag, std::string arg)
+		{
+			if (is_operator(nick) == true)
+			{
+				if (flag == 'b')
+					ban_user(arg);
+				else if (flag == 'i')
+					mode.i = true;
+				else if (flag == 'l')
+					set_limit(arg);
+				else if (flag == 'm')
+					mode.m = true;
+				else if (flag == 'n')
+					mode.n = true;
+				else if (flag == 'o')
+					operators.push_back(arg);
+				else if (flag == 'p')
+					mode.p = true;
+				else if (flag == 's')
+					mode.s = true;
+				else if (flag == 't')
+					mode.t = true;
+				else if (flag == 'k')
+					set_password(arg);
+			}
+		}
+
+		void	desactivate_mode(std::string nick, char flag, std::string arg)
+		{
+			if (is_operator(nick) == true)
+			{
+				if (flag == 'b')
+					unban_user(arg);
+				else if (flag == 'i')
+					mode.i = true;
+				else if (flag == 'l')
+					user_limit = 0;
+				else if (flag == 'm')
+					mode.m = true;
+				else if (flag == 'n')
+					mode.n = true;
+				else if (flag == 'o')
+					remove_operator(arg);
+				else if (flag == 'p')
+					mode.p = true;
+				else if (flag == 's')
+					mode.s = true;
+				else if (flag == 't')
+					mode.t = true;
+				else if (flag == 'k')
+					unset_password(arg);
+			}
+		}
+
+		bool	is_operator(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = operators.begin(); it != operators.end(); it++)
+			{
+				if (*it == nick)
+					return true;
+			}
+			return false;
+		}
+
+		bool	is_banned(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = bans.begin(); it != bans.end(); it++)
+			{
+				if (*it == nick)
+					return true;
+			}
+			return false;
+		}
+
+		bool	is_voice(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = voices.begin(); it != voices.end(); it++)
+			{
+				if (*it == nick)
+					return true;
+			}
+			return false;
+		}
+
+		void	ban_user(std::string nick)
+		{
+			if (is_banned(nick)) // If user is already ban, we can return
+				return ;
+			bans.push_back(nick);
+		}
+
+		void	unban_user(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = bans.begin(); it != bans.end(); it++)
+			{
+				if (*it == nick)
+				{
+					it->erase();
+					return;
+				}
+			}
+		}
+
+		void	remove_operator(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = operators.begin(); it != operators.end(); it++)
+			{
+				if (*it == nick)
+				{
+					it->erase();
+					return;
+				}
+			}
+			throw std::runtime_error("No such nick: Code 401");
+		}
+
+		void	set_limit(std::string limit)
+		{
+			user_limit = atoi(limit.c_str());
+			if (user_limit < 1)
+				user_limit = 0;
+		}
+
+		void	set_password(std::string key)
+		{
+			if (password.empty() == true)
+				password = key;
+			else
+				throw std::runtime_error(":Channel key already set: Code 467");
+		}
+
+		void	unset_password(std::string key)
+		{
+			if (password.empty() == true)
+				throw std::runtime_error(":Not enough parameters: Code 461");
+			else if (key != password)
+				throw std::runtime_error(":Channel key already set: Code 467");
+			password.erase();
+		}
+
+		void	change_topic(std::string nick, std::string topic)
+		{
+			if (mode.t == true)
+			{
+				if (is_operator(nick) == false)
+					throw std::runtime_error(":You're not channel operator: Code 482");				
+			}
+			_topic = topic;
+		}
+
+		bool	can_speak(std::string nick)
+		{
+			if (is_user(nick) == true)
+			{
+				if (is_banned(nick) == true || mode.m == true)
+				{
+					if (is_operator(nick) == true || is_voice(nick) == true)
+						return true;
+					return false;
+				}
+			}
+			return true;
 		}
 
 };
