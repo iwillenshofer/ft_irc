@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/16 20:38:21 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/18 18:03:19 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/FileDescriptors.cpp \
 			${SRC_DIR}/utilities.cpp \
 			${SRC_DIR}/WebServer.cpp \
+			${SRC_DIR}/Client.cpp \
 			${SRC_DIR}/Commands.cpp \
 			${SRC_DIR}/Commands/pass.cpp \
 			${SRC_DIR}/Commands/nick.cpp \
