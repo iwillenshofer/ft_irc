@@ -84,41 +84,6 @@ class Channel
 		std::string					_topic;
 
 	public:
-		bool is_user(std::string nick)
-		{
-			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
-			{
-				if (*it == nick)
-					return true;
-			}
-			return false;
-		}
-		
-		void add_user(std::string nick)
-		{
-			if (user_limit != 0 && users.size() >= user_limit)
-				throw std::runtime_error("Cannot join channel (+l): Code 471");
-			if (is_banned(nick) == true)
-				throw std::runtime_error("Cannot join channel (+b): Code 471");
-			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
-			{
-				if (*it == nick)
-				break ;
-			}		
-			users.push_back(nick);
-		}
-
-		void remove_user(std::string nick)
-		{
-			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
-			{
-				if (*it == nick)
-				{
-					users.erase(it);
-					return ;
-				}
-			}
-		}
 
 		void	set_name(std::string name)
 		{
@@ -144,15 +109,15 @@ class Channel
 			else if (flag == 'm')
 				set_moderated(nick);
 			else if (flag == 'n')
-				mode.n = true;
+				set_no_outside(nick);
 			else if (flag == 'o')
 				add_operator(nick, arg);
 			else if (flag == 'p')
-				mode.p = true;
+				set_private(nick);
 			else if (flag == 's')
-				mode.s = true;
+				set_secret(nick);
 			else if (flag == 't')
-				mode.t = true;
+				set_change_topic(nick);
 			else if (flag == 'k')
 				set_password(nick, arg);
 			else if (flag == 'v')
@@ -169,21 +134,59 @@ class Channel
 			else if (flag == 'l')
 				unset_limit(nick);
 			else if (flag == 'm')
-				mode.m = true;
+				unset_moderated(nick);
 			else if (flag == 'n')
-				mode.n = true;
+				unset_no_outside(nick);
 			else if (flag == 'o')
 				remove_operator(nick, arg);
 			else if (flag == 'p')
-				mode.p = true;
+				unset_private(nick);
 			else if (flag == 's')
-				mode.s = true;
+				unset_secret(nick);
 			else if (flag == 't')
-				mode.t = true;
+				unset_change_topic(nick);
 			else if (flag == 'k')
 				unset_password(nick, arg);
 			else if (flag == 'v')
 				remove_voice(nick, arg);
+		}
+
+		// user
+
+		bool is_user(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+			{
+				if (*it == nick)
+					return true;
+			}
+			return false;
+		}
+		
+		void add_user(std::string nick)
+		{
+			if (is_invitation(nick) == true)
+				users.push_back(nick);
+			else if (user_limit != 0 && users.size() >= user_limit)
+				throw std::runtime_error("Cannot join channel (+l): Code 471");
+			else if (is_banned(nick) == true)
+				throw std::runtime_error("Cannot join channel (+b): Code 471");	
+			else
+				users.push_back(nick);	
+			remove_invitation(nick);
+		}
+
+		void remove_user(std::string nick)
+		{
+			for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+			{
+				if (*it == nick)
+				{
+					users.erase(it);
+					return ;
+				}
+			}
+			remove_operator(creator, nick);
 		}
 
 		// operators
@@ -381,9 +384,49 @@ class Channel
 			return true;
 		}
 
-		void add_invitation(std::string nick)
+		bool	is_invitation(std::string nick)
 		{
+			for (std::vector<std::string>::iterator it = invitations.begin(); it != invitations.end(); it++)
+			{
+				if (*it == nick)
+					return true;
+			}
+			return false;
+		}
 
+		void	add_invitation(std::string chanop, std::string nick)
+		{
+			if (is_operator(chanop) == false)
+				throw std::runtime_error("You're not channel operator: Code 482");
+			if (is_user(nick) == true)
+				throw std::runtime_error("is already on channel: Code 443");
+			invitations.push_back(nick);
+		}
+
+		void	remove_invitation(std::string nick) // private
+		{
+			for (std::vector<std::string>::iterator it = invitations.begin(); it != invitations.end(); it++)
+			{
+				if (*it == nick)
+				{
+					it->erase();
+					return;
+				}
+			}
+		}
+
+		void	set_moderated(std::string chanop)
+		{
+			if (is_operator(chanop) == false)
+				throw std::runtime_error("You're not channel operator: Code 482");
+			mode.m = true;
+		}
+
+		void	unset_moderated(std::string chanop)
+		{
+			if (is_operator(chanop) == false)
+				throw std::runtime_error("You're not channel operator: Code 482");
+			mode.m = false;
 		}
 
 };
