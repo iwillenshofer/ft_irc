@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 17:48:51 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:10:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string>
 # include <algorithm>
 # include <exception>
+# include <cctype>
 # include "Debug.hpp"
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -159,6 +160,7 @@ class Commands
 		** IRC Commands Helpers
 		*/
 		void _register_user(void);	
+		void _truncate_nick(std::string &nickname);
 		bool _validate_nick(std::string const &nickname) const;
 		void _cmd_unknown(void);
 

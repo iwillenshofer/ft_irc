@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/17 23:33:54 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:14:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	Commands::_cmd_nick(void)
 	{
 		Debug("NICK");
 		_sender->nickname = _message.arguments()[0];
+		_truncate_nick(_sender->nickname);
 		if (_sender->registered)
 			_message_user(":" + old_nick + " NICK " + _sender->nickname + "\r\n", _sender); // send message that user changed nickname.
 		else if (!(_sender->username.empty()))

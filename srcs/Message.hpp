@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 17:50:11 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:21:33 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <string>
 # include <vector>
 # include "Debug.hpp"
+# include "server_defaults.hpp"
 
 class Message
 {
@@ -86,6 +87,7 @@ class Message
 				_arguments.erase(_arguments.begin());
 			}
 			_arguments.push_back(user_message);
+			ft::uppercase(_command);
 		}
 
 		void _validate(void)

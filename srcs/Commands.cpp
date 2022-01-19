@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 17:51:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:11:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,9 +376,29 @@ void Commands::_register_user(void)
 
 }
 
+/*
+** if the nickname is longer than SRV_MAXNICKLEN, truncate it.
+** should only be used after validating the nickname
+*/
+void Commands::_truncate_nick(std::string &nickname)
+{
+	if (nickname.size() > SRV_MAXNICKLEN)
+		nickname.erase(SRV_MAXNICKLEN);
+}
+
 bool Commands::_validate_nick(std::string const &nickname) const
 {
-	(void)nickname;			
+	std::string special("[]\\`_^{|}");
+
+	if (!nickname.size())
+		return (false);
+	if (special.find(nickname[0]) == std::string::npos && !(std::isalpha(nickname[0])))
+		return (false);
+	for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); it++)
+	{
+		if (!(std::isalnum(*it)) && special.find(*it) == std::string::npos && *it != '-')
+			return (false);
+	}
 	return (true);
 }
 
