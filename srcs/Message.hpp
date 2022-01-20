@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/19 23:11:25 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 17:03:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <string>
 # include <vector>
+# include <algorithm>
 # include "Debug.hpp"
 # include "server_defaults.hpp"
 
@@ -118,7 +119,57 @@ class Message
 		** https://datatracker.ietf.org/doc/html/rfc2812#section-2.3.1
 		*/
 
-		static bool validate_bnf_channel(std::string const &key)
+		static bool is_bnf_target(std::string const &key)
+		{
+			return (is_bnf_hostname(key) || is_bnf_hostaddr(key));
+		}
+
+		static bool is_bnf_msgtarget(std::string const &key)
+		{
+			std::vector<std::string> v;
+
+			if (!(key.size()))
+				return (false);
+			if (key[0] == ',' || key[key.size() - 1] == ',')
+				return (false);
+			v = ft::split(key, ',');
+			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+				if (!(is_bnf_msgto(*it)))
+					return (false);
+			return (true);			
+		}
+
+		static bool is_bnf_msgto(std::string const &key)
+		{
+			std::vector<std::string> v;
+			std::vector<std::string> v2;
+
+			if (is_bnf_channel(key))
+				return (true);
+			v = ft::split(key, '@');
+			if (v.size() == 2 || v.size() == 1)
+			{
+				v2 = ft::split(v[0], '%');
+				if (v.size() == 2 && v2.size() == 2 && is_bnf_user(v2[0]) && is_bnf_host(v2[1]) && is_bnf_servername(v[1]))
+					return (true);
+				else if (v.size() == 2 && v2.size() == 1 && is_bnf_user(v[0]) && is_bnf_servername(v[1]))
+					return (true);
+				else if (v.size() == 1 && v2.size() == 2 && is_bnf_user(v[0]) && is_bnf_host(v[1]))
+					return (true);
+			}
+			if (is_bnf_nickname(key))
+				return (true);
+			v = ft::split(key, '@');
+			if (v.size() == 2)
+			{
+				v2 = ft::split(v[0], '!');
+				if (v2.size() == 2 && is_bnf_nickname(v2[0]) && is_bnf_user(v2[1]) && is_bnf_host(v[1]))
+					return (true);
+			}
+			return (false);
+		}
+
+		static bool is_bnf_channel(std::string const &key)
 		{
 			std::string 			s(MSG_BNF_CHANNELTYPES);
 			std::string 			substr;
@@ -133,7 +184,7 @@ class Message
 			{
 				if (key.size() < 7)
 					return (false);
-				if (!(validate_bnf_channelid(key.substr(1, 5))))
+				if (!(is_bnf_channelid(key.substr(1, 5))))
 					return (false);
 				pos = 6;
 			}
@@ -144,26 +195,22 @@ class Message
 			if (!(v.size()) || v.size() > 2)
 				return (false);
 			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
-				if (!validate_bnf_chanstring(*it))
+				if (!is_bnf_chanstring(*it))
 					return (false);
 			return (true);
 		}
 
-		static bool validate_bnf_servername(std::string const &key)
+		static bool is_bnf_servername(std::string const &key)
 		{
-			if (validate_bnf_host(key))
-				return (true);
-			return (false);
+			return (is_bnf_host(key));
 		}
 		
-		static bool validate_bnf_host(std::string const &key)
+		static bool is_bnf_host(std::string const &key)
 		{
-			if (validate_bnf_hostname(key) || validate_bnf_hostaddr(key))
-				return (true);
-			return (false);
+			return (is_bnf_hostname(key) || is_bnf_hostaddr(key));
 		}
 
-		static bool validate_bnf_hostname(std::string const &key)
+		static bool is_bnf_hostname(std::string const &key)
 		{
 			std::vector<std::string> v;
 			if (!(key.size()))
@@ -172,70 +219,130 @@ class Message
 				return (false);
 			v = ft::split(key, '.');
 			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
-				if (!(validate_bnf_shortname(*it)))
+				if (!(is_bnf_shortname(*it)))
 					return (false);
 			return (true);
 		}
 
-		static bool validate_bnf_shortname(std::string const &key)
+		static bool is_bnf_shortname(std::string const &key)
 		{
 			if (!(key.size()))
 				return (false);
-			if (!(validate_bnf_letter(key[0])) && !(validate_bnf_digit(key[0])))
+			if (!(is_bnf_letter(key[0])) && !(is_bnf_digit(key[0])))
 				return (false);
 			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
-				if (!(validate_bnf_letter(*it)) && !(validate_bnf_digit(*it)) && *it != '-')
+				if (!(is_bnf_letter(*it)) && !(is_bnf_digit(*it)) && *it != '-')
 					return (false);
 			if (key[key.size() - 1] == '-')
 				return (false);
 			return (true);
 		}
 
-		static bool validate_bnf_hostaddr(std::string const &key)
+		static bool is_bnf_hostaddr(std::string const &key)
 		{
-			if (validate_bnf_ipv4addr(key) || validate_bnf_ipv6addr(key))
+			if (is_bnf_ipv4addr(key) || is_bnf_ipv6addr(key))
 				return (true);
 			return (false);
 		}
 
-		static bool validate_bnf_ipv4addr(std::string const &key)
+		static bool is_bnf_ipv4addr(std::string const &key)
 		{
-			(void)key;
-			/*
-			** TO-DO
-			*/
+			std::vector<std::string> v;
+
+			if (!(key.size()))
+				return (false);
+			if (key[0] == '.' || key[key.size() - 1] == '.')
+				return (false);
+			if (std::count(key.begin(), key.end(), '.') != 3)
+			 	return (false);
+			v = ft::split(key, '.');
+			if (v.size() != 4)
+				return (false);
+			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+			{
+				if (it->size() < 1 || it->size() > 3)
+					return (false);
+				for (std::string::iterator sit = it->begin(); sit != it->end(); sit++)
+					if (!(is_bnf_digit(*sit)))
+						return (false);
+			}
+			return (true);
 		}
 
-		static bool validate_bnf_ipv6addr(std::string const &key)
+		static bool is_bnf_ipv6addr(std::string const &key)
 		{
-			(void)key;
-			/*
-			** TO-DO
-			*/
+			std::vector<std::string> v;
+			std::string substr;
+
+			if (!(key.size()))
+				return (false);
+			if (key.find("0:0:0:0:0:") == 0)
+			{
+				substr = key.substr(10);
+				v = ft::split(substr, ':');
+				if (v.size() == 2 && (v[0] == "0" || v[0] == "FFFF") && is_bnf_ipv4addr(v[1]))
+					return (true);
+			}
+			if (key[0] == ':' || key[key.size() - 1] == ':')
+				return (false);
+			if (std::count(key.begin(), key.end(), '.') != 7)
+			 	return (false);
+			v = ft::split(key, ':');
+			if (v.size() != 8)
+				return (false);
+			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+			{
+				if (it->size() < 1)
+					return (false);
+				for (std::string::iterator sit = it->begin(); sit != it->end(); sit++)
+					if (!(is_bnf_hexdigit(*sit)))
+						return (false);
+			}
+			return (true);
 		}
 
-		static bool validate_bnf_nickname(std::string const &nickname)
+		static bool is_bnf_nickname(std::string const &nickname)
 		{
 			if (!(nickname.size()) || nickname.size() > SRV_MAXNICKLEN)
 				return (false);
-			if (!(validate_bnf_letter(nickname[0])) && !(validate_bnf_special(nickname[0])))
+			if (!(is_bnf_letter(nickname[0])) && !(is_bnf_special(nickname[0])))
 				return (false);
 			for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); it++)
-				if (!(validate_bnf_letter(*it)) && !(validate_bnf_special(*it)
-				&& !(validate_bnf_digit(*it)) && *it != '-'))
+				if (!(is_bnf_letter(*it)) && !(is_bnf_special(*it)
+				&& !(is_bnf_digit(*it)) && *it != '-'))
 					return (false);
 			return (true);
 		}
 
-		static bool validate_bnf_targetmask(std::string const &key)
+		static bool is_bnf_targetmask(std::string const &key)
 		{
-			(void)key;
-			/*
-			** TO-DO
-			*/
+			std::vector<std::string> v;
+
+			if ((key.size()) < 2)
+				return (false);
+			if (key[0] != '$' && key[0] != '#')
+				return (false);
+			if (key.find('.') == std::string::npos || key[1] == '.' || key[key.size() - 1] == '.')
+				return (false);
+			v = ft::split(key, '.');
+			if (!(v.size()))
+				return (false);
+			if (std::count(v.back().begin(), v.back().end(), '*') || std::count(v.back().begin(), v.back().end(), '?'))
+				return (false);
+			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+			{
+				if (it->find("**") != std::string::npos)
+					return (false);
+ 				for (std::string::iterator sit = it->begin(); sit != it->end(); sit++)
+				 	if (*sit == '?' || *sit == '*')
+						*sit = 'a';
+				if (!(is_bnf_shortname(*it)))
+					return (false);
+			}
+			return (true);
 		}
 
-		static bool validate_bnf_chanstring(std::string const &key)
+		static bool is_bnf_chanstring(std::string const &key)
 		{
 			std::string s(MSG_BNF_CHANNELSTRFORBIDDEN);
 
@@ -250,19 +357,19 @@ class Message
 			return (true);
 		}
 
-		static bool validate_bnf_channelid(std::string const &key)
+		static bool is_bnf_channelid(std::string const &key)
 		{
 			if (key.size() != MSG_BNF_CHANNELIDSIZE)
 				return (false);
 			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
 			{
-				if (!(validate_bnf_digit(*it)) || *it < 'A' || *it > 'Z')
+				if (!(is_bnf_digit(*it)) || *it < 'A' || *it > 'Z')
 					return (false);
 			}
 			return (true);
 		}
 
-		static bool validate_bnf_user(std::string const &key)
+		static bool is_bnf_user(std::string const &key)
 		{
 			std::string s(MSG_BNF_USERFORBIDDEN);
 
@@ -279,7 +386,7 @@ class Message
 			return (true);
 		}
 
-		static bool validate_bnf_key(std::string const &key)
+		static bool is_bnf_key(std::string const &key)
 		{
 			std::string s(MSG_BNF_KEYFORBIDDEN);
 
@@ -296,7 +403,7 @@ class Message
 			return (true);
 		}
 
-		static bool validate_bnf_letter(const char c)
+		static bool is_bnf_letter(const char c)
 		{
 			std::string s(MSG_BNF_LETTER);
 
@@ -307,7 +414,7 @@ class Message
 		}
 
 
-		static bool validate_bnf_digit(const char c)
+		static bool is_bnf_digit(const char c)
 		{
 			std::string s(MSG_BNF_DIGIT);
 
@@ -317,11 +424,11 @@ class Message
 			return (false);
 		}
 
-		static bool validate_bnf_hexdigit(const char c)
+		static bool is_bnf_hexdigit(const char c)
 		{
 			std::string s(MSG_BNF_HEXDIGIT);
 
-			if (validate_bnf_digit(c))
+			if (is_bnf_digit(c))
 				return (true);
 			for (std::string::iterator it = s.begin(); it != s.end(); it++)
 				if (*it == c)
@@ -329,7 +436,7 @@ class Message
 			return (false);
 		}
 
-		static bool validate_bnf_special(const char c)
+		static bool is_bnf_special(const char c)
 		{
 			std::string s(MSG_BNF_LETTER);
 
@@ -338,11 +445,6 @@ class Message
 					return (true);
 			return (false);
 		}
-
-
-
-
-
 
 		struct InputLineTooLong : public std::exception
 		{

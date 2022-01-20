@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/19 23:11:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 10:30:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # define	MSG_BNF_USERFORBIDDEN		"\0\r\n @"
 # define	MSG_BNF_CHANNELIDSIZE		5
 # define	MSG_BNF_CHANNELSTRFORBIDDEN	"\0\a\r\n ,:"
+# define	MSG_BNF_CHANNELTYPES		"#+!&"
+
 
 /*
 ** Server Defaults
