@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/19 23:09:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/19 23:11:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,16 @@
 /*
 ** Message Defaults
 */
-# define	MSG_ENDLINE				"\r\n"
-# define	MSG_MAXMSGSIZE			510
+# define	MSG_ENDLINE					"\r\n"
+# define	MSG_MAXMSGSIZE				510
+# define	MSG_BNF_LETTER				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+# define	MSG_BNF_DIGIT				"0123456789"
+# define	MSG_BNF_HEXDIGIT			"ABCDEFG"
+# define	MSG_BNF_SPECIAL				"[]\\`_^{|}"
+# define	MSG_BNF_KEYFORBIDDEN		"\0\r\n\f\v\t "
+# define	MSG_BNF_USERFORBIDDEN		"\0\r\n @"
+# define	MSG_BNF_CHANNELIDSIZE		5
+# define	MSG_BNF_CHANNELSTRFORBIDDEN	"\0\a\r\n ,:"
 
 /*
 ** Server Defaults
@@ -27,7 +35,7 @@
 # define	SRV_PONGWAIT			10
 # define 	BUFFERSIZE 				1024
 
-# define	SRV_MAXNICKLEN				9
+# define	SRV_MAXNICKLEN			9
 
 /*
 ** Reply message
