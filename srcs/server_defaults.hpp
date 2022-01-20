@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 10:30:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 20:20:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 # define	MSG_BNF_DIGIT				"0123456789"
 # define	MSG_BNF_HEXDIGIT			"ABCDEFG"
 # define	MSG_BNF_SPECIAL				"[]\\`_^{|}"
-# define	MSG_BNF_KEYFORBIDDEN		"\0\r\n\f\v\t "
-# define	MSG_BNF_USERFORBIDDEN		"\0\r\n @"
+# define	MSG_BNF_KEYFORBIDDEN		"\r\n\f\v\t \0"
+# define	MSG_BNF_USERFORBIDDEN		"\r\n @\0"
 # define	MSG_BNF_CHANNELIDSIZE		5
-# define	MSG_BNF_CHANNELSTRFORBIDDEN	"\0\a\r\n ,:"
+# define	MSG_BNF_CHANNELSTRFORBIDDEN	"\a\r\n ,:\0"
 # define	MSG_BNF_CHANNELTYPES		"#+!&"
 
 

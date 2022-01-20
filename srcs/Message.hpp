@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 17:03:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 20:50:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ class Message
 			if (!(v.size()) || v.size() > 2)
 				return (false);
 			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
-				if (!is_bnf_chanstring(*it))
+				if (!(is_bnf_chanstring(*it)))
 					return (false);
 			return (true);
 		}
@@ -308,8 +308,7 @@ class Message
 			if (!(is_bnf_letter(nickname[0])) && !(is_bnf_special(nickname[0])))
 				return (false);
 			for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); it++)
-				if (!(is_bnf_letter(*it)) && !(is_bnf_special(*it)
-				&& !(is_bnf_digit(*it)) && *it != '-'))
+				if (!(is_bnf_letter(*it)) && !(is_bnf_special(*it)) && !(is_bnf_digit(*it)) && *it != '-')
 					return (false);
 			return (true);
 		}
@@ -346,13 +345,16 @@ class Message
 		{
 			std::string s(MSG_BNF_CHANNELSTRFORBIDDEN);
 
+			s.push_back('\0');
 			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
 			{
 				if (*it < 0x01 || *it > 0x7f)
 					return (false);
 				for (std::string::const_iterator fbd = s.begin(); fbd != s.end(); fbd++)
+				{
 					if (*it == *fbd)
 						return (false);
+				}
 			}
 			return (true);
 		}
@@ -363,7 +365,7 @@ class Message
 				return (false);
 			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
 			{
-				if (!(is_bnf_digit(*it)) || *it < 'A' || *it > 'Z')
+				if (!(is_bnf_digit(*it)) && (*it < 'A' || *it > 'Z'))
 					return (false);
 			}
 			return (true);
@@ -373,6 +375,7 @@ class Message
 		{
 			std::string s(MSG_BNF_USERFORBIDDEN);
 
+			s.push_back('\0');
 			if (!(key.size()))
 				return (false);
 			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
@@ -390,6 +393,7 @@ class Message
 		{
 			std::string s(MSG_BNF_KEYFORBIDDEN);
 
+			s.push_back('\0');
 			if (!(key.size()) || key.size() > 23)
 				return (false);
 			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
@@ -417,7 +421,6 @@ class Message
 		static bool is_bnf_digit(const char c)
 		{
 			std::string s(MSG_BNF_DIGIT);
-
 			for (std::string::iterator it = s.begin(); it != s.end(); it++)
 				if (*it == c)
 					return (true);
@@ -438,7 +441,7 @@ class Message
 
 		static bool is_bnf_special(const char c)
 		{
-			std::string s(MSG_BNF_LETTER);
+			std::string s(MSG_BNF_SPECIAL);
 
 			for (std::string::iterator it = s.begin(); it != s.end(); it++)
 				if (*it == c)
