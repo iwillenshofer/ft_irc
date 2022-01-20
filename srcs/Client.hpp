@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 18:02:45 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/19 22:29:51 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ class Client
 		std::vector<std::string> 	_receive_queue;
 		std::vector<std::string> 	_send_queue;
 		bool						_hangup;
-		
+
 
 	public:
 		/*
@@ -60,14 +60,14 @@ class Client
 		** allowing us to send just the client to the Commands class,
 		** instead of also sending the User and Server properties separately.
 		*/
-		std::string nickname;
-		std::string username;
-		std::string hostname;
-		std::string realname;
-		bool		registered;
-		t_usermode	mode;
-		time_t		last_ping;
-		bool		is_ping;
+		std::string 				nickname;
+		std::string 				username;
+		std::string 				hostname;
+		std::string 				realname;
+		bool						registered;
+		t_usermode					mode;
+		time_t						last_ping;
+		bool						is_ping;
 
 		/*
 		** setters and getters.

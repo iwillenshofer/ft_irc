@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/17 23:32:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/19 22:12:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class FileDescriptors
 		std::vector<pollfd>					_fds;
 		
 //		char						_buffer[BUFFERSIZE + 1];
-
 	public:
 
 		/*
