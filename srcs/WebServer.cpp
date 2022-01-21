@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/10 19:31:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 22:28:20 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ WebServer::WebServer(std::string host, int port, std::string password) :
 {
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 
-	signal(SIGTSTP, _signalHandler);
+//	signal(SIGTSTP, _signalHandler);
 	_instances.push_back(this);
 	_init(port);
 }

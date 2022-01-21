@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 20:09:38 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 22:43:06 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void Client::read(void)
 void Client::write(void)
 {
 	int rc;
-	Debug("Write", DBG_DEV);
+	Debug("Write", DBG_ERROR);
 	if (!(_send_queue.size()))
 		return;
 	rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), 0);
