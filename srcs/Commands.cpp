@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 21:11:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 10:26:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,12 +208,13 @@ std::map<int, std::string> Commands::_replies = init_replies();
 ** Constructors, Desctructors, Assignment operators.
 */
 
-Commands::Commands(int message, Client *sender): _sender(sender), _clients(0x0), _channels(0x0)
+Commands::Commands(int message, Client *sender): _sender(sender), _clients(0x0), _channels(0x0), _server(0x0)
 {
 	_message_user(_generate_reply(message), _sender);
 }
 
-Commands::Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels): _sender(sender), _clients(clients), _channels(channels)
+Commands::Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels, Server *server)
+: _sender(sender), _clients(clients), _channels(channels), _server(server)
 { 
 	try
 	{
@@ -237,6 +238,7 @@ Commands &Commands::operator=(Commands const &cp)
 	_clients = cp._clients;
 	_message = cp._message;
 	_channels = cp._channels;
+	_server = cp._server;
 	return (*this);
 }
 Commands::~Commands() { }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/19 22:30:09 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 10:23:42 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "Debug.hpp"
 # include "Client.hpp"
 # include "Channel.hpp"
+# include "Server.hpp"
 # include "Message.hpp"
 # include "utilities.hpp"
 # include "server_defaults.hpp"
@@ -39,7 +40,7 @@ class Commands
 {
 	public:
 		Commands(int message, Client *sender);
-		Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels);
+		Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels, Server *server);
 		Commands(Commands const &cp);
 		Commands &operator=(Commands const &cp);
 		virtual ~Commands();
@@ -50,7 +51,7 @@ class Commands
 		Client							*_sender;
 		std::map<int, Client>			*_clients;
 		std::map<std::string, Channel>	*_channels;
-
+		Server							*_server;
 
 		typedef  void (Commands::*cmd_type)(void);
 		static std::map<std::string, cmd_type> init_commands(void);
