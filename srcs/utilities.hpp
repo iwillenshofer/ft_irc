@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/13 13:30:03 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 14:54:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # include <arpa/inet.h>
 # include <sstream>
 # include <ctime>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include <fstream>
 
 namespace ft
 {
@@ -49,6 +53,8 @@ namespace ft
         const std::string &stop_delim);
 
 	std::string	get_current_date( void );
+	std::string	format_date( time_t rawtime );
+	std::string load_file(std::string filename);
 }
 
 #endif

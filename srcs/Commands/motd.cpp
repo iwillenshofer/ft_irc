@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   motd.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:14 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 15:30:41 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,26 @@
 
 void	Commands::_cmd_motd(void)
 {
-	_message_user(_generate_reply(RPL_MOTDSTART), _sender);
-	_message_user(_generate_reply(RPL_MOTD), _sender);
+	std::string s;
+	std::map<std::string, std::string> v;
+	std::vector<std::string> lst;
+
+	try
+	{
+		s = ft::load_file(_server->motdfilename());
+	}
+	catch(const std::exception& e)
+	{
+		_message_user(_generate_reply(ERR_NOMOTD), _sender);
+		return ;
+	}
+	lst = ft::split(s, '\n');
+	v["server"] = _server->servername();
+	_message_user(_generate_reply(RPL_MOTDSTART, v), _sender);
+	for (std::vector<std::string>::iterator it = lst.begin(); it != lst.end(); it++)
+	{
+		v["text"] = *it;
+		_message_user(_generate_reply(RPL_MOTD, v), _sender);
+	}
 	_message_user(_generate_reply(RPL_ENDOFMOTD), _sender);
 }
