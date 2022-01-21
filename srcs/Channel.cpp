@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/20 19:55:59 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/20 22:14:59 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,9 @@ void Channel::add_user(std::string nick)
 {
     if (is_invitation(nick) == true)
         users.push_back(nick);
-    else if (_user_limit != 0 && users.size() >= _user_limit)
+    else if(_mode.i == true)
+        throw std::runtime_error("Cannot join channel (+i): Code 473");
+    else if (_mode.l == true && users.size() >= _user_limit)
         throw std::runtime_error("Cannot join channel (+l): Code 471");
     else if (is_banned(nick) == true)
         throw std::runtime_error("Cannot join channel (+b): Code 471");	
@@ -340,6 +342,7 @@ void	Channel::remove_voice(std::string chanop, std::string nick)
 
 bool	Channel::is_banned(std::string nick)
 {
+    // TO do : Add mask : *
     for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
     {
         if (*it == nick)

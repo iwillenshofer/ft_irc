@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 20:05:57 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/20 22:02:46 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@
 
 typedef struct s_channelmode
 {
-	bool O; // give "channel creator" status;
+	bool O; // give "channel creator" status; *
+
 	bool o; // give/take channel operator privilege;
 	bool v; // give/take the voice privilege;
 
-	bool a; // toggle the anonymous channel flag;
+	bool a; // toggle the anonymous channel flag; *
+	
 	bool i; // toggle the invite-only channel flag;
 	bool m; // toggle the moderated channel;
 	bool n; // toggle the no messages to channel from clients on the outside;
