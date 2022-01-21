@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/13 13:31:39 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 15:02:42 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,16 @@ std::string ft::get_str_between_two_str(const std::string &s,
 std::string	ft::get_current_date( void )
 {
 	time_t rawtime;
+
+	time (&rawtime);
+	return std::string(format_date(rawtime));
+}
+
+std::string	ft::format_date( time_t rawtime )
+{
 	struct tm* timeinfo;
 	char output[30];
 
-	time (&rawtime);
 	timeinfo = gmtime(&rawtime);
 	strftime(output, 30, "%a, %d %b %Y %X %Z", timeinfo);
 	
@@ -119,4 +125,22 @@ void ft::uppercase(std::string &s)
 {
 	for (std::string::iterator it = s.begin(); it != s.end(); it++)
 		*it = std::toupper(*it);
+}
+
+std::string ft::load_file(std::string filename)
+{
+	struct stat attributes;
+	std::string file;
+
+	if (stat(filename.c_str(), &attributes))
+		throw std::runtime_error("File '" + filename + "' does not exist.");
+	std::ifstream ifs(filename.c_str());
+	if (ifs.fail())
+	{
+		ifs.close();
+		throw std::runtime_error("File '" + filename + "' could not be open.");
+	}
+	file = std::string(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
+	ifs.close();
+	return (file);
 }

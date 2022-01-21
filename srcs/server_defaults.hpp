@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 20:20:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 23:06:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,15 @@
 /*
 ** Server Defaults
 */
-# define	SRV_PINGWAIT			15
-# define	SRV_PONGWAIT			10
+# define	SRV_PINGWAIT			60
+# define	SRV_PONGWAIT			60
 # define 	BUFFERSIZE 				1024
 
 # define	SRV_MAXNICKLEN			9
+# define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
+# define	SRV_SERVERNAME			"irc.42network.com"
+# define	SRV_MOTD_FILE			"motd.txt"
+
 
 /*
 ** Reply message

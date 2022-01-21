@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/18 21:11:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 15:17:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_WELCOME] = "Welcome to the Internet Relay Network <nick>!<user>@<host>";
 	replies[RPL_YOURHOST] = "Your host is <servername>, running version <ver>";
 	replies[RPL_CREATED] = "This server was created <date>";
-	replies[RPL_MYINFO] = "<servername> <version> <available user modes> <available channel modes>";
+	replies[RPL_MYINFO] = "<servername> <version> <available_user_modes> <available_channel_modes>";
 	replies[RPL_BOUNCE] = "Try server <server name>, port <port number>";
 	replies[RPL_USERHOST] = ":*1<reply> *( " " <reply> )";
 	replies[RPL_ISON] = ":*1<nick> *( " " <nick> )";
@@ -72,7 +72,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_WHOISOPERATOR] = "<nick> :is an IRC operator";
 	replies[RPL_WHOISIDLE] = "<nick> <integer> :seconds idle";
 	replies[RPL_ENDOFWHOIS] = "<nick> :End of WHOIS list";
-//	replies[RPL_WHOISCHANNELS] = "<nick> :*( ( "@" / "+" ) <channel> " " )";
+	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>"; //*( ( "@" / "+" ) <channel> " " )";
 	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real_name>";
 	replies[RPL_ENDOFWHOWAS] = "<nick> :End of WHOWAS";
 	replies[RPL_LIST] = "<channel> <# visible> :<topic>";
@@ -130,11 +130,11 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_UMODEIS] = "<user mode string>";
 	replies[RPL_SERVLIST] = "<name> <server> <mask> <type> <hopcount> <info>";
 	replies[RPL_SERVLISTEND] = "<mask> <type> :End of service listing";
-	replies[RPL_LUSERCLIENT] = ":There are <integer> users and <integer> services on <integer> servers";
+	replies[RPL_LUSERCLIENT] = ":There are <intusers> users and <intinvisible> invisible on <intservers> servers";
 	replies[RPL_LUSEROP] = "<integer> :operator(s) online";
 	replies[RPL_LUSERUNKNOWN] = "<integer> :unknown connection(s)";
 	replies[RPL_LUSERCHANNELS] = "<integer> :channels formed";
-	replies[RPL_LUSERME] = ":I have <integer> clients and <integer> servers";
+	replies[RPL_LUSERME] = ":I have <intclients> clients and <intservers> servers";
 	replies[RPL_ADMINME] = "<server> :Administrative info";
 	replies[RPL_ADMINLOC1] = ":<admin info>";
 	replies[RPL_ADMINLOC2] = ":<admin info>";
@@ -208,12 +208,13 @@ std::map<int, std::string> Commands::_replies = init_replies();
 ** Constructors, Desctructors, Assignment operators.
 */
 
-Commands::Commands(int message, Client *sender): _sender(sender), _clients(0x0), _channels(0x0)
+Commands::Commands(int message, Client *sender): _sender(sender), _clients(0x0), _channels(0x0), _server(0x0)
 {
 	_message_user(_generate_reply(message), _sender);
 }
 
-Commands::Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels): _sender(sender), _clients(clients), _channels(channels)
+Commands::Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels, Server *server)
+: _sender(sender), _clients(clients), _channels(channels), _server(server)
 { 
 	try
 	{
@@ -237,6 +238,7 @@ Commands &Commands::operator=(Commands const &cp)
 	_clients = cp._clients;
 	_message = cp._message;
 	_channels = cp._channels;
+	_server = cp._server;
 	return (*this);
 }
 Commands::~Commands() { }
@@ -365,12 +367,31 @@ void Commands::_message_user(std::string msg, Client *client)
 void Commands::_register_user(void)
 {
 	Debug("User Registered", DBG_ERROR);
+	std::map<std::string, std::string> v;
+
+	v["nick"] = _sender->nickname;
+	v["user"] = _sender->username;
+	v["host"] = _sender->hostname;
+	v["servername"] = _server->servername();
+	v["ver"] = _server->version();
+	v["version"] = _server->version();
+	v["date"] = _server->formatted_creation_date();
+	v["server"] = _server->servername();
+	v["intusers"] = ft::to_string(0); //TODO
+	v["intinvisible"] = ft::to_string(0); //TODO
+	v["intservers"] = ft::to_string(1);
+	v["intclients"] = ft::to_string(_clients->size() - 1);
+
 	_sender->registered = true;
-	_message_user(_generate_reply(RPL_WELCOME), _sender);
-	_message_user(_generate_reply(RPL_YOURHOST), _sender);
-	_message_user(_generate_reply(RPL_CREATED), _sender);
-	_message_user(_generate_reply(RPL_MYINFO), _sender);
+	_message_user(_generate_reply(RPL_WELCOME, v), _sender);
+	_message_user(_generate_reply(RPL_YOURHOST, v), _sender);
+	_message_user(_generate_reply(RPL_CREATED, v), _sender);
+	_message_user(_generate_reply(RPL_MYINFO, v), _sender);
+	_message_user(_generate_reply(RPL_LUSERCLIENT, v), _sender);
+	_message_user(_generate_reply(RPL_LUSERME, v), _sender);
+
 	_cmd_motd();
+	
 	std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
 	_message_user(msg, _sender);
 

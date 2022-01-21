@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/19 22:12:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 10:22:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <sys/ioctl.h>
 # include "Commands.hpp"
+# include "Server.hpp"
 
 class FileDescriptors
 {
@@ -34,11 +35,11 @@ class FileDescriptors
 		virtual ~FileDescriptors() { _fds.clear(); };
 		std::map<int, Client>				clients;
 		std::map<std::string, Channel>		channels;
+		Server								server;
 
 	private:
 		std::vector<pollfd>					_fds;
 		
-//		char						_buffer[BUFFERSIZE + 1];
 	public:
 
 		/*
@@ -157,7 +158,7 @@ class FileDescriptors
 			{
 				for (std::vector<std::string>::iterator msg_it = it->second.get_receive_queue().begin(); msg_it != it->second.get_receive_queue().end();)
 				{
-					Commands(*msg_it, &(it->second), &clients, &channels);
+					Commands(*msg_it, &(it->second), &clients, &channels, &server);
 					msg_it = it->second.get_receive_queue().erase(msg_it);
 				}
 			}
