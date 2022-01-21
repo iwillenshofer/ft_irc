@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:05 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:37:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 
 void	Commands::_cmd_part(void)
 {
-	std::string msg = _sender.get_prefix() + " PART " + _message.arguments()[0] + MSG_ENDLINE;
+	std::string msg = _sender->get_prefix() + " PART " + _message.arguments()[0] + MSG_ENDLINE;
 	_message_channel(msg, _message.arguments()[0], true);
-	_channels[_message.arguments()[0]].remove_user(_sender.nickname);
+	(*_channels)[_message.arguments()[0]].remove_user(_sender->nickname);
 }

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/14 23:09:59 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/20 20:20:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,30 @@
 # define SERVER_DEFAULTS_HPP
 
 
-# define	MSG_ENDLINE				"\r\n"
+/*
+** Message Defaults
+*/
+# define	MSG_ENDLINE					"\r\n"
+# define	MSG_MAXMSGSIZE				510
+# define	MSG_BNF_LETTER				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+# define	MSG_BNF_DIGIT				"0123456789"
+# define	MSG_BNF_HEXDIGIT			"ABCDEFG"
+# define	MSG_BNF_SPECIAL				"[]\\`_^{|}"
+# define	MSG_BNF_KEYFORBIDDEN		"\r\n\f\v\t \0"
+# define	MSG_BNF_USERFORBIDDEN		"\r\n @\0"
+# define	MSG_BNF_CHANNELIDSIZE		5
+# define	MSG_BNF_CHANNELSTRFORBIDDEN	"\a\r\n ,:\0"
+# define	MSG_BNF_CHANNELTYPES		"#+!&"
+
+
+/*
+** Server Defaults
+*/
+# define	SRV_PINGWAIT			15
+# define	SRV_PONGWAIT			10
+# define 	BUFFERSIZE 				1024
+
+# define	SRV_MAXNICKLEN			9
 
 /*
 ** Reply message
@@ -156,6 +179,13 @@
 # define    ERR_NOOPERHOST			491
 # define    ERR_UMODEUNKNOWNFLAG	501
 # define    ERR_USERSDONTMATCH		502
+
+/*
+** Implementation defined messages
+*/
+
+# define	ERR_INPUTTOOLONG		417
 # define    PRIVMSG					999
+
 
 #endif

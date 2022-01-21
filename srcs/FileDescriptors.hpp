@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 09:48:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/19 22:12:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ class FileDescriptors
 		std::vector<pollfd>					_fds;
 		
 //		char						_buffer[BUFFERSIZE + 1];
-
 	public:
 
 		/*
@@ -158,7 +157,7 @@ class FileDescriptors
 			{
 				for (std::vector<std::string>::iterator msg_it = it->second.get_receive_queue().begin(); msg_it != it->second.get_receive_queue().end();)
 				{
-					Commands(*msg_it, it->second, clients, channels);
+					Commands(*msg_it, &(it->second), &clients, &channels);
 					msg_it = it->second.get_receive_queue().erase(msg_it);
 				}
 			}
@@ -171,12 +170,12 @@ class FileDescriptors
 
 		   	for (std::map<int,Client>::iterator it = ++clients.begin(); it != clients.end(); it++)
 			{
-				if (it->second.is_ping == false && now - it->second.last_ping > 7)
+				if (it->second.is_ping == false && now - it->second.last_ping > (SRV_PINGWAIT))
 				{
 					it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
 					it->second.is_ping = true;
 				}
-				else if (it->second.is_ping == true && now - it->second.last_ping > 10)
+				else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
 				{
 					Debug("HANGUP", DBG_WARNING);
 					it->second.set_hangup(true);

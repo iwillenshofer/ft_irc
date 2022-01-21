@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:32:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/18 21:11:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_UMODEUNKNOWNFLAG] = ":Unknown MODE flag";
 	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";
 	
-	
+	replies[ERR_INPUTTOOLONG] = ":Input line was too long";
 	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
 
 	replies[329] = "<channel> <creation>"; // creation time
@@ -202,3 +202,208 @@ std::map<int, std::string> Commands::init_replies(void)
 }
 
 std::map<int, std::string> Commands::_replies = init_replies();
+
+
+/*
+** Constructors, Desctructors, Assignment operators.
+*/
+
+Commands::Commands(int message, Client *sender): _sender(sender), _clients(0x0), _channels(0x0)
+{
+	_message_user(_generate_reply(message), _sender);
+}
+
+Commands::Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels): _sender(sender), _clients(clients), _channels(channels)
+{ 
+	try
+	{
+		_message = Message(message);
+	}
+	catch (const Message::EmptyMessage &e)
+	{
+		return;
+	}
+	catch (const Message::InputLineTooLong &e)
+	{
+		_message_user(_generate_reply(ERR_INPUTTOOLONG), _sender);
+		return ;
+	}
+	_process();
+}
+Commands::Commands(Commands const &cp): _sender(cp._sender), _clients(cp._clients), _channels(cp._channels) { *this = cp; }
+Commands &Commands::operator=(Commands const &cp)
+{
+	_sender = cp._sender;
+	_clients = cp._clients;
+	_message = cp._message;
+	_channels = cp._channels;
+	return (*this);
+}
+Commands::~Commands() { }
+
+
+/*
+** command helpers
+*/
+Client *Commands::_get_client_by_nickname(std::string nick)
+{
+	for (std::map<int, Client>::iterator it = _clients->begin(); it != _clients->end(); it++ )
+		if (it->second.nickname == nick)
+			return (&(it->second));
+	return (NULL);
+}
+
+/*
+** command parsing and processing
+*/
+
+void	Commands::_process()
+{
+	_run_command(_message.command());
+}
+
+void Commands::_run_command(std::string &cmd_name)
+{
+	std::map<std::string, cmd_type>::iterator cmd_it;
+	Debug("Looking for command", DBG_DEV);
+
+	cmd_it = _commands.find(cmd_name);
+	if (cmd_it == _commands.end())
+		_cmd_unknown();
+	else
+		(*this.*(cmd_it->second))();
+}
+
+/*
+** reply generation
+*/
+std::string Commands::_numeric_reply(int reply)
+{
+	std::string nb = ft::to_string(reply);
+
+	while (nb.size() < 3)
+		nb.insert(nb.begin(), '0');
+	return (nb);
+}
+
+std::string Commands::_generate_reply(int reply, std::map<std::string, std::string> v)
+{
+	std::string message = ":localhost " + _numeric_reply(reply) + " " + _sender->nickname + " ";
+	if (v.size())
+		message += _replace_tags(_replies[reply], v);
+	else
+		message += _replies[reply];
+	message += MSG_ENDLINE;
+	return (message);
+}
+
+std::string Commands::_replace_tags(std::string msg, std::map<std::string, std::string> v)
+{
+
+	size_t find_pos;
+	
+	for (std::map<std::string, std::string>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		std::string str_tofind("<" + it->first + ">");
+		find_pos = msg.find(str_tofind);
+		if (find_pos != std::string::npos)
+			msg.replace(find_pos, str_tofind.size(), it->second);
+	}
+	return (msg);
+}
+
+
+/*
+** sends a message to everyone that is in a channel the _sender is.
+*/
+
+void Commands::_message_all_channels(std::string const &msg, bool sender_too)
+{
+	std::set<std::string> users;
+	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++)
+	{
+		if (std::find(it->second.users.begin(), it->second.users.end(), _sender->nickname) != it->second.users.end())
+			users.insert(it->second.users.begin(), it->second.users.end());
+	}
+	if (!sender_too)
+		users.erase(_sender->nickname);
+	for (std::set<std::string>::iterator it = users.begin(); it!= users.end(); it++)
+		_message_user(msg, *it);
+}
+
+/*
+** sends a message to a specific channel
+*/
+void Commands::_message_channel(std::string const &msg, std::string const &channel, bool sender_too)
+{
+	for (std::vector<std::string>::iterator it = (*_channels)[channel].users.begin(); it != (*_channels)[channel].users.end(); it++)
+		if (*it != _sender->nickname || sender_too)
+			_message_user(msg, *it);
+}
+
+/*
+** sends a message to a specific user
+*/
+void Commands::_message_user(std::string msg, std::string const &nickname)
+{
+	Client *client = _get_client_by_nickname(nickname);
+
+	if (!(client))
+		_message_user(_generate_reply(ERR_NOSUCHNICK), _sender);
+	else
+		_message_user(msg, client);
+}
+
+void Commands::_message_user(std::string msg, Client *client)
+{
+	client->get_send_queue().push_back(msg);
+}
+
+/*
+** IRC Commands Helpers
+*/
+void Commands::_register_user(void)
+{
+	Debug("User Registered", DBG_ERROR);
+	_sender->registered = true;
+	_message_user(_generate_reply(RPL_WELCOME), _sender);
+	_message_user(_generate_reply(RPL_YOURHOST), _sender);
+	_message_user(_generate_reply(RPL_CREATED), _sender);
+	_message_user(_generate_reply(RPL_MYINFO), _sender);
+	_cmd_motd();
+	std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
+	_message_user(msg, _sender);
+
+}
+
+/*
+** if the nickname is longer than SRV_MAXNICKLEN, truncate it.
+** should only be used after validating the nickname
+*/
+void Commands::_truncate_nick(std::string &nickname)
+{
+	if (nickname.size() > SRV_MAXNICKLEN)
+		nickname.erase(SRV_MAXNICKLEN);
+}
+
+bool Commands::_validate_nick(std::string const &nickname) const
+{
+	std::string special("[]\\`_^{|}");
+
+	if (!nickname.size())
+		return (false);
+	if (special.find(nickname[0]) == std::string::npos && !(std::isalpha(nickname[0])))
+		return (false);
+	for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); it++)
+	{
+		if (!(std::isalnum(*it)) && special.find(*it) == std::string::npos && *it != '-')
+			return (false);
+	}
+	return (true);
+}
+
+void Commands::_cmd_unknown(void)
+{
+	Debug("User " + _sender->nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);
+	_message_user(":server 421  " + _message.command() + " :Unknown command\r\n", _sender);
+}

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:31:20 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:37:33 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@
 void	Commands::_cmd_privmsg(void)
 {
 	std::string destination = _message.arguments().front();
-	std::string msg = _sender.get_prefix() + " PRIVMSG " + _message.arguments().front() + " " + _message.arguments().back() + MSG_ENDLINE;
+	std::string msg = _sender->get_prefix() + " PRIVMSG " + _message.arguments().front() + " " + _message.arguments().back() + MSG_ENDLINE;
 
 	if (destination.at(0) == '#')
 		_message_channel(msg, _message.arguments().front(), false);

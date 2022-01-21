@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/17 23:35:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@
 void	Commands::_cmd_quit(void)
 {
 	// must call _cmd_error() at the end.
-	std::string msg = _sender.get_prefix() + " QUIT " + _message.arguments().back() + MSG_ENDLINE;
+	std::string msg = _sender->get_prefix() + " QUIT " + _message.arguments().back() + MSG_ENDLINE;
 	_message_all_channels(msg, false);
-	for (std::map<std::string, Channel>::iterator it = _channels.begin(); it != _channels.end(); it++)
-		it->second.remove_user(_sender.nickname);
-	_sender.set_hangup(true);
+	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++)
+		it->second.remove_user(_sender->nickname);
+	_sender->set_hangup(true);
 }
