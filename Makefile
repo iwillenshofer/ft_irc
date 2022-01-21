@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
+#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/16 20:38:21 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/20 19:53:27 by roman            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,9 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/kill.cpp \
 			${SRC_DIR}/Commands/ping.cpp \
 			${SRC_DIR}/Commands/pong.cpp \
-			${SRC_DIR}/Commands/error.cpp
+			${SRC_DIR}/Commands/error.cpp \
+			${SRC_DIR}/Channel.cpp
+
 
 
 OBJECTS = $(patsubst ${SRC_DIR}/%.cpp, ${OBJ_DIR}/%.o, ${SRCS})
