@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 12:56:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 13:25:23 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@
 ** server, and _sender->hangup() will be set to true, which will communicate
 ** the peers only when the hangup is completed, with a QUIT message initiated
 ** by the Server.
+**
+** Example of a normal quit message:
+** -> Users send QUIT command
+** -> _cmd_quit() sets hangup to true;
+** -> FileDescriptors, in turn, call remove_queued()
+** -> queue runs a QUIT command again on behalf of the user;
+** -> _cmd_quit() sends a message to all channels.
+** -> the user is erased
 */
 
 void	Commands::_cmd_quit(void)
