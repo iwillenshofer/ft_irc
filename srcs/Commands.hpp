@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:57:09 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 11:21:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ class Commands
 		Commands(Commands const &cp);
 		Commands &operator=(Commands const &cp);
 		virtual ~Commands();
+		static std::string generate_errormsg(int error, std::map<std::string, std::string> v = std::map<std::string, std::string>());
 	
 	private:
 		Commands(void);
@@ -138,8 +139,7 @@ class Commands
 		*/
 		std::string _numeric_reply(int reply);
 		std::string _generate_reply(int reply, std::map<std::string, std::string> v = std::map<std::string, std::string>());
-		std::string _generate_error(int error, std::map<std::string, std::string> v = std::map<std::string, std::string>());
-		std::string _replace_tags(std::string msg, std::map<std::string, std::string> v);
+		static std::string _replace_tags(std::string msg, std::map<std::string, std::string> v);
 
 		/*
 		** sends a message to everyone that is in a channel the _sender is.

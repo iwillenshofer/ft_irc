@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 09:38:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 12:56:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,19 @@ void	Commands::_cmd_quit(void)
 {
 	// must call _cmd_error() at the end.
 	std::string error_msg;
-	if (_message.arguments().size())
-		error_msg = _message.arguments().back();
-	else
-		error_msg = SRV_DFLQUITMSG;
+	std::map<std::string, std::string> v;
 	if (_sender->get_hangup())
 	{
-		std::string msg = _sender->get_prefix() + " QUIT :" + error_msg + MSG_ENDLINE;
+		std::string msg = _sender->get_prefix() + " QUIT :" + _sender->get_hangup_message() + MSG_ENDLINE;
 		_message_all_channels(msg, false);
 	}
 	else
 	{
-		_sender->set_hangup(true, "QUIT: " + error_msg);		
+		if (_message.arguments().size())
+			error_msg = _message.arguments().back();
+		else
+			error_msg = SRV_DFLQUITMSG;
+		v["message"] = error_msg;
+		_sender->set_hangup(true, generate_errormsg(ERR_USERQUIT, v));		
 	}
 }

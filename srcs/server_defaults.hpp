@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 10:09:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 11:57:23 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@
 /*
 ** Server Defaults
 */
-# define	SRV_PINGWAIT			15
-# define	SRV_PONGWAIT			10
+# define	SRV_PINGWAIT			45
+# define	SRV_PONGWAIT			40
+# define	SRV_REGISTERWAIT		45
 # define 	BUFFERSIZE 				1024
 
 # define	SRV_MAXNICKLEN			9
@@ -190,6 +191,9 @@
 
 # define    ERR_BADPASSWORD			700
 # define    ERR_USERQUIT			701
+# define 	ERR_PINGTIMEOUT			702
+# define	ERR_REGISTERTIMEOUT		703
+# define	ERR_EOFFROMCLIENT		704
 # define	ERR_INPUTTOOLONG		417
 # define    PRIVMSG					999
 

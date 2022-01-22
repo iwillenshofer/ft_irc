@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 23:26:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 12:53:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,8 +195,12 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";	
 	replies[ERR_INPUTTOOLONG] = ":Input line was too long";
 	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
-	replies[ERR_BADPASSWORD] = ":Closing Link: <server> (Bad Password)";
-	replies[ERR_USERQUIT] = ":QUIT :<message>";
+	replies[ERR_USERQUIT] = "Quit: <message>";
+	replies[ERR_BADPASSWORD] = "Bad Password";
+	replies[ERR_PINGTIMEOUT] = "Ping timeout";
+	replies[ERR_REGISTERTIMEOUT] = "Registration Timeout";
+	replies[ERR_EOFFROMCLIENT] = "EOF from client";
+
 	replies[329] = "<channel> <creation>"; // creation time
 	return (replies);
 }
@@ -292,10 +296,9 @@ std::string Commands::_numeric_reply(int reply)
 ** user`s send queue must always be cleared
 ** before sending an error.
 */
-std::string Commands::_generate_error(int error, std::map<std::string, std::string> v)
+std::string Commands::generate_errormsg(int error, std::map<std::string, std::string> v)
 {
-	_sender->get_send_queue().clear();
-	std::string message = "ERROR ";
+	std::string message = "";
 	if (v.size())
 		message += _replace_tags(_replies[error], v);
 	else
@@ -317,7 +320,6 @@ std::string Commands::_generate_reply(int reply, std::map<std::string, std::stri
 
 std::string Commands::_replace_tags(std::string msg, std::map<std::string, std::string> v)
 {
-
 	size_t find_pos;
 	
 	for (std::map<std::string, std::string>::iterator it = v.begin(); it != v.end(); it++)
@@ -384,13 +386,14 @@ void Commands::_register_user(void)
 {
 	Debug("User Registered", DBG_ERROR);
 	std::map<std::string, std::string> v;
+	std::string msg;
 
 	if (_sender->password != _server->password())
 	{
 		_sender->get_send_queue().clear();
 		v["server"] = _server->servername();
-		_message_user(_generate_error(ERR_BADPASSWORD, v), _sender)	;
-		_sender->set_hangup(true);
+		msg = generate_errormsg(ERR_BADPASSWORD, v);
+		_sender->set_hangup(true, msg);
 		return ;
 	}
 	_sender->registered = true;
@@ -414,7 +417,7 @@ void Commands::_register_user(void)
 	_message_user(_generate_reply(RPL_LUSERME, v), _sender);
 	_cmd_motd();
 	//CALL USER MODE COMMAND, INSTEAD OF SENDING THE FOLLOWING MESSAGE:
-	std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
+	msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
 	_message_user(msg, _sender);
 }
 
@@ -428,6 +431,7 @@ void Commands::_truncate_nick(std::string &nickname)
 		nickname.erase(SRV_MAXNICKLEN);
 }
 
+/*
 bool Commands::_validate_nick(std::string const &nickname) const
 {
 	std::string special("[]\\`_^{|}");
@@ -443,6 +447,7 @@ bool Commands::_validate_nick(std::string const &nickname) const
 	}
 	return (true);
 }
+*/
 
 void Commands::_cmd_unknown(void)
 {

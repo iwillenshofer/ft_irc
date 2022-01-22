@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 09:41:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 11:46:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,10 +151,11 @@ class FileDescriptors
 			std::map<int,Client>::iterator prev;
             for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); )
 			{
+				
 				if (it->second.get_hangup())
 				{
 					prev = it++;
-					disconnect_client(&(it->second));
+					disconnect_client(&(prev->second));
 					Debug("FD to Remove: " + ft::to_string(prev->second.get_fd()), DBG_ERROR);
 					remove(prev->second.get_fd());
 					clients.erase(prev);
@@ -197,16 +198,30 @@ class FileDescriptors
 
 		   	for (std::map<int,Client>::iterator it = ++clients.begin(); it != clients.end(); it++)
 			{
-				if (it->second.is_ping == false && now - it->second.last_ping > (SRV_PINGWAIT))
+				if (it->second.registered)
 				{
-					it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
-					it->second.is_ping = true;
+					if (it->second.is_ping == false && now - it->second.last_ping > (SRV_PINGWAIT))
+					{
+						it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
+						it->second.is_ping = true;
+					}
+					else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
+					{
+						Debug("HANGUP", DBG_WARNING);
+						std::map<std::string, std::string> v;
+						v["nickname"] = it->second.nickname;
+						v["server"] = server->servername();
+						it->second.set_hangup(true, Commands::generate_errormsg(ERR_PINGTIMEOUT, v));
+					}
 				}
-				else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
+				else if (now - it->second.joined_time > (SRV_REGISTERWAIT))
 				{
 					Debug("HANGUP", DBG_WARNING);
-					it->second.set_hangup(true, "Ping Timeout");
-				}			
+					std::map<std::string, std::string> v;
+					v["nickname"] = it->second.nickname;
+					v["server"] = server->servername();
+					it->second.set_hangup(true, Commands::generate_errormsg(ERR_REGISTERTIMEOUT, v));
+				}
 			}
 			
 			/*
