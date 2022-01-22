@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 22:43:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 22:02:07 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,3 +118,62 @@ std::string Client::_get_address(void)
 	return (ft::to_string(inet_ntoa(sockinfo.sin_addr)));
 }
 
+bool	Client::is_invisible(void) const
+{
+	return mode.i;
+}
+
+void	Client::set_invisible(void)
+{
+	mode.i = true;
+}
+
+void	Client::unset_invisible(void)
+{
+	mode.i = false;
+}
+
+bool	Client::is_receive_notices(void) const
+{
+	return mode.s;
+}
+
+void	Client::set_receive_notices(void)
+{
+	mode.s = true;
+}
+
+void	Client::unset_receive_notices(void)
+{
+	mode.s = false;
+}
+
+bool	Client::is_receive_wallops(void) const
+{
+	return mode.s;
+}
+
+void	Client::set_receive_wallops(void)
+{
+	mode.w = true;
+}
+
+void	Client::unset_receive_wallops(void)
+{
+	mode.w = false;
+}
+
+bool	Client::is_operator(void) const
+{
+	return mode.o;
+}
+
+void	Client::set_operator(void)
+{
+	mode.o = true;
+}
+
+void	Client::unset_operator(void)
+{
+	mode.o = false;
+}

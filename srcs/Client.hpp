@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:38:09 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 21:53:14 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ class Commands;
 */
 typedef struct s_usermode
 {
-	bool a;
+
 	bool i;
+	bool s;
 	bool w;
-	bool r;
 	bool o;
-	bool O;
-	bool S;
+
+	bool a; //  not used
+	bool r; //  not used
+	bool O; //  not used
+
 } t_usermode;
 
 class Client
@@ -83,6 +86,22 @@ class Client
 		void set_hangup(bool v);
 		int get_fd(void);
 		void set_fd(int fd);
+
+		bool	is_invisible(void) const;
+		void	set_invisible(void);
+		void	unset_invisible(void);
+
+		bool	is_receive_notices(void) const;
+		void	set_receive_notices(void);
+		void	unset_receive_notices(void);
+
+		bool	is_receive_wallops(void) const;
+		void	set_receive_wallops(void);
+		void	unset_receive_wallops(void);
+
+		bool	is_operator(void) const;
+		void	set_operator(void);
+		void	unset_operator(void);
 		
 		/*
 		** reads messages from the client. If message is incomplete,
