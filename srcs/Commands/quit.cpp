@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/17 23:35:40 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 23:33:17 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,18 @@
 void	Commands::_cmd_quit(void)
 {
 	// must call _cmd_error() at the end.
-	std::string msg = _sender->get_prefix() + " QUIT " + _message.arguments().back() + MSG_ENDLINE;
+	std::string error_msg;
+	if (_message.arguments().size())
+		error_msg = _message.arguments().back();
+	else
+		error_msg = SRV_DFLQUITMSG;
+	std::string msg = _sender->get_prefix() + " QUIT :" + error_msg + MSG_ENDLINE;
+	std::map<std::string, std::string> v;
 	_message_all_channels(msg, false);
 	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++)
 		it->second.remove_user(_sender->nickname);
+	_sender->get_send_queue().clear();
+	v["message"] = error_msg;
+	_message_user(_generate_error(701, v), _sender);
 	_sender->set_hangup(true);
 }

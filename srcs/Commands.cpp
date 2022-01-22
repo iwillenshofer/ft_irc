@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 22:29:03 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 23:26:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_INPUTTOOLONG] = ":Input line was too long";
 	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
 	replies[ERR_BADPASSWORD] = ":Closing Link: <server> (Bad Password)";
-
+	replies[ERR_USERQUIT] = ":QUIT :<message>";
 	replies[329] = "<channel> <creation>"; // creation time
 	return (replies);
 }

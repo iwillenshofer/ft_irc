@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:58:22 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 23:26:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
 # define	SRV_SERVERNAME			"irc.42network.com"
 # define	SRV_MOTD_FILE			"motd.txt"
-
+# define	SRV_DFLQUITMSG			"Bye!"
 
 /*
 ** Reply message
@@ -189,6 +189,7 @@
 */
 
 # define    ERR_BADPASSWORD			700
+# define    ERR_USERQUIT			701
 # define	ERR_INPUTTOOLONG		417
 # define    PRIVMSG					999
 
