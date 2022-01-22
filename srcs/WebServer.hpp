@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/10 07:14:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 21:21:08 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <vector>
 # include <map>
 # include <csignal>
+# include <cerrno>
 # include "Socket.hpp"
+# include "Server.hpp"
 # include "FileDescriptors.hpp"
 # include "Debug.hpp"
 # include <poll.h>
@@ -44,8 +46,7 @@ class WebServer
 			*/
 			Socket							_socket;
 			FileDescriptors		 			_connections;
-			std::string						_host;
-			std::string						_password;
+			Server							_server;
 			void							_init(int port);
 
 			/*

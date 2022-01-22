@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 15:17:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 22:29:03 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,10 +192,10 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_UNIQOPPRIVSNEEDED] = ":You're not the original channel operator";
 	replies[ERR_NOOPERHOST] = ":No O-lines for your host";
 	replies[ERR_UMODEUNKNOWNFLAG] = ":Unknown MODE flag";
-	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";
-	
+	replies[ERR_USERSDONTMATCH] = ":Cannot change mode for other users";	
 	replies[ERR_INPUTTOOLONG] = ":Input line was too long";
 	replies[PRIVMSG] = ":<nick>!<user>@<host> PRIVMSG <destinatary> :<message>";
+	replies[ERR_BADPASSWORD] = ":Closing Link: <server> (Bad Password)";
 
 	replies[329] = "<channel> <creation>"; // creation time
 	return (replies);
@@ -231,7 +231,7 @@ Commands::Commands(std::string message, Client *sender, std::map<int, Client> *c
 	}
 	_process();
 }
-Commands::Commands(Commands const &cp): _sender(cp._sender), _clients(cp._clients), _channels(cp._channels) { *this = cp; }
+Commands::Commands(Commands const &cp) { *this = cp; }
 Commands &Commands::operator=(Commands const &cp)
 {
 	_sender = cp._sender;
@@ -288,9 +288,25 @@ std::string Commands::_numeric_reply(int reply)
 	return (nb);
 }
 
+/*
+** user`s send queue must always be cleared
+** before sending an error.
+*/
+std::string Commands::_generate_error(int error, std::map<std::string, std::string> v)
+{
+	_sender->get_send_queue().clear();
+	std::string message = "ERROR ";
+	if (v.size())
+		message += _replace_tags(_replies[error], v);
+	else
+		message += _replies[error];
+	message += MSG_ENDLINE;
+	return (message);
+}
+
 std::string Commands::_generate_reply(int reply, std::map<std::string, std::string> v)
 {
-	std::string message = ":localhost " + _numeric_reply(reply) + " " + _sender->nickname + " ";
+	std::string message = ":" + _server->servername() + " " + _numeric_reply(reply) + " " + _sender->nickname + " ";
 	if (v.size())
 		message += _replace_tags(_replies[reply], v);
 	else
@@ -369,6 +385,15 @@ void Commands::_register_user(void)
 	Debug("User Registered", DBG_ERROR);
 	std::map<std::string, std::string> v;
 
+	if (_sender->password != _server->password())
+	{
+		_sender->get_send_queue().clear();
+		v["server"] = _server->servername();
+		_message_user(_generate_error(ERR_BADPASSWORD, v), _sender)	;
+		_sender->set_hangup(true);
+		return ;
+	}
+	_sender->registered = true;
 	v["nick"] = _sender->nickname;
 	v["user"] = _sender->username;
 	v["host"] = _sender->hostname;
@@ -381,20 +406,16 @@ void Commands::_register_user(void)
 	v["intinvisible"] = ft::to_string(0); //TODO
 	v["intservers"] = ft::to_string(1);
 	v["intclients"] = ft::to_string(_clients->size() - 1);
-
-	_sender->registered = true;
 	_message_user(_generate_reply(RPL_WELCOME, v), _sender);
 	_message_user(_generate_reply(RPL_YOURHOST, v), _sender);
 	_message_user(_generate_reply(RPL_CREATED, v), _sender);
 	_message_user(_generate_reply(RPL_MYINFO, v), _sender);
 	_message_user(_generate_reply(RPL_LUSERCLIENT, v), _sender);
 	_message_user(_generate_reply(RPL_LUSERME, v), _sender);
-
 	_cmd_motd();
-	
+	//CALL USER MODE COMMAND, INSTEAD OF SENDING THE FOLLOWING MESSAGE:
 	std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
 	_message_user(msg, _sender);
-
 }
 
 /*

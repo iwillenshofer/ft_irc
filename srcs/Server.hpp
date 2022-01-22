@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 12:41:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 22:23:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,17 @@ typedef struct s_userattr
 class Server
 {
 	public:
-		Server(void):_version(SRV_VERSION), _servername(SRV_SERVERNAME), _motdfilename(SRV_MOTD_FILE), _highest_connections(0) { _init(); };
+		Server(std::string host = SRV_SERVERNAME, std::string password = "")
+		:_version(SRV_VERSION), _servername(host), _password(password), _motdfilename(SRV_MOTD_FILE), _highest_connections(0)
+		{
+			_init();
+		};
+		
 		Server(Server const &cp) { *this = cp; }
 		Server &operator=(Server const &cp)
 		{
 			_version = cp._version;
+			_password = cp._password;
 			_servername = cp._servername;
 			_operators = cp._operators;
 			_motdfilename = cp._motdfilename;
@@ -50,6 +56,7 @@ class Server
 	private:
 		std::string								_version;
 		std::string								_servername;
+		std::string								_password;
 		std::map<std::string, std::string>		_operators;
 		std::string								_motdfilename;
 		std::multimap<std::string, t_userattr>	_whowaslist;
@@ -67,6 +74,7 @@ class Server
 		/*
 		** getters
 		*/
+		std::string							&password(void) { return (_password); }
 		std::string							&version(void) { return (_version); }
 		std::string							&servername(void) { return (_servername); }
 		std::map<std::string, std::string>	&operators(void) { return (_operators); }

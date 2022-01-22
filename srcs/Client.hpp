@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 09:52:41 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 21:38:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,13 @@ class Client
 		std::string 				username;
 		std::string 				hostname;
 		std::string 				realname;
+		std::string					password;
 		bool						registered;
 		t_usermode					mode;
 		time_t						last_ping;
 		bool						is_ping;
 		time_t						joined_time;
+
 
 		/*
 		** setters and getters.

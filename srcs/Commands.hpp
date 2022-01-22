@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 15:55:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 21:57:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ class Commands
 		*/
 		std::string _numeric_reply(int reply);
 		std::string _generate_reply(int reply, std::map<std::string, std::string> v = std::map<std::string, std::string>());
+		std::string _generate_error(int error, std::map<std::string, std::string> v = std::map<std::string, std::string>());
 		std::string _replace_tags(std::string msg, std::map<std::string, std::string> v);
 
 		/*

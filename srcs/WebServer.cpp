@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 22:28:20 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 22:22:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "WebServer.hpp"
-#include <cerrno>
 
 std::vector<WebServer *> WebServer::_instances; //static members must be defined
 bool WebServer::_stop_server = false;
 
-WebServer::WebServer(std::string host, int port, std::string password) :
-	_host(host), _password(password)
+WebServer::WebServer(std::string host, int port, std::string password)
 {
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 
 //	signal(SIGTSTP, _signalHandler);
 	_instances.push_back(this);
+	_server = Server(host, password);
+	_connections = FileDescriptors(&_server);
 	_init(port);
 }
 
@@ -35,6 +35,7 @@ WebServer::WebServer(WebServer const &cp)
 WebServer &WebServer::operator=(WebServer const &cp)
 {
 	this->_socket = cp._socket;
+	this->_server = cp._server;
 	this->_connections = cp._connections;
 	return (*this);
 }

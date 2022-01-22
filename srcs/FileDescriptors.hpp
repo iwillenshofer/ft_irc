@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 10:22:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 22:26:07 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,20 @@
 class FileDescriptors
 {
 	public:
-		FileDescriptors() { }
+		FileDescriptors(Server *srv = 0x0): server(srv) { }
 		FileDescriptors(FileDescriptors const &cp) { *this = cp; }
 		FileDescriptors &operator=(FileDescriptors const &cp)
 		{
+			clients = cp.clients;
+			channels = cp.channels;
+			server = cp.server;
 			_fds = cp._fds;
 			return (*this);
 		}
 		virtual ~FileDescriptors() { _fds.clear(); };
 		std::map<int, Client>				clients;
 		std::map<std::string, Channel>		channels;
-		Server								server;
+		Server								*server;
 
 	private:
 		std::vector<pollfd>					_fds;
@@ -158,11 +161,11 @@ class FileDescriptors
 			{
 				for (std::vector<std::string>::iterator msg_it = it->second.get_receive_queue().begin(); msg_it != it->second.get_receive_queue().end();)
 				{
-					Commands(*msg_it, &(it->second), &clients, &channels, &server);
+					Commands(*msg_it, &(it->second), &clients, &channels, server);
 					msg_it = it->second.get_receive_queue().erase(msg_it);
 				}
 			}
-			remove_queued(); // calls remove queue again in case anyone was added for hangup during commands processing.
+//			remove_queued(); // calls remove queue again in case anyone was added for hangup during commands processing.
 		}
 
 		void pingpong(void)

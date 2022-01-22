@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 20:50:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 20:36:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ class Message
 				_command = _arguments[0];
 				_arguments.erase(_arguments.begin());
 			}
-			_arguments.push_back(user_message);
+			if (user_message.size())
+				_arguments.push_back(user_message);
 			ft::uppercase(_command);
 		}
 

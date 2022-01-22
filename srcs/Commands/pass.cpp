@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:50 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/21 21:38:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,12 @@
 
 void	Commands::_cmd_pass(void)
 {
-
+	if (_sender->registered)
+		_message_user(_generate_reply(ERR_ALREADYREGISTRED), _sender);
+	else if (!(_message.arguments().size()))
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+    else
+    {
+        _sender->password = _message.arguments()[0];
+    }
 }
