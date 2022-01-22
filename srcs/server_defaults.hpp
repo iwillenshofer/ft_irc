@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:58:22 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 11:57:23 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@
 /*
 ** Server Defaults
 */
-# define	SRV_PINGWAIT			60
-# define	SRV_PONGWAIT			60
+# define	SRV_PINGWAIT			45
+# define	SRV_PONGWAIT			40
+# define	SRV_REGISTERWAIT		45
 # define 	BUFFERSIZE 				1024
 
 # define	SRV_MAXNICKLEN			9
 # define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
 # define	SRV_SERVERNAME			"irc.42network.com"
 # define	SRV_MOTD_FILE			"motd.txt"
-
+# define	SRV_DFLQUITMSG			"Bye!"
 
 /*
 ** Reply message
@@ -189,6 +190,10 @@
 */
 
 # define    ERR_BADPASSWORD			700
+# define    ERR_USERQUIT			701
+# define 	ERR_PINGTIMEOUT			702
+# define	ERR_REGISTERTIMEOUT		703
+# define	ERR_EOFFROMCLIENT		704
 # define	ERR_INPUTTOOLONG		417
 # define    PRIVMSG					999
 
