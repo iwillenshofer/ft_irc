@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 23:33:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 09:38:33 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,19 @@
 **									syrk has quit IRC to have lunch.
 */
 
+/*
+** [IMPLEMENTATION NOTES]
+** The QUIT command is used by the User to quit itself from the server,
+** or by the Server, to send a QUIT message on behalf of the user 
+** to all other users that share a channel, upon disconnecting.
+** If _sender->hangup() is set, the QUIT message was already sent to the user,
+** so _cmd_quit() will just inform its peers.
+** If not, it means that the QUIT user was initiated by the user, not the
+** server, and _sender->hangup() will be set to true, which will communicate
+** the peers only when the hangup is completed, with a QUIT message initiated
+** by the Server.
+*/
+
 void	Commands::_cmd_quit(void)
 {
 	// must call _cmd_error() at the end.
@@ -39,13 +52,13 @@ void	Commands::_cmd_quit(void)
 		error_msg = _message.arguments().back();
 	else
 		error_msg = SRV_DFLQUITMSG;
-	std::string msg = _sender->get_prefix() + " QUIT :" + error_msg + MSG_ENDLINE;
-	std::map<std::string, std::string> v;
-	_message_all_channels(msg, false);
-	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++)
-		it->second.remove_user(_sender->nickname);
-	_sender->get_send_queue().clear();
-	v["message"] = error_msg;
-	_message_user(_generate_error(701, v), _sender);
-	_sender->set_hangup(true);
+	if (_sender->get_hangup())
+	{
+		std::string msg = _sender->get_prefix() + " QUIT :" + error_msg + MSG_ENDLINE;
+		_message_all_channels(msg, false);
+	}
+	else
+	{
+		_sender->set_hangup(true, "QUIT: " + error_msg);		
+	}
 }

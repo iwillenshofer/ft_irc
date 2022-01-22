@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 22:26:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 09:41:08 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,30 @@ class FileDescriptors
 			return (0x0);
 		}
 
+
+		void disconnect_client(Client *client)
+		{
+			Commands("QUIT :" + client->get_hangup_message(), client, &clients, &channels, server);
+			for (std::map<std::string, Channel>::iterator chanit = channels.begin(); chanit != channels.end(); chanit++)
+				chanit->second.remove_user(client->nickname);
+			/*
+			** here we should disconnect the user entirely from the channels
+			** so more functions may be called.
+			*/
+
+			/*
+			** also here, we add the client to the WHOWAS list.
+			*/
+		}
+
 		/*
 		** removes any fd that has been queued for removal.
+		** A HANGUP generates an error message to the user and
+		** informs everyone that shares a channel with them.
+		** The hangup user message is created at the moment that client hangup
+		** is set to be true.
+		** The message to the others users are sent in the remove_queued()
+		** function
 		*/
 
 		void remove_queued()
@@ -132,6 +154,7 @@ class FileDescriptors
 				if (it->second.get_hangup())
 				{
 					prev = it++;
+					disconnect_client(&(it->second));
 					Debug("FD to Remove: " + ft::to_string(prev->second.get_fd()), DBG_ERROR);
 					remove(prev->second.get_fd());
 					clients.erase(prev);
@@ -182,7 +205,7 @@ class FileDescriptors
 				else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
 				{
 					Debug("HANGUP", DBG_WARNING);
-					it->second.set_hangup(true);
+					it->second.set_hangup(true, "Ping Timeout");
 				}			
 			}
 			

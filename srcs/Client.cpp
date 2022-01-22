@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 22:43:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 09:43:37 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,17 @@ std::string Client::get_prefix(void) { return (std::string(":") + nickname + "!~
 size_t Client::get_send_queue_size(void) { return (_send_queue.size()); }
 std::vector<std::string> &Client::get_send_queue(void) { return (_send_queue); }
 std::vector<std::string> &Client::get_receive_queue(void) { return (_receive_queue); }
+std::string &Client::get_hangup_message(void) { return (_hangup_message); }
 bool Client::get_hangup(void) { return (_hangup); }
-void Client::set_hangup(bool v) { _hangup = v; }
+
+void Client::set_hangup(bool v, std::string msg)
+{
+	_hangup = v;
+	_hangup_message = msg;
+	_send_queue.clear();
+	_send_queue.push_back("ERROR: " + msg + MSG_ENDLINE);
+}
+
 int Client::get_fd(void) { return (_fd); }
 void Client::set_fd(int fd) { _fd = fd; }
 
