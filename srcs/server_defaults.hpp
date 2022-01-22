@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 23:26:09 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 10:09:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 /*
 ** Server Defaults
 */
-# define	SRV_PINGWAIT			60
-# define	SRV_PONGWAIT			60
+# define	SRV_PINGWAIT			15
+# define	SRV_PONGWAIT			10
 # define 	BUFFERSIZE 				1024
 
 # define	SRV_MAXNICKLEN			9

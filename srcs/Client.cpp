@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 09:43:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 10:01:19 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ void Client::set_hangup(bool v, std::string msg)
 {
 	_hangup = v;
 	_hangup_message = msg;
-	_send_queue.clear();
-	_send_queue.push_back("ERROR: " + msg + MSG_ENDLINE);
+	if (v)
+	{
+		_send_queue.clear();
+		_send_queue.push_back("ERROR: " + msg + MSG_ENDLINE);
+	}
 }
 
 int Client::get_fd(void) { return (_fd); }
