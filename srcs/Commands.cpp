@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 12:53:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 13:08:08 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,9 +391,7 @@ void Commands::_register_user(void)
 	if (_sender->password != _server->password())
 	{
 		_sender->get_send_queue().clear();
-		v["server"] = _server->servername();
-		msg = generate_errormsg(ERR_BADPASSWORD, v);
-		_sender->set_hangup(true, msg);
+		_sender->set_hangup(true, generate_errormsg(ERR_BADPASSWORD));
 		return ;
 	}
 	_sender->registered = true;

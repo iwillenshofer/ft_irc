@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 11:46:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 13:08:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,19 +208,14 @@ class FileDescriptors
 					else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
 					{
 						Debug("HANGUP", DBG_WARNING);
-						std::map<std::string, std::string> v;
-						v["nickname"] = it->second.nickname;
-						v["server"] = server->servername();
-						it->second.set_hangup(true, Commands::generate_errormsg(ERR_PINGTIMEOUT, v));
+						it->second.set_hangup(true, Commands::generate_errormsg(ERR_PINGTIMEOUT));
 					}
 				}
 				else if (now - it->second.joined_time > (SRV_REGISTERWAIT))
 				{
 					Debug("HANGUP", DBG_WARNING);
-					std::map<std::string, std::string> v;
-					v["nickname"] = it->second.nickname;
-					v["server"] = server->servername();
-					it->second.set_hangup(true, Commands::generate_errormsg(ERR_REGISTERTIMEOUT, v));
+
+					it->second.set_hangup(true, Commands::generate_errormsg(ERR_REGISTERTIMEOUT));
 				}
 			}
 			
