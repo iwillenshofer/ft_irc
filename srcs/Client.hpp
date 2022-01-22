@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:38:09 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 13:06:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class Client
 		std::vector<std::string> 	_receive_queue;
 		std::vector<std::string> 	_send_queue;
 		bool						_hangup;
+		std::string					_hangup_message;
 
 
 	public:
@@ -75,14 +76,15 @@ class Client
 		/*
 		** setters and getters.
 		*/
-		std::string get_prefix(void);
-		size_t get_send_queue_size(void);
-		std::vector<std::string> &get_send_queue(void);
-		std::vector<std::string> &get_receive_queue(void);
-		bool get_hangup(void);
-		void set_hangup(bool v);
-		int get_fd(void);
-		void set_fd(int fd);
+		std::string 				get_prefix(void);
+		size_t 						get_send_queue_size(void);
+		std::vector<std::string> 	&get_send_queue(void);
+		std::vector<std::string> 	&get_receive_queue(void);
+		bool 						get_hangup(void);
+		std::string 				&get_hangup_message(void);
+		void 						set_hangup(bool v, std::string m = MSG_ENDLINE);
+		int 						get_fd(void);
+		void 						set_fd(int fd);
 		
 		/*
 		** reads messages from the client. If message is incomplete,

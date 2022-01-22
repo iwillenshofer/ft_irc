@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 22:26:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 13:08:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,30 @@ class FileDescriptors
 			return (0x0);
 		}
 
+
+		void disconnect_client(Client *client)
+		{
+			Commands("QUIT :" + client->get_hangup_message(), client, &clients, &channels, server);
+			for (std::map<std::string, Channel>::iterator chanit = channels.begin(); chanit != channels.end(); chanit++)
+				chanit->second.remove_user(client->nickname);
+			/*
+			** here we should disconnect the user entirely from the channels
+			** so more functions may be called.
+			*/
+
+			/*
+			** also here, we add the client to the WHOWAS list.
+			*/
+		}
+
 		/*
 		** removes any fd that has been queued for removal.
+		** A HANGUP generates an error message to the user and
+		** informs everyone that shares a channel with them.
+		** The hangup user message is created at the moment that client hangup
+		** is set to be true.
+		** The message to the others users are sent in the remove_queued()
+		** function
 		*/
 
 		void remove_queued()
@@ -129,9 +151,11 @@ class FileDescriptors
 			std::map<int,Client>::iterator prev;
             for (std::map<int,Client>::iterator it = clients.begin(); it != clients.end(); )
 			{
+				
 				if (it->second.get_hangup())
 				{
 					prev = it++;
+					disconnect_client(&(prev->second));
 					Debug("FD to Remove: " + ft::to_string(prev->second.get_fd()), DBG_ERROR);
 					remove(prev->second.get_fd());
 					clients.erase(prev);
@@ -174,16 +198,25 @@ class FileDescriptors
 
 		   	for (std::map<int,Client>::iterator it = ++clients.begin(); it != clients.end(); it++)
 			{
-				if (it->second.is_ping == false && now - it->second.last_ping > (SRV_PINGWAIT))
+				if (it->second.registered)
 				{
-					it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
-					it->second.is_ping = true;
+					if (it->second.is_ping == false && now - it->second.last_ping > (SRV_PINGWAIT))
+					{
+						it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
+						it->second.is_ping = true;
+					}
+					else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
+					{
+						Debug("HANGUP", DBG_WARNING);
+						it->second.set_hangup(true, Commands::generate_errormsg(ERR_PINGTIMEOUT));
+					}
 				}
-				else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
+				else if (now - it->second.joined_time > (SRV_REGISTERWAIT))
 				{
 					Debug("HANGUP", DBG_WARNING);
-					it->second.set_hangup(true);
-				}			
+
+					it->second.set_hangup(true, Commands::generate_errormsg(ERR_REGISTERTIMEOUT));
+				}
 			}
 			
 			/*

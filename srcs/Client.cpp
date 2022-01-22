@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/20 22:43:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 13:05:41 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ Client::Client(int fd): _fd(fd), _hangup(false), registered(false), is_ping(fals
 {
 	bzero(&mode, sizeof(mode));
 	last_ping = time(NULL);
+	joined_time = time(NULL);
 	hostname = _get_address();
 }
 
@@ -28,6 +29,7 @@ Client &Client::operator=(Client const &cp)
 	_receive_queue = cp._receive_queue;
 	_send_queue = cp._send_queue;
 	_hangup = cp._hangup;
+	_hangup_message = cp._hangup_message;
 	nickname = cp.nickname;
 	realname = cp.realname;
 	registered = cp.registered;
@@ -45,8 +47,20 @@ std::string Client::get_prefix(void) { return (std::string(":") + nickname + "!~
 size_t Client::get_send_queue_size(void) { return (_send_queue.size()); }
 std::vector<std::string> &Client::get_send_queue(void) { return (_send_queue); }
 std::vector<std::string> &Client::get_receive_queue(void) { return (_receive_queue); }
+std::string &Client::get_hangup_message(void) { return (_hangup_message); }
 bool Client::get_hangup(void) { return (_hangup); }
-void Client::set_hangup(bool v) { _hangup = v; }
+
+void Client::set_hangup(bool v, std::string msg)
+{
+	_hangup = v;
+	_hangup_message = msg;
+	if (v)
+	{
+		_send_queue.clear();
+		_send_queue.push_back("ERROR :" + msg);
+	}
+}
+
 int Client::get_fd(void) { return (_fd); }
 void Client::set_fd(int fd) { _fd = fd; }
 
@@ -66,7 +80,7 @@ void Client::read(void)
 		is_ping = false;
 		last_ping = time(NULL);
 		_receive_buffer += _buffer;
-		tmp = ft::split(_receive_buffer, "\r\n");
+		tmp = ft::split(_receive_buffer, MSG_ENDLINE);
 		if (_receive_buffer.size() > MSG_MAXMSGSIZE * 2)
 		{
 			Commands commands(ERR_INPUTTOOLONG, this);
@@ -78,7 +92,10 @@ void Client::read(void)
 	{
 		Debug("Read Error", (rc == 0 ? DBG_WARNING: DBG_ERROR));
 		if (rc == 0)
-			set_hangup(true);
+		{
+			Debug("HANGUP", DBG_WARNING);
+			set_hangup(true, Commands::generate_errormsg(ERR_EOFFROMCLIENT));
+		}
 		// rc == 0 other side closed socket 
 		// rc == -1 error;
 		/*

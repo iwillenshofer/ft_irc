@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 22:22:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 12:20:37 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void WebServer::RunServer(void)
 			{
 				fd = _connections.get_fd(idx);
 				if (_connections.get_revents(idx) & POLLHUP)
-					_connections.clients[fd].set_hangup(true);
+					_connections.clients[fd].set_hangup(true, Commands::generate_errormsg(ERR_EOFFROMCLIENT));
 				else if (_connections.get_revents(idx) & POLLIN)
 				{
 					if (idx == 0)
@@ -111,9 +111,9 @@ void WebServer::RunServer(void)
 		{
 			Debug("Poll timed out", DBG_DEV);
 		}
-		_connections.pingpong();
 		_connections.remove_queued();
 		_connections.process_commands();
+		_connections.pingpong();
 	}
 }
 
