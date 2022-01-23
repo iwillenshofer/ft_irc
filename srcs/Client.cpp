@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 22:52:35 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 10:21:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ Client::Client(int fd): _fd(fd), _hangup(false), registered(false), is_ping(fals
 	bzero(&mode, sizeof(mode));
 	last_ping = time(NULL);
 	joined_time = time(NULL);
-	hostname = _get_address();
 }
 
 Client::Client(Client const &cp) { *this = cp; }
@@ -44,7 +43,7 @@ Client::~Client() { }
 /*
 ** setters and getters.
 */
-std::string Client::get_prefix(void) { return (std::string(":") + nickname + "!~" + username + "@" + hostname); }
+std::string Client::get_prefix(void) { return (std::string(":") + nickname + "!" + username + "@" + hostname); }
 size_t Client::get_send_queue_size(void) { return (_send_queue.size()); }
 std::vector<std::string> &Client::get_send_queue(void) { return (_send_queue); }
 std::vector<std::string> &Client::get_receive_queue(void) { return (_receive_queue); }
@@ -63,7 +62,11 @@ void Client::set_hangup(bool v, std::string msg)
 }
 
 int Client::get_fd(void) { return (_fd); }
-void Client::set_fd(int fd) { _fd = fd; }
+void Client::set_fd(int fd)
+{ 
+	_fd = fd; 
+	hostname = _get_address();
+}
 
 /*
 ** reads messages from the client. If message is incomplete,
@@ -129,11 +132,27 @@ void Client::write(void)
 
 std::string Client::_get_address(void)
 {
-	struct sockaddr_in sockinfo;
-	socklen_t sockinfo_len = sizeof(sockinfo);
+	struct sockaddr_storage addr;
+	struct sockaddr_in addr4;
+	socklen_t addr_len = sizeof(addr);
+	char buffer[INET6_ADDRSTRLEN];
 
-	getsockname(_fd, (struct sockaddr*)&sockinfo, &sockinfo_len);
-	return (ft::to_string(inet_ntoa(sockinfo.sin_addr)));
+	std::memset(&addr, 0, sizeof(addr));
+	std::memset(&addr4, 0, sizeof(addr4));
+	std::memset(&buffer, 0, sizeof(buffer));
+	if ((getpeername(_fd,(struct sockaddr*)&addr,&addr_len)))
+		return (SRV_UNKNOWNHOST);
+	if (addr.ss_family == AF_INET6 && IN6_IS_ADDR_V4MAPPED(&((struct sockaddr_in6 *)&addr)->sin6_addr))
+	{
+		addr_len = sizeof(addr4);
+		addr4.sin_family = AF_INET;
+		addr4.sin_port = ((struct sockaddr_in6 *)&addr)->sin6_port;
+		memcpy(&addr4.sin_addr.s_addr, ((struct sockaddr_in6 *)&addr)->sin6_addr.s6_addr + 12, sizeof(addr4.sin_addr.s_addr));
+		memcpy(&addr, &addr4, sizeof(addr4));
+	}
+	if ((getnameinfo((struct sockaddr*)&addr, addr_len, buffer, sizeof(buffer), 0, 0, 0)))
+		return (SRV_UNKNOWNHOST);
+	return (std::string(buffer));
 }
 
 bool	Client::is_invisible(void) const

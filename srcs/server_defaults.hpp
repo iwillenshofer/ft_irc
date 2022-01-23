@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 11:57:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 01:29:04 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define	SRV_SERVERNAME			"irc.42network.com"
 # define	SRV_MOTD_FILE			"motd.txt"
 # define	SRV_DFLQUITMSG			"Bye!"
+# define	SRV_UNKNOWNHOST			"hostname"
 
 /*
 ** Reply message
