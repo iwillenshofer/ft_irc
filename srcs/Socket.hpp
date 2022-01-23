@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Socket.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:35:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/09 08:47:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 22:57:50 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Socket
 {
 	private:
 		int						_server_socket;		//	Socket FD
-		struct sockaddr_in		_server_address;	// sockaddr_in contains Port and Address where server listen to.
+		struct sockaddr_in6		_server_address;	// sockaddr_in contains Port and Address where server listen to.
 		int						_port;
 
 		void _create_socket( void );
@@ -36,7 +36,6 @@ class Socket
 
 	public:
 		Socket( void );
-		Socket( config_data config );
 		Socket( int port );
 		~Socket( void );
 
