@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 12:20:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 21:39:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void WebServer::_signalHandler( int signal )
 void WebServer::_close_all_connections(void)
 {
 	pollfd *lst = _connections.list();
-	for (size_t idx = 0; idx < _connections.size(); idx++)
+	for (size_t idx = 1; idx < _connections.size(); idx++)
 		close(lst[idx].fd);
+	close(lst[0].fd);
 }

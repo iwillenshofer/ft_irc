@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 13:08:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 15:02:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,14 +265,20 @@ Client *Commands::_get_client_by_nickname(std::string nick)
 
 void	Commands::_process()
 {
-	_run_command(_message.command());
+	std::string cmd = _message.command();	
+
+	if (!(_sender->registered) && (cmd != "ADMIN" && cmd != "NICK" && cmd != "PASS"
+		&& cmd != "PONG" && cmd != "QUIT" && cmd != "USER" && cmd != "VERSION"))
+		_message_user(_generate_reply(ERR_NOTREGISTERED), _sender);
+	else
+		_run_command(cmd);
 }
 
 void Commands::_run_command(std::string &cmd_name)
 {
 	std::map<std::string, cmd_type>::iterator cmd_it;
+	
 	Debug("Looking for command", DBG_DEV);
-
 	cmd_it = _commands.find(cmd_name);
 	if (cmd_it == _commands.end())
 		_cmd_unknown();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 22:35:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 20:41:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int main (int argc, char **argv)
 	}
 	catch(const std::runtime_error& e)
 	{
-		Debug(std::string(e.what()));
+		Debug(std::string(e.what()), DBG_FATAL);
 		return (1);
 	}
 }
