@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 14:03:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/22 22:52:35 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ Client &Client::operator=(Client const &cp)
 	registered = cp.registered;
 	mode = cp.mode;
 	last_ping = cp.last_ping;
+	joined_time = cp.joined_time;
 	is_ping = cp.is_ping;
 	return (*this);
 }
