@@ -31,133 +31,60 @@
 ** Mask::match(client, mask);
 ** Mask::match("nickname!user@hostname", mask);
 ** Mask::create("nickname"); nickname!*@*
+**
+** Mask::match_raw(s1, mask); matches a string against a mask
+**  without parsing it first.
 */
+
+class Client;
 
 class Mask
 {
 	public:
-		Mask(void) { };
-		Mask(Mask const &cp) { *this = cp; }
-		Mask &operator=(Mask const &cp)	{ return (*this); }
-		virtual ~Mask() { };
+		Mask(void);
+		Mask(Mask const &cp);
+		Mask &operator=(Mask const &cp);
+		virtual ~Mask();
 	
 		class Maskparts
 		{
 			public:
-				Maskparts(void) { };
-				Maskparts(std::string s) { _strip(s); };
-				Maskparts(Mask const &cp) { *this = cp; }
-				Maskparts &operator=(Maskparts const &cp)
-				{
-					nickname = cp.nickname;
-					username = cp.username;
-					hostname = cp.hostname;
-					return (*this);
-				}
-				virtual ~Maskparts() { };
+				Maskparts(void);
+				Maskparts(std::string s);
+				Maskparts(Maskparts const &cp);
+				Maskparts &operator=(Maskparts const &cp);
+				virtual ~Maskparts();
 				std::string nickname;
 				std::string username;
 				std::string hostname;
-				std::string fullmask( void ) { return (nickname + "!" + username + "@" + hostname); }
-
+				std::string fullmask( void );
 			private:
-				static std::string _striphost(std::string &string)
-				{
-					size_t pos;
-					std::string ret;
+				static std::string _striphost(std::string &string);
+				static std::string _stripuser(std::string &string);
 
-					pos =  string.find('@');
-					if (pos != std::string::npos)
-					{
-						ret = string.substr(pos + 1);
-						string = string.substr(0, pos);
-						return (ret);
-					}
-					return ("");
-				}
-				
-				static std::string _stripuser(std::string &string)
-				{
-					size_t pos;
-					std::string ret;
-
-					pos =  string.find('!');
-					if (pos != std::string::npos)
-					{
-						ret = string.substr(pos + 1);
-						string = string.substr(0, pos);
-						return (ret);
-					}
-					return ("");
-				}
-
-				void _strip(std::string string)
-				{
-					hostname = _striphost(string);
-					username = _stripuser(string);
-					nickname = string;
-					if (!(hostname.size()))
-						hostname = "*";
-					if (!(username.size()))
-						username = "*";
-					if (!(nickname.size()))
-						nickname = "*";
-				}
+				void _strip(std::string string);
 		};
 
 	private:
 
-		static bool	_match(std::string::iterator target, std::string::iterator mask, std::string::iterator t_end, std::string::iterator m_end)
-		{
-			if (target == t_end && mask == m_end)
-				return (true);
-			if (mask != m_end && *mask == '*' && (mask + 1 != m_end) && target == t_end)
-				return (false);
-			if (mask != m_end && target != t_end && ( *mask == '?' || *mask == *target))
-				return (_match(++target, ++mask, t_end, m_end));
-			if (mask != m_end && *mask == '*')
-				return (_match(target + 1, mask, t_end, m_end) || _match(target, ++mask, t_end, m_end));
-			return (false);
-		}
+		static bool	_match(std::string::iterator target, std::string::iterator mask, std::string::iterator t_end, std::string::iterator m_end);
 
 	public:
 		/*
 		** getters
 		*/
-		static bool	match(Client &client, std::string mask)
-		{
-			Maskparts mp_target;
-			Maskparts mp_mask(mask);
+		static bool	match(Client &client, std::string mask);
+		static bool	match(std::string target, std::string mask);
 
-			mp_target.hostname = client.hostname;
-			mp_target.nickname = client.nickname;
-			mp_target.username = client.username;
-			return (match(mp_target, mp_mask));
-		}
+		static bool	match(Maskparts &target, Maskparts &mask);
+		/*
+		** match raw:
+		** matches a string against a mask without parsing it into username, nickname
+		** and hostname 
+		*/
+		static bool	match_raw(std::string target, std::string mask);
 
-		static bool	match(std::string target, std::string mask)
-		{
-			Maskparts mp_target(target);
-			Maskparts mp_mask(mask);
-
-			return (match(mp_target, mp_mask));
-		}
-
-		static bool	match(Maskparts &target, Maskparts &mask)
-		{
-			Debug("Matching username: " + target.username + "  -  " + mask.username + " : " + (_match(target.username.begin(),mask.username.begin(), target.username.end(),mask.username.end()) ? "TRUE" : "FALSE"), DBG_DEV);
-			Debug("Matching nickname: " + target.nickname + "  -  " + mask.nickname + " : " + (_match(target.nickname.begin(),mask.nickname.begin(), target.nickname.end(),mask.nickname.end()) ? "TRUE" : "FALSE"), DBG_DEV);
-			Debug("Matching hostname: " + target.hostname + "  -  " + mask.hostname + " : " + (_match(target.hostname.begin(),mask.hostname.begin(), target.hostname.end(),mask.hostname.end()) ? "TRUE" : "FALSE"), DBG_DEV);
-			if (!(_match(target.hostname.begin(),mask.hostname.begin(), target.hostname.end(),mask.hostname.end())))
-				return (false);
-			if (!(_match(target.nickname.begin(),mask.nickname.begin(), target.nickname.end(),mask.nickname.end())))
-				return (false);
-			if (!(_match(target.username.begin(),mask.username.begin(), target.username.end(),mask.username.end())))
-				return (false);
-			return (true);
-		}
-
-		static std::string create(std::string target) { return (Maskparts(target).fullmask()); }
+		static std::string create(std::string target);
 };
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 10:21:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 22:21:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,12 @@ std::string Client::_get_address(void)
 		return (SRV_UNKNOWNHOST);
 	return (std::string(buffer));
 }
+
+int		Client::get_idle(void)
+{
+	return (static_cast<int>(std::difftime(time(NULL), last_ping)));
+}
+
 
 bool	Client::is_invisible(void) const
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 20:35:43 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 19:44:20 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define	SRV_PONGWAIT			40
 # define	SRV_REGISTERWAIT		45
 # define 	BUFFERSIZE 				1024
-
+# define	SRV_MAXWHOIS			5
 # define	SRV_MAXNICKLEN			9
 # define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
 # define	SRV_SERVERNAME			"irc.42network.com"
@@ -203,7 +203,7 @@
 # define	ERR_REGISTERTIMEOUT		703
 # define	ERR_EOFFROMCLIENT		704
 # define	ERR_INPUTTOOLONG		417
+# define    ERR_WHOISTOOMANY		416
 # define    PRIVMSG					999
-
 
 #endif

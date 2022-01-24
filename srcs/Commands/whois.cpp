@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   whois.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:25 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 22:14:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,89 @@
 **									information  about trillian
 */
 
+/*
+** [IMPLEMENTATION NOTES]
+** Since we are dealing with only one server, the [target] parameter has been
+** ommited.
+** Undernet also disregards the first parameter. If it is a hostname, it is
+** simply ignored.
+** 
+** 
+** 	replies[RPL_WHOISUSER] = "<nick> <user> <host> * :<real_name>";
+** 	replies[ERR_NONICKNAMEGIVEN] = ":No nickname given";
+**	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>"; 
+** 	replies[RPL_WHOISSERVER] = "<nick> <server> :<server info>";
+**	replies[RPL_WHOISOPERATOR] = "<nick> :is an IRC operator";
+**	replies[RPL_WHOISIDLE] = "<nick> <integer> :seconds idle";
+**
+**
+*/
+
+void	Commands::__perform_whois(std::vector<std::string> &v)
+{
+	Client *client;
+	std::vector<std::string>::iterator it = std::unique(v.begin(), v.end());
+	std::map<std::string, std::string> m;
+	v.resize(it - v.begin());
+	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		client = _get_client_by_nickname(*it);
+		if (client)
+		{
+			m["nick"] = client->nickname;
+			m["user"] = client->username;
+			m["host"] = client->hostname;
+			m["real_name"] = client->realname;
+			m["secidle"] = ft::to_string(client->get_idle());
+			_message_user(_generate_reply(RPL_WHOISUSER, m), _sender);
+			_message_user(_generate_reply(RPL_WHOISCHANNELS, m), _sender);
+			_message_user(_generate_reply(RPL_WHOISSERVER, m), _sender);
+			_message_user(_generate_reply(RPL_WHOISOPERATOR, m), _sender);
+			_message_user(_generate_reply(RPL_WHOISIDLE, m), _sender);
+		}
+		else
+		{
+			m["nick"] = *it;
+			_message_user(_generate_reply(ERR_NOSUCHNICK, m), _sender);
+		}
+		if (it - v.begin() > SRV_MAXWHOIS)
+		{
+			_message_user(_generate_reply(ERR_WHOISTOOMANY), _sender);
+			break ;
+		}
+	}
+	_message_user(_generate_reply(RPL_ENDOFWHOIS), _sender);
+}
+
 void	Commands::_cmd_whois(void)
 {
+	std::vector<std::string> masks;
+	std::vector<std::string> userlist;
+	std::vector<std::string> matched_mask;
+	int first_arg = 0;
 
+	if (!(_message.arguments().size()))
+	{   
+		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
+		return ;
+	}
+	if (_message.arguments().size() >= 2)
+		first_arg = 1;
+	masks = ft::split(_message.arguments()[first_arg], ',');
+	for (std::vector<std::string>::iterator it = masks.begin(); it != masks.end(); it++)
+	{
+		if (!(Message::is_bnf_mask(*it)))
+			userlist.push_back(*it);
+		matched_mask.clear();
+		for (std::map<int, Client>::iterator mit = _clients->begin(); mit != _clients->end(); mit++)
+		{
+			if (mit != _clients->begin() && Mask::match_raw(mit->second.nickname, *it))
+				matched_mask.push_back(mit->second.nickname);
+		}
+		if (!(matched_mask.size()))
+			userlist.push_back(*it);
+		else
+			userlist.insert(userlist.end(), matched_mask.begin(), matched_mask.end());
+	}
+	__perform_whois(userlist);
 }

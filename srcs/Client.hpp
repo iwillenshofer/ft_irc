@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 11:54:45 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/23 22:08:49 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ class Client
 		** setters and getters.
 		*/
 		std::string 				get_prefix(void);
+		int			 				get_idle(void);
+
 		size_t 						get_send_queue_size(void);
 		std::vector<std::string> 	&get_send_queue(void);
 		std::vector<std::string> 	&get_receive_queue(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 17:20:51 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 19:44:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_UNAWAY] = ":You are no longer marked as being away";
 	replies[RPL_NOWAWAY] = ":You have been marked as being away";
 	replies[RPL_WHOISUSER] = "<nick> <user> <host> * :<real_name>";
-	replies[RPL_WHOISSERVER] = "<nick> <server> :<server info>";
+	replies[RPL_WHOISSERVER] = "<nick> <server> :<server_info>";
 	replies[RPL_WHOISOPERATOR] = "<nick> :is an IRC operator";
-	replies[RPL_WHOISIDLE] = "<nick> <integer> :seconds idle";
+	replies[RPL_WHOISIDLE] = "<nick> <secidle> :seconds idle";
 	replies[RPL_ENDOFWHOIS] = "<nick> :End of WHOIS list";
 	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>"; //*( ( "@" / "+" ) <channel> " " )";
 	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real_name>";
@@ -92,7 +92,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_ENDOFWHO] = "<name> :End of /WHO list";
 	replies[RPL_NAMREPLY] = "= <channel> :<names_list>";
 	replies[RPL_ENDOFNAMES] = "<channel> :End of /NAMES list";
-	replies[RPL_LINKS] = "<mask> <server> :<hopcount> <server info>";
+	replies[RPL_LINKS] = "<mask> <server> :<hopcount> <server_info>";
 	replies[RPL_ENDOFLINKS] = "<mask> :End of LINKS list";
 	replies[RPL_BANLIST] = "<channel> <banmask>";
 	replies[RPL_ENDOFBANLIST] = "<channel> :End of channel ban list";
@@ -140,7 +140,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_ADMINLOC2] = ":<admin info>";
 	replies[RPL_ADMINEMAIL] = ":<admin info>";
 	replies[RPL_TRYAGAIN] = "<command> :Please wait a while and try again.";
-	replies[ERR_NOSUCHNICK] = "<nickname> :No such nick/channel";
+	replies[ERR_NOSUCHNICK] = "<nickname> :No such nick";
 	replies[ERR_NOSUCHSERVER] = "<server name> :No such server";
 	replies[ERR_NOSUCHCHANNEL] = "<channel name> :No such channel";
 	replies[ERR_CANNOTSENDTOCHAN] = "<channel name> :Cannot send to channel";
@@ -200,7 +200,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_PINGTIMEOUT] = "Ping timeout";
 	replies[ERR_REGISTERTIMEOUT] = "Registration Timeout";
 	replies[ERR_EOFFROMCLIENT] = "EOF from client";
-
+	replies[ERR_WHOISTOOMANY] = "Too many results, restrict your query";
 	replies[329] = "<channel> <creation>"; // creation time
 	return (replies);
 }

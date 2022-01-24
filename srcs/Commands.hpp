@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 19:59:37 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 19:44:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <algorithm>
 # include <exception>
 # include <cctype>
+# include "Mask.hpp"
 # include "Debug.hpp"
 # include "Client.hpp"
 # include "Channel.hpp"
@@ -167,6 +168,11 @@ class Commands
 		void _truncate_nick(std::string &nickname);
 		bool _validate_nick(std::string const &nickname) const;
 		void _cmd_unknown(void);
+
+		/*
+		** Single command helpers
+		*/
+		void __perform_whois(std::vector<std::string> &v);
 
 		/*
 		** Commands not Implemented:

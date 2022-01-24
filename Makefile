@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/23 21:22:57 by roman            ###   ########.fr        #
+#    Updated: 2022/01/24 19:44:16 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,8 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/ping.cpp \
 			${SRC_DIR}/Commands/pong.cpp \
 			${SRC_DIR}/Commands/error.cpp \
-			${SRC_DIR}/Channel.cpp
+			${SRC_DIR}/Channel.cpp \
+			${SRC_DIR}/Mask.cpp
 
 
 
