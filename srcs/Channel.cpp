@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/23 21:22:36 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/23 21:57:34 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,10 @@ Channel::~Channel(void)
 
 void	Channel::set_name(std::string name)
 {
-	if (name.at(0) != '&' || name.at(0) != '#' || name.at(0) != '+' || name.at(0) != '!')
+    Debug(name, DBG_DEFAULT);
+	if (Message::is_bnf_channel(name) == false)
 		throw std::runtime_error("Invalid channel name : Code 476");
-	if (name.size() > 50)
-		throw std::runtime_error("Invalid channel name: Code 476");
-	for (std::string::iterator it = name.begin(); it != name.end(); it++)
-	{
-		if (*it == ' ' || *it == 7 || *it == ',' || *it == ':')
-			throw std::runtime_error("Invalid channel name: Code 476");
-	}
+    _name = name;
 }
 
 std::string	Channel::get_name(void) const

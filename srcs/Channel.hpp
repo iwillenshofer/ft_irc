@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:13:39 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/23 21:55:43 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <exception>
 # include <stdexcept>
 # include <cstring>
-
+# include "Debug.hpp"
+# include "Message.hpp"
 /*
 ** channel modes. currently a struct, but will be converted into a class so it can initialize itself.
 */
