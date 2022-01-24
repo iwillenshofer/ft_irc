@@ -6,7 +6,7 @@
 #    By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/21 15:56:50 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/23 20:28:56 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,8 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/ping.cpp \
 			${SRC_DIR}/Commands/pong.cpp \
 			${SRC_DIR}/Commands/error.cpp \
-			${SRC_DIR}/Channel.cpp
+			${SRC_DIR}/Channel.cpp \
+			${SRC_DIR}/Mask.cpp
 
 
 

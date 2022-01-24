@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 20:36:45 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 18:20:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,6 +337,18 @@ class Message
 				 	if (*sit == '?' || *sit == '*')
 						*sit = 'a';
 				if (!(is_bnf_shortname(*it)))
+					return (false);
+			}
+			return (true);
+		}
+
+		static bool is_bnf_mask(std::string const &key)
+		{
+			for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
+			{
+				if (*it == 0)
+					return (false);
+				if ((*it == '*' || *it == '?') && (it != key.begin() && *(it - 1) == '\\'))
 					return (false);
 			}
 			return (true);
