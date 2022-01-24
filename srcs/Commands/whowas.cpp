@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:35 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 18:32:53 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@
 **	WHOWAS Trillian 1 *.edu         ; return the most recent history for
 **									"Trillian" from the first server
 **									found to match "*.edu".
+*/
+
+/*
+** [IMPLEMENTATION NOTES]
+** As there is only one server, the last parameter <target> is ignored.
 */
 
 void	Commands::_cmd_whowas(void)
