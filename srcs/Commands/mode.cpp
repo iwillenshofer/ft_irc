@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:12 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 19:50:45 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 19:59:45 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@
 **	
 **	MODE &oulu +b                   ; Command to list ban masks set for
 **									the channel "&oulu".
-**	
+**	P
 **	MODE &oulu +b *!*@*             ; Command to prevent all users from
 **									joining.
 **	
@@ -160,22 +160,28 @@ void	Commands::_cmd_mode(void)
 {
 	// if the subject of the command is a channel instead of a nickname,
 	// this function should call _cmd_channel_mode() and return;
-	_message.print();
-	std::string users;
-	std::map<std::string, std::string> arguments;
 
-	for (std::vector<std::string>::iterator it = (*_channels)[_message.arguments()[0]].users.begin(); it != (*_channels)[_message.arguments()[0]].users.end(); it++ )
-		users += "@" + *it + ' ';
-	if (users.size())
-		users.erase(users.length() - 1);
-	arguments["channel"] = _message.arguments()[0];
-	arguments["name"] = _message.arguments()[0];
-	arguments["names_list"] = users;
-	arguments["mode"] = "+";
-	arguments["mode_params"] = "";
-	arguments["creation"] = "1642347646";
-	_message_user(_generate_reply(RPL_NAMREPLY, arguments), _sender);
-	_message_user(_generate_reply(RPL_ENDOFNAMES, arguments), _sender);
-	_message_user(_generate_reply(RPL_CHANNELMODEIS, arguments), _sender);
-	_message_user(_generate_reply(329, arguments), _sender);
+	_message.print();
+
+	if (_message.arguments()[0].at(0) == '#' || _message.arguments()[0].at(0) == '&')
+		_cmd_mode_channel();
+	else
+		_cmd_mode_user();
+	//std::string users;
+	//std::map<std::string, std::string> arguments;
+//
+	//for (std::vector<std::string>::iterator it = (*_channels)[_message.arguments()[0]].users.begin(); it != (*_channels)[_message.arguments()[0]].users.end(); it++ )
+	//	users += "@" + *it + ' ';
+	//if (users.size())
+	//	users.erase(users.length() - 1);
+	//arguments["channel"] = _message.arguments()[0];
+	//arguments["name"] = _message.arguments()[0];
+	//arguments["names_list"] = users;
+	//arguments["mode"] = "+";
+	//arguments["mode_params"] = "";
+	//arguments["creation"] = "1642347646";
+	//_message_user(_generate_reply(RPL_NAMREPLY, arguments), _sender);
+	//_message_user(_generate_reply(RPL_ENDOFNAMES, arguments), _sender);
+	//_message_user(_generate_reply(RPL_CHANNELMODEIS, arguments), _sender);
+	//_message_user(_generate_reply(329, arguments), _sender);
 }

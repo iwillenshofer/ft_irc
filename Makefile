@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/21 15:56:50 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/23 21:22:57 by roman            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/join.cpp \
 			${SRC_DIR}/Commands/part.cpp \
 			${SRC_DIR}/Commands/mode_channel.cpp \
+			${SRC_DIR}/Commands/mode_user.cpp \
 			${SRC_DIR}/Commands/topic.cpp \
 			${SRC_DIR}/Commands/names.cpp \
 			${SRC_DIR}/Commands/list.cpp \

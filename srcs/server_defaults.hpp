@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 01:29:04 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 20:35:43 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@
 # define	SRV_MOTD_FILE			"motd.txt"
 # define	SRV_DFLQUITMSG			"Bye!"
 # define	SRV_UNKNOWNHOST			"hostname"
+
+/*
+** Mode Defaults
+*/
+
+# define	MODE_CHANNEL			"-+opsitnmlbvk"
+# define	MODE_USER   			"-+iswo"
 
 /*
 ** Reply message

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 10:21:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 19:20:25 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,14 @@ Client *Commands::_get_client_by_nickname(std::string nick)
 {
 	for (std::map<int, Client>::iterator it = _clients->begin(); it != _clients->end(); it++ )
 		if (it->second.nickname == nick)
+			return (&(it->second));
+	return (NULL);
+}
+
+Channel *Commands::_get_channel_by_name(std::string name)
+{
+	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++ )
+		if (it->second.get_name() == name)
 			return (&(it->second));
 	return (NULL);
 }

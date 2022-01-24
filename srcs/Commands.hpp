@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 14:32:22 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/23 19:59:37 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ class Commands
 		void _cmd_join(void);
 		void _cmd_part(void);
 		void _cmd_mode_channel(void);
+		void _cmd_mode_user(void);
 		void _cmd_topic(void);
 		void _cmd_names(void);
 		void _cmd_list(void);
@@ -127,6 +128,7 @@ class Commands
 		** command helpers
 		*/
 		Client *_get_client_by_nickname(std::string nick);
+		Channel *_get_channel_by_name(std::string name);
 
 		/*
 		** command parsing and processing
