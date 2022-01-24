@@ -31,6 +31,9 @@
 ** Mask::match(client, mask);
 ** Mask::match("nickname!user@hostname", mask);
 ** Mask::create("nickname"); nickname!*@*
+**
+** Mask::match_raw(s1, mask); matches a string against a mask
+**  without parsing it first.
 */
 
 class Client;
