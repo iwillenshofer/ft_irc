@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 19:20:25 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 17:20:51 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,8 +262,13 @@ Client *Commands::_get_client_by_nickname(std::string nick)
 Channel *Commands::_get_channel_by_name(std::string name)
 {
 	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++ )
+	{
+		Debug(it->first, DBG_FATAL);
+		Debug(it->second.get_name());
 		if (it->second.get_name() == name)
 			return (&(it->second));
+	}
+
 	return (NULL);
 }
 

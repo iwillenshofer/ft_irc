@@ -6,13 +6,16 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/23 21:57:34 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 17:26:46 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void) { }
+Channel::Channel(void)
+{
+    //here
+}
 
 Channel::Channel(std::string name, std::string creator): _user_limit(0)
 {
@@ -51,7 +54,7 @@ Channel::~Channel(void)
 
 void	Channel::set_name(std::string name)
 {
-    Debug(name, DBG_DEFAULT);
+    Debug(name, DBG_ERROR);
 	if (Message::is_bnf_channel(name) == false)
 		throw std::runtime_error("Invalid channel name : Code 476");
     _name = name;
