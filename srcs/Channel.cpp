@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/24 17:26:46 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 20:41:22 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ Channel::~Channel(void)
 
 void	Channel::set_name(std::string name)
 {
-    Debug(name, DBG_ERROR);
 	if (Message::is_bnf_channel(name) == false)
-		throw std::runtime_error("Invalid channel name : Code 476");
+		throw (ERR_BADCHANMASK);
     _name = name;
 }
 
@@ -75,7 +74,7 @@ void	Channel::set_topic(std::string nick, std::string topic)
 	if (_mode.t == true)
 	{
 		if (is_operator(nick) == false)
-			throw std::runtime_error(":You're not channel operator: Code 482");			
+			throw (ERR_CHANOPRIVSNEEDED);		
 	}
 	_topic = topic;
 }
@@ -88,11 +87,11 @@ std::string	Channel::get_topic(void) const
 void	Channel::set_password(std::string chanop, std::string key)
 {
     if (key.empty() == true)
-        throw std::runtime_error(":Not enough parameters: Code 461");
+        throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     if (_password.empty() == false)
-        throw std::runtime_error(":Channel key already set: Code 467");
+        throw (ERR_KEYSET);
     _password = key;
     _mode.k = true;
 }
@@ -100,11 +99,11 @@ void	Channel::set_password(std::string chanop, std::string key)
 void	Channel::unset_password(std::string chanop, std::string key)
 {
     if (key.empty() == true)
-        throw std::runtime_error(":Not enough parameters: Code 461");
+        throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     if (key != _password)
-        throw std::runtime_error(":Channel key already set: Code 467");
+        throw (ERR_KEYSET);
     _password.erase();
     _mode.k = false;
 }
@@ -207,7 +206,7 @@ void	Channel::desactivate_mode(std::string nick, char flag, std::string arg)
 void	Channel::set_user_limit(std::string chanop, std::string limit)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _user_limit = atoi(limit.c_str());
     if (_user_limit < 1)
     {
@@ -220,7 +219,7 @@ void	Channel::set_user_limit(std::string chanop, std::string limit)
 void	Channel::unset_user_limit(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _user_limit = 0;
     _mode.l = false;
 }
@@ -240,11 +239,11 @@ void Channel::add_user(std::string nick)
     if (is_invitation(nick) == true)
         users.push_back(nick);
     else if(_mode.i == true)
-        throw std::runtime_error("Cannot join channel (+i): Code 473");
+        throw (ERR_INVITEONLYCHAN);
     else if (_mode.l == true && users.size() >= _user_limit)
-        throw std::runtime_error("Cannot join channel (+l): Code 471");
+        throw (ERR_CHANNELISFULL);
     else if (is_banned(nick) == true)
-        throw std::runtime_error("Cannot join channel (+b): Code 471");	
+        throw (ERR_BANNEDFROMCHAN);	
     else
         users.push_back(nick);	
     remove_invitation(nick);
@@ -283,16 +282,16 @@ bool	Channel::is_operator(std::string nick)
 void	Channel::add_operator(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");	
+        throw (ERR_CHANOPRIVSNEEDED);	
     if (is_user(nick) == false)
-        throw std::runtime_error("No such nick: Code 401");
+        throw (ERR_NOSUCHNICK);
     _operators.push_back(nick);
 }
 
 void	Channel::remove_operator(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");	
+        throw (ERR_CHANOPRIVSNEEDED);	
     for (std::vector<std::string>::iterator it = _operators.begin(); it != _operators.end(); it++)
     {
         if (*it == nick)
@@ -301,7 +300,7 @@ void	Channel::remove_operator(std::string chanop, std::string nick)
             return;
         }
     }
-    throw std::runtime_error("No such nick: Code 401");
+    throw (ERR_NOSUCHNICK);
 }
 
 bool	Channel::is_voice(std::string nick)
@@ -317,16 +316,16 @@ bool	Channel::is_voice(std::string nick)
 void	Channel::add_voice(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");	
+        throw (ERR_CHANOPRIVSNEEDED);	
     if (is_user(nick) == false)
-        throw std::runtime_error("No such nick: Code 401");
+        throw (ERR_NOSUCHNICK);
     _voices.push_back(nick);
 }
 
 void	Channel::remove_voice(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");	
+        throw (ERR_CHANOPRIVSNEEDED);	
     for (std::vector<std::string>::iterator it = _voices.begin(); it != _voices.end(); it++)
     {
         if (*it == nick)
@@ -335,7 +334,7 @@ void	Channel::remove_voice(std::string chanop, std::string nick)
             return;
         }
     }
-    throw std::runtime_error("No such nick: Code 401");
+    throw (ERR_NOSUCHNICK);
 }
 
 bool	Channel::is_banned(std::string nick)
@@ -352,7 +351,7 @@ bool	Channel::is_banned(std::string nick)
 void	Channel::add_ban(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error(":You're not channel operator: Code 482");	
+        throw (ERR_CHANOPRIVSNEEDED);	
     if (is_banned(nick)) // If user is already ban, we can return
         return ;
     _bans.push_back(nick);
@@ -361,7 +360,7 @@ void	Channel::add_ban(std::string chanop, std::string nick)
 void	Channel::remove_ban(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error(":You're not channel operator: Code 482");	
+        throw (ERR_CHANOPRIVSNEEDED);	
     for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
     {
         if (*it == nick)
@@ -375,14 +374,14 @@ void	Channel::remove_ban(std::string chanop, std::string nick)
 void	Channel::set_invitation(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.i = true;
 }
 
 void	Channel::unset_invitation(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _invitations.clear();
     _mode.i = false;
 }
@@ -400,9 +399,9 @@ bool	Channel::is_invitation(std::string nick)
 void	Channel::add_invitation(std::string chanop, std::string nick)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     if (is_user(nick) == true)
-        throw std::runtime_error("is already on channel: Code 443");
+        throw (ERR_USERONCHANNEL);
     _invitations.push_back(nick);
 }
 
@@ -421,70 +420,70 @@ void	Channel::remove_invitation(std::string nick)
 void	Channel::set_moderated(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.m = true;
 }
 
 void	Channel::unset_moderated(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.m = false;
 }
 
 void	Channel::set_no_outside(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.n = true;
 }
 
 void	Channel::unset_no_outside(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.n = false;
 }
 
 void	Channel::set_private(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.p = true;
 }
 
 void	Channel::unset_private(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.p = false;
 }
 
 void	Channel::set_secret(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.s = true;
 }
 
 void	Channel::unset_secret(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.s = false;
 }
 
 void	Channel::set_change_topic(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.t = true;
 }
 
 void	Channel::unset_change_topic(std::string chanop)
 {
     if (is_operator(chanop) == false)
-        throw std::runtime_error("You're not channel operator: Code 482");
+        throw (ERR_CHANOPRIVSNEEDED);
     _mode.t = false;
 }
 

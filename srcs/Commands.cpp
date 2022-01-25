@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 22:28:05 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/25 19:09:23 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,8 +264,6 @@ Channel *Commands::_get_channel_by_name(std::string name)
 {
 	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++ )
 	{
-		Debug(it->first, DBG_FATAL);
-		Debug(it->second.get_name());
 		if (it->second.get_name() == name)
 			return (&(it->second));
 	}

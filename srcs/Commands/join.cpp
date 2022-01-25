@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:45:34 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 17:46:30 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	Commands::_cmd_join(void)
 
 	// validate arguments
 
-	if (std::find((*_channels)[_message.arguments()[0]].users.begin(), (*_channels)[_message.arguments()[0]].users.end(), _sender->nickname) != (*_channels)[_message.arguments()[0]].users.end())
-			return ; // user is already in channel.
+	//if (std::find((*_channels)[_message.arguments()[0]].users.begin(), (*_channels)[_message.arguments()[0]].users.end(), _sender->nickname) != (*_channels)[_message.arguments()[0]].users.end())
+	//		return ; // user is already in channel.
 	Channel *chan = _get_channel_by_name(_message.arguments()[0]);
 	if (chan == NULL)
 	{
