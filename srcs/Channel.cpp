@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/24 20:41:22 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 21:28:39 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ void	Channel::activate_mode(std::string nick, char flag, std::string arg)
         add_voice(nick, arg);
 }
 
-void	Channel::desactivate_mode(std::string nick, char flag, std::string arg)
+void	Channel::deactivate_mode(std::string nick, char flag, std::string arg)
 {
     if (flag == 'b')
         remove_ban(nick, arg);

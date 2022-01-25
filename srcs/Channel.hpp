@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:55:43 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 21:28:48 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ class Channel
 
 		bool		get_mode(char mode) const;
 		void		activate_mode(std::string nick, char flag, std::string arg = "");
-		void		desactivate_mode(std::string nick, char flag, std::string arg = "");
+		void		deactivate_mode(std::string nick, char flag, std::string arg = "");
 
 		void		set_user_limit(std::string chanop, std::string limit);
 		void		unset_user_limit(std::string chanop);

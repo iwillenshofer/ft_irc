@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 20:55:28 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 21:32:16 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,10 +137,18 @@ void	Commands::_cmd_mode_channel(void)
         {
             try
             {
+                std::string msg;
                 if (is_arg == true)
+                {
                     chan->activate_mode(_sender->nickname, _message.arguments()[1].at(i), _message.arguments()[2]);
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +" + _message.arguments()[1].at(i) + " " + _message.arguments()[2] + MSG_ENDLINE;
+                }
                 else
+                {
                     chan->activate_mode(_sender->nickname, _message.arguments()[1].at(i));
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +" + _message.arguments()[1].at(i) + MSG_ENDLINE;
+                }
+	            _message_channel(msg, _message.arguments()[0], true);
             }
             catch(int code_error)
             {
@@ -151,10 +159,18 @@ void	Commands::_cmd_mode_channel(void)
         {
             try
             {
+                std::string msg;
                 if (is_arg == true)
-                    chan->desactivate_mode(_sender->nickname, _message.arguments()[1].at(i), _message.arguments()[2]);
+                {
+                    chan->deactivate_mode(_sender->nickname, _message.arguments()[1].at(i), _message.arguments()[2]);
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " -" + _message.arguments()[1].at(i) + " " + _message.arguments()[2] + MSG_ENDLINE;
+                }
                 else
-                    chan->desactivate_mode(_sender->nickname, _message.arguments()[1].at(i));
+                {
+                    chan->deactivate_mode(_sender->nickname, _message.arguments()[1].at(i));
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " -" + _message.arguments()[1].at(i) + MSG_ENDLINE;
+                }
+	            _message_channel(msg, _message.arguments()[0], true);
             }
             catch(int code_error)
             {
@@ -163,4 +179,3 @@ void	Commands::_cmd_mode_channel(void)
         }
     }
 }
-
