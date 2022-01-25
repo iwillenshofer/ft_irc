@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 19:44:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:30:29 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,8 +263,6 @@ Channel *Commands::_get_channel_by_name(std::string name)
 {
 	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++ )
 	{
-		Debug(it->first, DBG_FATAL);
-		Debug(it->second.get_name());
 		if (it->second.get_name() == name)
 			return (&(it->second));
 	}

@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:28:00 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/24 20:55:28 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,9 @@ void	Commands::_cmd_mode_channel(void)
                 else
                     chan->activate_mode(_sender->nickname, _message.arguments()[1].at(i));
             }
-            catch(const std::exception& e)
+            catch(int code_error)
             {
-                Debug("To implement to return the good message to client");
+                _message_user(_generate_reply(code_error), _sender);
             }
         }
         else
@@ -156,10 +156,11 @@ void	Commands::_cmd_mode_channel(void)
                 else
                     chan->desactivate_mode(_sender->nickname, _message.arguments()[1].at(i));
             }
-            catch(const std::exception& e)
+            catch(int code_error)
             {
-                Debug("To implement to return the good message to client");
+                _message_user(_generate_reply(code_error), _sender);
             }
         }
     }
 }
+
