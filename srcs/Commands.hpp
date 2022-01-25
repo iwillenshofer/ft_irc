@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 19:44:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 21:22:30 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include "server_defaults.hpp"
 
 class Client;
-
+class Server;
 /*
 ** the command Class parses the command, creates a response,
 ** and adds it to the appropriate clients send queue.

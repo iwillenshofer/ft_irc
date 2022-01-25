@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 18:20:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 22:46:54 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -461,6 +461,20 @@ class Message
 					return (true);
 			return (false);
 		}
+
+		/*
+		** string functions
+		*/
+		static void clear_commas(std::string &s)
+		{
+			while (s.find(",,") != std::string::npos)
+			    s.replace(s.find(",,"), 2, ",");
+			if (s.size() && s.front() == ',')
+				s.erase(s.begin());
+			if (s.size() && s.back() == ',')
+				s.pop_back();
+		}
+
 
 		struct InputLineTooLong : public std::exception
 		{

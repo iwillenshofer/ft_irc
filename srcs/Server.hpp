@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 22:23:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 22:13:21 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,22 @@
 # include <string>
 # include <map>
 # include "Debug.hpp"
+# include "Client.hpp"
 # include "server_defaults.hpp"
 
 /*
 ** Server Properties
 */
-
-typedef struct s_userattr
-{
-		std::string 	username;
-		std::string 	hostname;
-		std::string 	realname;
-		time_t			joined_time;
-} t_userattr;
+class Client;
 
 class Server
 {
 	public:
-		Server(std::string host = SRV_SERVERNAME, std::string password = "")
-		:_version(SRV_VERSION), _servername(host), _password(password), _motdfilename(SRV_MOTD_FILE), _highest_connections(0)
-		{
-			_init();
-		};
+		Server(std::string host = SRV_SERVERNAME, std::string password = "");
 		
-		Server(Server const &cp) { *this = cp; }
-		Server &operator=(Server const &cp)
-		{
-			_version = cp._version;
-			_password = cp._password;
-			_servername = cp._servername;
-			_operators = cp._operators;
-			_motdfilename = cp._motdfilename;
-			_whowaslist = cp._whowaslist;
-			return (*this);
-		}
-		virtual ~Server() { };
+		Server(Server const &cp);
+		Server &operator=(Server const &cp);
+		virtual ~Server();
 	
 	
 	private:
@@ -59,43 +40,29 @@ class Server
 		std::string								_password;
 		std::map<std::string, std::string>		_operators;
 		std::string								_motdfilename;
-		std::multimap<std::string, t_userattr>	_whowaslist;
+		std::map<std::string, std::vector<Client> >		_whowaslist;
 		size_t									_highest_connections;
 		time_t									_creation_date;
 
-		void _init(void)
-		{
-			_operators.insert(std::make_pair("iwillens", "senha1"));
-			_operators.insert(std::make_pair("robitett", "senha1"));
-			std::time(&_creation_date);
-		}
+		void _init(void);
 
 	public:
 		/*
 		** getters
 		*/
-		std::string							&password(void) { return (_password); }
-		std::string							&version(void) { return (_version); }
-		std::string							&servername(void) { return (_servername); }
-		std::map<std::string, std::string>	&operators(void) { return (_operators); }
-		std::string							&motdfilename(void) { return (_motdfilename); }
-		std::vector<std::string>			whowaslist(std::string &s)
-		{ 
-			//todo
-			std::vector<std::string> list;
-			(void)(s);
-			return (list);
-		}
-		size_t								highest_connections(void) { return (_highest_connections); }
-		size_t								highest_connections(size_t current_connections)
-		{
-			if (current_connections > _highest_connections)
-				_highest_connections = current_connections;
-			return (_highest_connections);
-		}
+		std::string							&password(void);
+		std::string							&version(void);
+		std::string							&servername(void);
+		std::map<std::string, std::string>	&operators(void);
+		std::string							&motdfilename(void);
 
-		time_t								&creation_date(void) { return (_creation_date); }
-		std::string							formatted_creation_date(void) { return (ft::format_date(_creation_date)); }	
+		void								add_whowas(Client &client);
+		std::map<std::string, std::vector<Client> >	&whowas(void);
+		size_t								highest_connections(void);
+		size_t								highest_connections(size_t current_connections);
+
+		time_t								&creation_date(void);
+		std::string							formatted_creation_date(void);
 };
 
 #endif

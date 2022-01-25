@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 19:44:20 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 21:09:59 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@
 # define 	ERR_PINGTIMEOUT			702
 # define	ERR_REGISTERTIMEOUT		703
 # define	ERR_EOFFROMCLIENT		704
+# define	RPL_WHOWASSERVER		705
 # define	ERR_INPUTTOOLONG		417
 # define    ERR_WHOISTOOMANY		416
 # define    PRIVMSG					999

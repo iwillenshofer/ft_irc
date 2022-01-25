@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 13:08:45 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 20:31:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ class FileDescriptors
 			/*
 			** also here, we add the client to the WHOWAS list.
 			*/
+			server->add_whowas(*client);
 		}
 
 		/*

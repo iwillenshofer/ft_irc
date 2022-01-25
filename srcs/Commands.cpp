@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 19:44:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 22:28:05 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_ENDOFWHOIS] = "<nick> :End of WHOIS list";
 	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>"; //*( ( "@" / "+" ) <channel> " " )";
 	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real_name>";
-	replies[RPL_ENDOFWHOWAS] = "<nick> :End of WHOWAS";
+	replies[RPL_ENDOFWHOWAS] = "<nickname> :End of WHOWAS";
 	replies[RPL_LIST] = "<channel> <# visible> :<topic>";
 	replies[RPL_LISTEND] = ":End of LIST";
 	replies[RPL_UNIQOPIS] = "<channel> <nickname>";
@@ -145,7 +145,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_NOSUCHCHANNEL] = "<channel name> :No such channel";
 	replies[ERR_CANNOTSENDTOCHAN] = "<channel name> :Cannot send to channel";
 	replies[ERR_TOOMANYCHANNELS] = "<channel name> :You have joined too many channels";
-	replies[ERR_WASNOSUCHNICK] = "<nickname> :There was no such nickname";
+	replies[ERR_WASNOSUCHNICK] = "<nick> :There was no such nickname";
 	replies[ERR_TOOMANYTARGETS] = "<target> :<error code> recipients. <abort message>";
 	replies[ERR_NOSUCHSERVICE] = "<service name> :No such service";
 	replies[ERR_NOORIGIN] = ":No origin specified";
@@ -201,6 +201,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_REGISTERTIMEOUT] = "Registration Timeout";
 	replies[ERR_EOFFROMCLIENT] = "EOF from client";
 	replies[ERR_WHOISTOOMANY] = "Too many results, restrict your query";
+	replies[RPL_WHOWASSERVER] = "<nick> <server> :<last_activity>";
 	replies[329] = "<channel> <creation>"; // creation time
 	return (replies);
 }
