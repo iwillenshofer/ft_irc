@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:58:45 by roman             #+#    #+#             */
-/*   Updated: 2022/01/25 21:35:10 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 22:13:37 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	Commands::_cmd_mode_user(void)
             try
             {
                 std::string msg;
-                client->activate_mode(_sender->nickname, _message.arguments()[1].at(i));
+                client->activate_mode(_message.arguments()[1].at(i));
                 msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +" + _message.arguments()[1].at(i) + MSG_ENDLINE;
 	            _message_channel(msg, _message.arguments()[0], true);
             }
@@ -61,7 +61,7 @@ void	Commands::_cmd_mode_user(void)
             try
             {
                 std::string msg;
-                client->deactivate_mode(_sender->nickname, _message.arguments()[1].at(i));
+                client->deactivate_mode(_message.arguments()[1].at(i));
                 msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " -" + _message.arguments()[1].at(i) + MSG_ENDLINE;
 	            _message_channel(msg, _message.arguments()[0], true);
             }

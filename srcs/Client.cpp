@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 21:42:23 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 22:12:48 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,28 +160,28 @@ int		Client::get_idle(void)
 	return (static_cast<int>(std::difftime(time(NULL), last_ping)));
 }
 
-void	Client::activate_mode(std::string nick, char flag)
+void	Client::activate_mode(char flag)
 {
     if (flag == 'i')
-        set_invisible(nick);
+        set_invisible();
     else if (flag == 's')
-        set_receive_notices(nick);
+        set_receive_notices();
     else if (flag == 'w')
-        set_receive_wallops(nick);
+        set_receive_wallops();
     else if (flag == 'o')
         throw (-1);	// User can't do MODE himself +o. User need to call OPER USER PASS
 }
 
-void	Client::deactivate_mode(std::string nick, char flag)
+void	Client::deactivate_mode(char flag)
 {
     if (flag == 'i')
-        unset_invisible(nick);
+        unset_invisible();
     else if (flag == 's')
-        unset_receive_notices(nick);
+        unset_receive_notices();
     else if (flag == 'w')
-        unset_receive_wallops(nick);
+        unset_receive_wallops();
     else if (flag == 'o')
-        unset_operator(nick);
+        unset_operator();
 }
 
 bool	Client::is_invisible(void) const
@@ -189,14 +189,14 @@ bool	Client::is_invisible(void) const
 	return mode.i;
 }
 
-void	Client::set_invisible(std::string op)
+void	Client::set_invisible(void)
 {
 	if (mode.i == true)
 		throw (-1);
 	mode.i = true;
 }
 
-void	Client::unset_invisible(std::string op)
+void	Client::unset_invisible(void)
 {
 	if (mode.i == false)
 		throw (-1);
@@ -208,7 +208,7 @@ bool	Client::is_receive_notices(void) const
 	return mode.s;
 }
 
-void	Client::set_receive_notices(std::string op)
+void	Client::set_receive_notices(void)
 {
 	if (mode.s == true)
 		throw (-1);
@@ -217,7 +217,7 @@ void	Client::set_receive_notices(std::string op)
 	mode.s = true;
 }
 
-void	Client::unset_receive_notices(std::string op)
+void	Client::unset_receive_notices(void)
 {
 	if (mode.s == false)
 		throw (-1);
@@ -231,14 +231,14 @@ bool	Client::is_receive_wallops(void) const
 	return mode.s;
 }
 
-void	Client::set_receive_wallops(std::string op)
+void	Client::set_receive_wallops(void)
 {
 	if (mode.w == true)
 		throw (-1);
 	mode.w = true;
 }
 
-void	Client::unset_receive_wallops(std::string op)
+void	Client::unset_receive_wallops(void)
 {
 	if (mode.w == false)
 		throw (-1);
@@ -250,25 +250,16 @@ bool	Client::is_operator(void) const
 	return mode.o;
 }
 
-void	Client::set_operator(std::string op)
+void	Client::set_operator(void)
 {
 	mode.o = true;
 }
 
-void	Client::unset_operator(std::string op)
+void	Client::unset_operator(void)
 {
 	if (mode.o == false)
 		throw (-1);
 	mode.o = false;
 }
 
-//void	Client::init_irc_op(void)
-//{
-//	std::vector<std::string> user_psw = ft::split(std::string(IRC_OPS), ';');
-//	
-//	for (int i = 0; i < user_psw.size(); i++)
-//	{
-//		std::vector<std::string> op = ft::split(user_psw[i], ':');
-//		_irc_op.insert(std::make_pair(op[0], op[1]));
-//	}
-//}
+

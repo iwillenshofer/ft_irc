@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 20:52:59 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 22:12:59 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ class Client
 		std::vector<std::string> 			_send_queue;
 		bool								_hangup;
 		std::string							_hangup_message;
-		std::map<std::string, std::string> 	_irc_op;
 
 
 	public:
@@ -93,24 +92,24 @@ class Client
 		int 						get_fd(void);
 		void 						set_fd(int fd);
 
-		void	activate_mode(std::string nick, char flag);
-		void	deactivate_mode(std::string nick, char flag);
+		void	activate_mode(char flag);
+		void	deactivate_mode(char flag);
 
 		bool	is_invisible(void) const;
-		void	set_invisible(std::string op);
-		void	unset_invisible(std::string op);
+		void	set_invisible(void);
+		void	unset_invisible(void);
 
 		bool	is_receive_notices(void) const;
-		void	set_receive_notices(std::string op);
-		void	unset_receive_notices(std::string op);
+		void	set_receive_notices(void);
+		void	unset_receive_notices(void);
 
 		bool	is_receive_wallops(void) const;
-		void	set_receive_wallops(std::string op);
-		void	unset_receive_wallops(std::string op);
+		void	set_receive_wallops(void);
+		void	unset_receive_wallops(void);
 
 		bool	is_operator(void) const;
-		void	set_operator(std::string op);
-		void	unset_operator(std::string op);
+		void	set_operator(void);
+		void	unset_operator(void);
 
 		bool	can_be_operator(std::string nick);
 		
