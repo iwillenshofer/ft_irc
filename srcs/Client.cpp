@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 22:12:48 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 00:20:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ Client &Client::operator=(Client const &cp)
 	_hangup = cp._hangup;
 	_hangup_message = cp._hangup_message;
 	nickname = cp.nickname;
+	username = cp.username;
+	hostname = cp.hostname;
 	realname = cp.realname;
+	password = cp.password;
 	registered = cp.registered;
 	mode = cp.mode;
 	last_ping = cp.last_ping;
-	joined_time = cp.joined_time;
 	is_ping = cp.is_ping;
+	joined_time = cp.joined_time;
 	return (*this);
 }
 Client::~Client() { }
@@ -140,7 +143,7 @@ std::string Client::_get_address(void)
 	std::memset(&addr, 0, sizeof(addr));
 	std::memset(&addr4, 0, sizeof(addr4));
 	std::memset(&buffer, 0, sizeof(buffer));
-	if ((getpeername(_fd,(struct sockaddr*)&addr,&addr_len)))
+	if ((getpeername(_fd,(struct sockaddr*)&addr, &addr_len)))
 		return (SRV_UNKNOWNHOST);
 	if (addr.ss_family == AF_INET6 && IN6_IS_ADDR_V4MAPPED(&((struct sockaddr_in6 *)&addr)->sin6_addr))
 	{

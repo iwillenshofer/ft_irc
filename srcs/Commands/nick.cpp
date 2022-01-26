@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:05:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 21:56:59 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,20 @@ void	Commands::_cmd_nick(void)
 {
 	std::string old_nick = _sender->nickname;
 	if (_message.arguments().size() == 0 || _message.arguments()[0].empty())
+	{
 		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
-	else if (_get_client_by_nickname(_message.arguments()[0]) != NULL && _sender->nickname != _message.arguments()[0])
+		return ;
+	}
+	if (_get_client_by_nickname(_message.arguments()[0]) != NULL && _sender->nickname != _message.arguments()[0])
 		_message_user(_generate_reply(ERR_NICKNAMEINUSE), _sender);
+	else if (_sender->nickname == _message.arguments()[0])
+		return;
 	else if (!(Message::is_bnf_nickname(_message.arguments()[0])))
 		_message_user(_generate_reply(ERR_ERRONEUSNICKNAME), _sender);
 	else
 	{
+		if (_sender->registered)
+			_server->add_whowas(*_sender);
 		_sender->nickname = _message.arguments()[0];
 		_truncate_nick(_sender->nickname);
 		if (_sender->registered)

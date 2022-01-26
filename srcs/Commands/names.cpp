@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/25 23:34:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@
 **	NAMES                           ; Command to list all visible
 **									channels and users
 */
+
+void Commands::__perform_names(Channel &channel)
+{
+	std::map<std::string, std::string> m;
+	
+	m["channel"] = channel.get_name();
+	m["names_list"] = channel.get_names();
+	_message_user(_generate_reply(RPL_NAMREPLY, m), _sender);
+	_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
+}
 
 void	Commands::_cmd_names(void)
 {

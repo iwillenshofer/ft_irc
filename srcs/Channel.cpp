@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/24 21:28:39 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 00:20:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,13 @@ std::string	Channel::get_topic(void) const
     return _topic;
 }
 
+bool		Channel::match_password(std::string password) const
+{
+	if (_mode.k && password != _password)
+		return (false);
+	return (true);
+}
+
 void	Channel::set_password(std::string chanop, std::string key)
 {
     if (key.empty() == true)
@@ -149,6 +156,34 @@ bool	Channel::get_mode(char mode) const
             return false;
             break;
     }
+}
+
+
+std::string	Channel::get_modes(void) const
+{
+	std::string m = "+";
+
+	if (_mode.a) m += 'a';
+	if (_mode.i) m += 'i';
+	if (_mode.m) m += 'm';
+	if (_mode.n) m += 'n';
+	if (_mode.q) m += 'q';
+	if (_mode.p) m += 'p';
+	if (_mode.s) m += 's';
+	if (_mode.r) m += 'r';
+	if (_mode.t) m += 't';
+	if (_mode.k) m += 'k';
+	if (_mode.l) m += 'l';
+
+	return (m);
+}
+std::string	Channel::get_mode_params(void) const
+{
+	std::string m;
+
+	if (_mode.k) m += " " + ft::to_string(_password);
+	if (_mode.l) m += " " + ft::to_string(_user_limit);
+	return (m);
 }
 
 void	Channel::activate_mode(std::string nick, char flag, std::string arg)
@@ -234,7 +269,8 @@ bool Channel::is_user(std::string nick)
     return false;
 }
 
-void Channel::add_user(std::string nick)
+
+void Channel::add_user(std::string nick, std::string password)
 {
     if (is_invitation(nick) == true)
         users.push_back(nick);
@@ -244,6 +280,8 @@ void Channel::add_user(std::string nick)
         throw (ERR_CHANNELISFULL);
     else if (is_banned(nick) == true)
         throw (ERR_BANNEDFROMCHAN);	
+    else if (!(match_password(password)))
+	    throw (ERR_BADCHANNELKEY);
     else
         users.push_back(nick);	
     remove_invitation(nick);
@@ -499,4 +537,21 @@ bool	Channel::can_speak(std::string nick)
         }
     }
     return true;
+}
+
+std::string	Channel::get_names(void)
+{
+	std::string names;
+	std::vector<std::string>::iterator it;
+	for (it = _operators.begin(); it != _operators.end(); it++)
+		names += "@" + *it + " ";
+	for (it = _voices.begin(); it != _voices.end(); it++)
+		if (!(is_operator(*it)))
+			names += "+" +  *it + " ";
+	for (it = users.begin(); it != users.end(); it++)
+		if (!(is_operator(*it)) && !(is_voice(*it)))
+			names += *it + " ";
+	if (names.size() && names.back() == ' ')
+		names.pop_back();
+	return (names);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 20:34:50 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 00:20:32 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@
 # include "utilities.hpp"
 # include "server_defaults.hpp"
 
+class Channel;
 class Client;
-
+class Server;
 /*
 ** the command Class parses the command, creates a response,
 ** and adds it to the appropriate clients send queue.
@@ -40,6 +41,10 @@ class Client;
 class Commands
 {
 	public:
+		typedef std::map<std::string, Channel>::iterator	channel_iterator;
+		typedef std::map<int, Client>::iterator			client_iterator;
+
+
 		Commands(int message, Client *sender);
 		Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels, Server *server);
 		Commands(Commands const &cp);
@@ -173,6 +178,7 @@ class Commands
 		** Single command helpers
 		*/
 		void __perform_whois(std::vector<std::string> &v);
+		void __perform_names(Channel &channel);
 
 		/*
 		** Commands not Implemented:

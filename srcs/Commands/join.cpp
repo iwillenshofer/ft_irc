@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 17:46:30 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 23:37:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,70 @@
 **									on channel #Twilight_zone
 */
 
+// < :iwillens2!~iwillens2@177.73.71.99 JOIN #brasil
+//< :iwillens2!iwillens2@localhost JOIN #brasil
+
 void	Commands::_cmd_join(void)
 {
+	Channel *channel;
+	std::vector<std::string> u;
+	std::vector<std::string> p;
+	std::map<std::string, std::string> m;
 
-	// validate arguments
-
-	//if (std::find((*_channels)[_message.arguments()[0]].users.begin(), (*_channels)[_message.arguments()[0]].users.end(), _sender->nickname) != (*_channels)[_message.arguments()[0]].users.end())
-	//		return ; // user is already in channel.
-	Channel *chan = _get_channel_by_name(_message.arguments()[0]);
-	if (chan == NULL)
+	_message.print();
+	if (!(_message.arguments().size()))
 	{
-		Channel ch(_message.arguments()[0], _sender->nickname);
-		_channels->insert(std::make_pair(_message.arguments()[0], ch));
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		return ;
 	}
-	else
-		(*_channels)[_message.arguments()[0]].add_user(_sender->nickname);
-	std::string msg = _sender->get_prefix() + " JOIN " + _message.arguments()[0] + MSG_ENDLINE;
-	_message_channel(msg, _message.arguments()[0], true);
+	if (_message.arguments()[0] == "0")
+	{
+		Debug("ARGUMENT: " + _message.arguments()[0], DBG_ERROR);
+		for (Commands::channel_iterator it = _channels->begin(); it != _channels->end(); it++)
+		{
+			if (it->second.is_user(_sender->nickname))
+			{
+				_message_channel(_sender->get_prefix() + " PART " + it->second.get_name() + " :Leaving" + MSG_ENDLINE, it->second.get_name(), true);
+				it->second.remove_user(_sender->nickname);
+			}
+		}
+		return;
+	}
+	Message::remove_double_commas(_message.arguments()[0]);
+	u = ft::split(_message.arguments()[0], ',');
+	if (_message.arguments().size() > 1)
+	{
+		Message::remove_double_commas(_message.arguments()[1]);
+		p = ft::split(_message.arguments()[1], ',');
+	}
+	while (p.size() < u.size())
+		p.push_back("");
+	for (std::vector<std::string>::iterator it = u.begin(); it != u.end(); it++)
+	{
+		m["channel name"] = *it;
+		if (!(Message::is_bnf_channel(*it)))
+			_message_user(_generate_reply(ERR_NOSUCHCHANNEL, m), _sender);
+		else if (!(channel = _get_channel_by_name(*it)))
+		{
+			Channel ch(*it, _sender->nickname);
+			channel = &((_channels->insert(std::make_pair(*it, ch)).first)->second);
+			_message_channel(_sender->get_prefix() + " JOIN " + *it + MSG_ENDLINE, *it, true);
+			__perform_names(*channel);
+		}
+		else
+		{
+			if (channel->is_user(_sender->nickname))
+				continue ;
+			try
+			{
+				channel->add_user(_sender->nickname, p[it - u.begin()]);
+				_message_channel(_sender->get_prefix() + " JOIN " + *it + MSG_ENDLINE, *it, true);
+				__perform_names(*channel);
+			}
+			catch(int code_error)
+			{
+                _message_user(_generate_reply(code_error), _sender);
+			}
+		}
+	}
 }

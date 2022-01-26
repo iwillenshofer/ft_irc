@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 18:32:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/24 22:52:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,54 @@
 /*
 ** [IMPLEMENTATION NOTES]
 ** As there is only one server, the last parameter <target> is ignored.
+** Whowas user is added when the user disconnects or changes nickname.
 */
 
 void	Commands::_cmd_whowas(void)
 {
-
+	size_t i = 0;
+	size_t max = 0;
+	std::map<std::string, std::vector<Client> >::iterator it;
+	std::map<std::string, std::string> m;
+	std::vector<std::string> v;
+	Debug("HERE");
+	if (!(_message.arguments().size()))
+	{
+		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
+		return ;
+	}
+	if (_message.arguments().size() > 1 && ft::isNumeric(_message.arguments()[1]))
+		max = std::atoi(_message.arguments()[1].c_str());
+	Message::clear_commas(_message.arguments()[0]);
+	v = ft::split(_message.arguments()[0], ',');
+	m["server"] = _server->servername();
+	m["nickname"] = _message.arguments()[0];
+	for (std::vector<std::string>::iterator vit = v.begin(); vit != v.end(); vit++)
+	{
+		m["nick"] = *vit;
+		it = _server->whowas().find(*vit);
+		if (it == _server->whowas().end())
+		{
+			_message_user(_generate_reply(ERR_WASNOSUCHNICK, m), _sender);
+			i++;
+		}
+		else
+		{
+			for (std::vector<Client>::iterator cit = _server->whowas()[*vit].begin(); cit != _server->whowas()[*vit].end(); cit++)
+			{
+				m["user"] = cit->username;
+				m["host"] = cit->hostname;
+				m["real_name"] = cit->realname;
+				m["last_activity"] = ft::format_date(cit->last_ping);
+				_message_user(_generate_reply(RPL_WHOWASUSER, m), _sender);
+				_message_user(_generate_reply(RPL_WHOWASSERVER, m), _sender);
+				if (max != 0 && i >= max)
+					break ;
+				i++;
+			}
+		}
+		if (max != 0 && i >= max)
+			break ;
+	}
+	_message_user(_generate_reply(RPL_ENDOFWHOWAS, m), _sender);
 }
