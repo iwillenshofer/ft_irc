@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 17:17:54 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 17:32:18 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 void	Commands::_cmd_oper(void)
 {
     std::map<std::string, std::string>::iterator it;
-    std::string flags = "+";
+    std::string flags = " :+";
 
     it = _server->operators().find(_message.arguments()[0]);
     if (it == _server->operators().end())
@@ -60,8 +60,8 @@ void	Commands::_cmd_oper(void)
         if (code == -1)
             code = -1; //Do nothing just continue
     }
-    std::string msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + flags + MSG_ENDLINE;
-	_message_channel(msg, _message.arguments()[0], true);
+    std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + flags + MSG_ENDLINE;
+	_message_user(msg, _sender);
     _message_user(_generate_reply(RPL_YOUREOPER), _sender);
     // TODO :NOTICE ALL USER THAT I AM THE BOSS
 }
