@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 19:09:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/25 23:31:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "utilities.hpp"
 # include "server_defaults.hpp"
 
+class Channel;
 class Client;
 class Server;
 /*
@@ -40,6 +41,10 @@ class Server;
 class Commands
 {
 	public:
+		typedef std::map<std::string, Channel>::iterator	channel_iterator;
+		typedef std::map<int, Client>::iterator			client_iterator;
+
+
 		Commands(int message, Client *sender);
 		Commands(std::string message, Client *sender, std::map<int, Client> *clients, std::map<std::string, Channel> *channels, Server *server);
 		Commands(Commands const &cp);
@@ -173,6 +178,7 @@ class Commands
 		** Single command helpers
 		*/
 		void __perform_whois(std::vector<std::string> &v);
+		void __perform_names(Channel &channel);
 
 		/*
 		** Commands not Implemented:

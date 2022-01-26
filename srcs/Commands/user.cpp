@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:17 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:37:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/25 22:21:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	Commands::_cmd_user(void)
 		_sender->realname = ft::trim(_message.arguments()[3]);
 		if (_sender->realname.size() && _sender->realname[0] == ':')
 			_sender->realname.erase(_sender->realname.begin());
-		_sender->username = ft::trim(_message.arguments()[0]);
+		_sender->username = "~" + ft::trim(_message.arguments()[0]);
 		if (!(_sender->nickname.empty()))
 			_register_user();
 		__set_modes(_message.arguments()[1]);

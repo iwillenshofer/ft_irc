@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 22:46:54 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 00:03:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ class Message
 		/*
 		** disassembles _message into _prefix, _command and [_arguments]
 		*/
+		
 		void _disassemble(void)
 		{
 			std::string user_message;
@@ -89,6 +90,13 @@ class Message
 			}
 			if (user_message.size())
 				_arguments.push_back(user_message);
+			for (size_t i = 0; i < _arguments.size(); )
+			{
+				if (!(_arguments[i].size()))
+					_arguments.erase(_arguments.begin() + i);
+				else
+					i++;
+			}
 			ft::uppercase(_command);
 		}
 
@@ -467,12 +475,17 @@ class Message
 		*/
 		static void clear_commas(std::string &s)
 		{
-			while (s.find(",,") != std::string::npos)
-			    s.replace(s.find(",,"), 2, ",");
+			remove_double_commas(s);
 			if (s.size() && s.front() == ',')
 				s.erase(s.begin());
 			if (s.size() && s.back() == ',')
 				s.pop_back();
+		}
+
+		static void remove_double_commas(std::string &s)
+		{
+			while (s.find(",,") != std::string::npos)
+			    s.replace(s.find(",,"), 2, ",");
 		}
 
 

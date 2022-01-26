@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_channel.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 20:55:28 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 22:24:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,12 @@ void	Commands::_cmd_mode_channel(void)
     std::string mode_channel = MODE_CHANNEL;
     char        prefix = '+';
     bool        is_arg;
-    
-    try
-    {
-        _message.arguments().at(2);
-        is_arg = true;
-    }
-    catch(const std::exception& e)
-    {
+    std::map<std::string, std::string> m;
+	
+	if (_message.arguments().size() > 1)
+	    is_arg = true;
+	else
         is_arg = false;
-    } 
     if (chan == NULL)
     {
         _message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
@@ -119,7 +115,16 @@ void	Commands::_cmd_mode_channel(void)
     {
         _message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
         return ;
-    }     
+    }
+	else if (!(is_arg))
+	{
+		m["channel"] = chan->get_name();
+		m["mode"] = chan->get_modes();
+		m["mode_params"] = chan->get_mode_params();
+		_message_user(_generate_reply(RPL_CHANNELMODEIS, m), _sender);
+		return ;
+	}
+
     for (size_t i = 0; i < _message.arguments()[1].size(); i++)
     {
         if (mode_channel.find(_message.arguments()[1].at(i)) == std::string::npos)

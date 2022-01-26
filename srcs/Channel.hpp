@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:55:43 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 23:26:25 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdexcept>
 # include <cstring>
 # include "Debug.hpp"
+# include "Client.hpp"
 # include "Message.hpp"
 /*
 ** channel modes. currently a struct, but will be converted into a class so it can initialize itself.
@@ -68,9 +69,12 @@ class Channel
 		void		set_topic(std::string nick, std::string topic);
 		std::string	get_topic(void) const;
 
+		bool		match_password(std::string password) const;
 		void		set_password(std::string chanop, std::string key);
 		void		unset_password(std::string chanop, std::string key);
 
+		std::string	get_modes(void) const;
+		std::string	get_mode_params(void) const;
 		bool		get_mode(char mode) const;
 		void		activate_mode(std::string nick, char flag, std::string arg = "");
 		void		desactivate_mode(std::string nick, char flag, std::string arg = "");
@@ -79,7 +83,7 @@ class Channel
 		void		unset_user_limit(std::string chanop);
 
 		bool 		is_user(std::string nick);
-		void 		add_user(std::string nick);
+		void 		add_user(std::string nick, std::string password = "");
 		void 		remove_user(std::string nick);
 
 		bool		is_operator(std::string nick);
@@ -116,6 +120,7 @@ class Channel
 		void		unset_change_topic(std::string chanop);
 
 		bool		can_speak(std::string nick);
+		std::string	get_names(void);
 
 	public:
 
