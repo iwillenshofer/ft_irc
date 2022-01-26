@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 22:13:45 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 22:29:30 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,9 @@ void	Commands::_cmd_oper(void)
         return ;
     }
     _sender->set_operator();
+    _sender->set_receive_notices();
+    std::string msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +os" + MSG_ENDLINE;
+	_message_channel(msg, _message.arguments()[0], true);
+    _message_user(_generate_reply(RPL_YOUREOPER), _sender);
+    // TODO :NOTICE ALL USER THAT I AM THE BOSS
 }
