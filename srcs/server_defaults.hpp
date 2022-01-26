@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 16:57:58 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/25 18:53:23 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@
 
 # define	MODE_CHANNEL			"-+opsitnmlbvk"
 # define	MODE_USER   			"-+iswo"
+
+/*
+** IRC OP Defaults
+*/
+
+# define    IRC_OPS			"iwillens:iwillens123;robitett:robitett123"
 
 /*
 ** Reply message

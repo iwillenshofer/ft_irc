@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 22:08:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/25 20:52:59 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <cstring>
 # include <ctime>
+# include "Server.hpp"
 # include "server_defaults.hpp"
 # include "Commands.hpp"
 
@@ -46,14 +47,15 @@ class Client
 		virtual ~Client();
 	
 	private:
-		int							_fd;
-		char						_buffer[BUFFERSIZE + 1];
-		std::string					_receive_buffer;
-		std::string					_send_buffer;
-		std::vector<std::string> 	_receive_queue;
-		std::vector<std::string> 	_send_queue;
-		bool						_hangup;
-		std::string					_hangup_message;
+		int									_fd;
+		char								_buffer[BUFFERSIZE + 1];
+		std::string							_receive_buffer;
+		std::string							_send_buffer;
+		std::vector<std::string> 			_receive_queue;
+		std::vector<std::string> 			_send_queue;
+		bool								_hangup;
+		std::string							_hangup_message;
+		std::map<std::string, std::string> 	_irc_op;
 
 
 	public:
@@ -91,21 +93,26 @@ class Client
 		int 						get_fd(void);
 		void 						set_fd(int fd);
 
+		void	activate_mode(std::string nick, char flag);
+		void	deactivate_mode(std::string nick, char flag);
+
 		bool	is_invisible(void) const;
-		void	set_invisible(void);
-		void	unset_invisible(void);
+		void	set_invisible(std::string op);
+		void	unset_invisible(std::string op);
 
 		bool	is_receive_notices(void) const;
-		void	set_receive_notices(void);
-		void	unset_receive_notices(void);
+		void	set_receive_notices(std::string op);
+		void	unset_receive_notices(std::string op);
 
 		bool	is_receive_wallops(void) const;
-		void	set_receive_wallops(void);
-		void	unset_receive_wallops(void);
+		void	set_receive_wallops(std::string op);
+		void	unset_receive_wallops(std::string op);
 
 		bool	is_operator(void) const;
-		void	set_operator(void);
-		void	unset_operator(void);
+		void	set_operator(std::string op);
+		void	unset_operator(std::string op);
+
+		bool	can_be_operator(std::string nick);
 		
 		/*
 		** reads messages from the client. If message is incomplete,
@@ -123,6 +130,8 @@ class Client
 		void write(void);
 
 		std::string _get_address(void);
+
+		void	init_irc_op(void);
 };
 
 #endif
