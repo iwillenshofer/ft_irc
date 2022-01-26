@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
+#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/24 21:29:34 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/26 17:54:01 by roman            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ircserv
 
 CC = clang++
-CCFLAGS = -Wall -Werror -Wextra -g -std=c++98 -pedantic -fsanitize=address
+CCFLAGS = -Wall -Werror -Wextra -g -std=c++11 -pedantic -fsanitize=address
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./build
