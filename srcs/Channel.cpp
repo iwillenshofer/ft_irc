@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/26 17:33:34 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 19:07:58 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -407,6 +407,11 @@ void	Channel::remove_ban(std::string chanop, std::string nick)
             return;
         }
     }
+}
+
+bool    Channel::is_invitation_only(void) const
+{
+    return (_mode.i);
 }
 
 void	Channel::set_invitation(std::string chanop)

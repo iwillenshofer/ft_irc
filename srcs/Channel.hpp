@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:20:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 19:07:01 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ class Channel
 		void		add_ban(std::string chanop, std::string nick);
 		void		remove_ban(std::string chanop, std::string nick);
 
+		bool		is_invitation_only(void) const;
 		void		set_invitation(std::string chanop);
 		void		unset_invitation(std::string chanop);
 		bool		is_invitation(std::string nick);
