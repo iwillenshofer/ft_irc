@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 19:07:01 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 19:47:38 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ class Channel
 		void		unset_invitation(std::string chanop);
 		bool		is_invitation(std::string nick);
 		void		add_invitation(std::string chanop, std::string nick);
+		void		add_invitation(std::string nick);
 		void		remove_invitation(std::string nick);
 
 		void		set_moderated(std::string chanop);

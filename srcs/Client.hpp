@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 22:12:59 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 19:22:37 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ typedef struct s_usermode
 	bool s;
 	bool w;
 	bool o;
+	bool a;
 
-	bool a; //  not used
 	bool r; //  not used
 	bool O; //  not used
 
@@ -70,6 +70,7 @@ class Client
 		std::string 				hostname;
 		std::string 				realname;
 		std::string					password;
+		std::string					away_message;
 		bool						registered;
 		t_usermode					mode;
 		time_t						last_ping;
@@ -110,6 +111,10 @@ class Client
 		bool	is_operator(void) const;
 		void	set_operator(void);
 		void	unset_operator(void);
+
+		bool	is_away(void) const;
+		void	set_away(void);
+		void	unset_away(void);
 
 		bool	can_be_operator(std::string nick);
 		
