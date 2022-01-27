@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 23:34:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 23:40:25 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,83 @@
 **									channels and users
 */
 
-void Commands::__perform_names(Channel &channel)
+std::vector<std::string> Commands::__perform_names(Channel &channel, bool add_invisible, bool end_names)
 {
 	std::map<std::string, std::string> m;
-	
+	std::vector<std::string> users = channel.users;
+	Client *client;
+	std::vector<std::string> shown_users;
+
+	Debug("Perform Names", DBG_ERROR);
+	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+	{
+		client = _get_client_by_nickname(*it);
+		if (!(add_invisible) && client && client->is_invisible())
+			continue ;
+		shown_users.push_back(*it);
+		if (channel.is_operator(*it))
+			*it = '@' + *it;
+		else if (channel.is_voice(*it))
+			*it = '+' + *it;
+		*it += ' ';
+	}
+	std::sort(users.begin(), users.end());
+	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+		m["names_list"] += *it;	
+	if (m["names_list"].back() == ' ')
+		m["names_list"].erase(m["names_list"].size() - 1);
 	m["channel"] = channel.get_name();
-	m["names_list"] = channel.get_names();
 	_message_user(_generate_reply(RPL_NAMREPLY, m), _sender);
-	_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
+	if (end_names)
+		_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
+	return (shown_users);
 }
 
 void	Commands::_cmd_names(void)
 {
+	std::vector<std::string> v;
+	std::vector<std::string> tmp;
+	std::vector<std::string> listed_users;
+	std::vector<std::string> visible_users;
+	std::map<std::string, std::string> m;
+	Channel *channel;
 
+	Debug("Names", DBG_ERROR);
+	if (_message.arguments().size() == 1 && _message.arguments()[0] == _server->servername())
+		_message.arguments().clear();
+	if (!(_message.arguments().size()))
+		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
+			v.push_back(it->first);
+	else
+		v = Message::split_commas(_message.arguments()[0]);
+	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		Debug("Channels:" + *it, DBG_ERROR);
+		channel = _get_channel_by_name(*it);
+		if (!channel || (!(channel->is_user(_sender->nickname)) && ((channel->is_secret()) || (channel->is_private()))))
+			continue ;
+		if (channel->is_user(_sender->nickname))
+			tmp = __perform_names(*channel, true, (_message.arguments().size() ? true : false));
+		else
+			tmp = __perform_names(*channel, false, (_message.arguments().size() ? true : false));
+		listed_users.insert(listed_users.end(), tmp.begin(), tmp.end());
+	}
+	if (_message.arguments().size())
+		return ;
+	for (client_iterator it = _clients->begin(); it != _clients->end(); it++)
+		if (!(it->second.is_invisible()) && std::find(listed_users.begin(), listed_users.end(), it->second.nickname) == listed_users.end())
+			visible_users.push_back(it->second.nickname + ' ');
+	if (!(visible_users.size()))
+	{
+		_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
+		return ;
+	}
+	std::sort(visible_users.begin(), visible_users.end());
+	for (std::vector<std::string>::iterator it = visible_users.begin(); it != visible_users.end(); it++)
+		m["names_list"] += *it;	
+	if (m["names_list"].back() == ' ')
+		m["names_list"].erase(m["names_list"].size() - 1);
+	m["channel"] = '*';
+	_message_user(_generate_reply(RPL_NAMREPLY, m), _sender);
+	_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
 }

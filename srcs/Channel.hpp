@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:20:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 21:14:37 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,11 @@ class Channel
 		void		set_no_outside(std::string chanop);
 		void		unset_no_outside(std::string chanop);
 
+		bool		is_private(void);
 		void		set_private(std::string chanop);
 		void		unset_private(std::string chanop);
 
+		bool		is_secret(void);
 		void		set_secret(std::string chanop);
 		void		unset_secret(std::string chanop);
 
@@ -120,7 +122,7 @@ class Channel
 		void		unset_change_topic(std::string chanop);
 
 		bool		can_speak(std::string nick);
-		std::string	get_names(void);
+		std::string	get_names(bool no_invisible = true);
 
 	public:
 

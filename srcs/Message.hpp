@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:03:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 22:43:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -488,6 +488,14 @@ class Message
 			    s.replace(s.find(",,"), 2, ",");
 		}
 
+		static std::vector<std::string> split_commas(std::string s, bool trim_commas = true)
+		{
+			if (trim_commas)
+				clear_commas(s);
+			else
+				remove_double_commas(s);
+			return (ft::split(s, ','));
+		}
 
 		struct InputLineTooLong : public std::exception
 		{

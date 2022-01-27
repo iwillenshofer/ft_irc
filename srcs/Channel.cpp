@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/26 00:20:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 21:23:15 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -483,6 +483,8 @@ void	Channel::unset_no_outside(std::string chanop)
     _mode.n = false;
 }
 
+bool	Channel::is_private(void) { return (_mode.p); }
+
 void	Channel::set_private(std::string chanop)
 {
     if (is_operator(chanop) == false)
@@ -496,6 +498,8 @@ void	Channel::unset_private(std::string chanop)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.p = false;
 }
+
+bool	Channel::is_secret(void) { return (_mode.s); }
 
 void	Channel::set_secret(std::string chanop)
 {
@@ -537,21 +541,4 @@ bool	Channel::can_speak(std::string nick)
         }
     }
     return true;
-}
-
-std::string	Channel::get_names(void)
-{
-	std::string names;
-	std::vector<std::string>::iterator it;
-	for (it = _operators.begin(); it != _operators.end(); it++)
-		names += "@" + *it + " ";
-	for (it = _voices.begin(); it != _voices.end(); it++)
-		if (!(is_operator(*it)))
-			names += "+" +  *it + " ";
-	for (it = users.begin(); it != users.end(); it++)
-		if (!(is_operator(*it)) && !(is_voice(*it)))
-			names += *it + " ";
-	if (names.size() && names.back() == ' ')
-		names.pop_back();
-	return (names);
 }

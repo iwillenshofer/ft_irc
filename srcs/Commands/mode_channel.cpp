@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:20:03 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 23:31:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@
 **	
 **	MODE !12345ircd O               ; Command to ask who the channel
 **									creator for "!12345ircd" is
+**
+** TODO: FIX args segfault
 */
 
 void	Commands::_cmd_mode_channel(void)
@@ -102,7 +104,7 @@ void	Commands::_cmd_mode_channel(void)
     bool        is_arg;
     std::map<std::string, std::string> m;
 	
-	if (_message.arguments().size() > 1)
+	if (_message.arguments().size() > 2)
 	    is_arg = true;
 	else
         is_arg = false;
