@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 18:03:04 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/26 19:24:28 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,4 +267,17 @@ void	Client::unset_operator(void)
 	mode.o = false;
 }
 
+bool	Client::is_away(void) const
+{
+	return (mode.a);
+}
 
+void	Client::set_away(void)
+{
+	mode.a = true;
+}
+
+void	Client::unset_away(void)
+{
+	mode.a = false;
+}

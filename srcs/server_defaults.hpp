@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:21:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:35:27 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 # define	MSG_BNF_CHANNELSTRFORBIDDEN	"\a\r\n ,:\0"
 # define	MSG_BNF_CHANNELTYPES		"#+!&"
 
+/*
+** Admin Infos
+*/
+
+# define    MSG_ADMIN1                  "Igor <iwillens@student.42sp.org.br>"
+# define    MSG_ADMIN2                  "Roman <robitett@student.42sp.org.br>"
+# define    MSG_NAME_SERVER             "FT-IRC 42"
 
 /*
 ** Server Defaults
@@ -212,5 +219,6 @@
 # define	ERR_INPUTTOOLONG		417
 # define    ERR_WHOISTOOMANY		416
 # define    PRIVMSG					999
+# define    RPL_PONG                706
 
 #endif

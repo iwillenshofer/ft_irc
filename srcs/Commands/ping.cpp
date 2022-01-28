@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ping.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 19:12:44 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,11 @@
 
 void	Commands::_cmd_ping(void)
 {
-
+    if (_message.arguments().size() >= 1)
+    {
+        std::string msg = ":" + std::string(SRV_SERVERNAME) + " PONG " + std::string(SRV_SERVERNAME) + " :" + _message.arguments()[0] + MSG_ENDLINE;
+        _message_user(msg, _sender);
+    }
+    else
+        _message_user("PONG", _sender);
 }

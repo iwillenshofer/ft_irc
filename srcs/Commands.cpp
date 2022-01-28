@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 21:59:35 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:27:29 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,10 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_LUSERUNKNOWN] = "<integer> :unknown connection(s)";
 	replies[RPL_LUSERCHANNELS] = "<integer> :channels formed";
 	replies[RPL_LUSERME] = ":I have <intclients> clients and <intservers> servers";
-	replies[RPL_ADMINME] = "<server> :Administrative info";
-	replies[RPL_ADMINLOC1] = ":<admin info>";
-	replies[RPL_ADMINLOC2] = ":<admin info>";
-	replies[RPL_ADMINEMAIL] = ":<admin info>";
+	replies[RPL_ADMINME] = ":Administrative info about <server>";
+	replies[RPL_ADMINLOC1] = ":<info1>";
+	replies[RPL_ADMINLOC2] = ":<info2>";
+	replies[RPL_ADMINEMAIL] = ":<email>";
 	replies[RPL_TRYAGAIN] = "<command> :Please wait a while and try again.";
 	replies[ERR_NOSUCHNICK] = "<nickname> :No such nick";
 	replies[ERR_NOSUCHSERVER] = "<server name> :No such server";
@@ -203,6 +203,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_WHOISTOOMANY] = "Too many results, restrict your query";
 	replies[RPL_WHOWASSERVER] = "<nick> <server> :<last_activity>";
 	replies[329] = "<channel> <creation>"; // creation time
+	replies[RPL_PONG] = "PONG";
 	return (replies);
 }
 

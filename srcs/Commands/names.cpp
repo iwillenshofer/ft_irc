@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 22:45:24 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 23:02:17 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,17 @@ void	Commands::_cmd_names(void)
 	}
 	if (_message.arguments().size())
 		return ;
-	for (client_iterator it = _clients->begin(); it != _clients->end(); it++)
+	for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
 		if (!(it->second.is_invisible()) && std::find(listed_users.begin(), listed_users.end(), it->second.nickname) == listed_users.end())
 			visible_users.push_back(it->second.nickname + ' ');
 	if (!(visible_users.size()))
 	{
+		if (!(_message.arguments().size()))
+			m["channel"] = _server->servername();
 		_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
 		return ;
 	}
+	Debug("Visible Users:" + ft::to_string(visible_users.size()));
 	std::sort(visible_users.begin(), visible_users.end());
 	for (std::vector<std::string>::iterator it = visible_users.begin(); it != visible_users.end(); it++)
 		m["names_list"] += *it;	
@@ -125,5 +128,7 @@ void	Commands::_cmd_names(void)
 		m["names_list"].erase(m["names_list"].size() - 1);
 	m["channel"] = '*';
 	_message_user(_generate_reply(RPL_NAMREPLY, m), _sender);
+	if (!(_message.arguments().size()))
+		m["channel"] = _server->servername();
 	_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
 }

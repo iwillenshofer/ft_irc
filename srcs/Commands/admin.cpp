@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   admin.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:36:48 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,17 @@
 */
 
 void	Commands::_cmd_admin(void)
-
 {
+    std::map<std::string, std::string> m;
 
+    m["server"] = SRV_SERVERNAME;
+    m["info1"] = MSG_NAME_SERVER;
+    m["info2"] = "";
+    m["email"] = MSG_ADMIN1;
+    _message_user(_generate_reply(RPL_ADMINME, m), _sender);
+    _message_user(_generate_reply(RPL_ADMINLOC1, m), _sender);
+    _message_user(_generate_reply(RPL_ADMINLOC2, m), _sender);
+    _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
+    m["email"] = MSG_ADMIN2;
+    _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
 }

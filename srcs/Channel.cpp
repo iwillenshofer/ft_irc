@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/27 22:07:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:52:54 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,6 +445,11 @@ void	Channel::add_invitation(std::string chanop, std::string nick)
         throw (ERR_CHANOPRIVSNEEDED);
     if (is_user(nick) == true)
         throw (ERR_USERONCHANNEL);
+    _invitations.push_back(nick);
+}
+
+void	Channel::add_invitation(std::string nick)
+{
     _invitations.push_back(nick);
 }
 

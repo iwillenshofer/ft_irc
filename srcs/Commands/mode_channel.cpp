@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 23:31:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:53:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,17 +108,22 @@ void	Commands::_cmd_mode_channel(void)
 	    is_arg = true;
 	else
         is_arg = false;
+    if (_message.arguments().size() == 0)
+    {
+        _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+        return ;
+    }
     if (chan == NULL)
     {
         _message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
         return ;
     }  
-    else if (chan->is_user(_sender->nickname) == false)
+    if (chan->is_user(_sender->nickname) == false)
     {
         _message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
         return ;
     }
-	else if (!(is_arg))
+	if (_message.arguments().size() == 1)
 	{
 		m["channel"] = chan->get_name();
 		m["mode"] = chan->get_modes();
@@ -126,7 +131,6 @@ void	Commands::_cmd_mode_channel(void)
 		_message_user(_generate_reply(RPL_CHANNELMODEIS, m), _sender);
 		return ;
 	}
-
     for (size_t i = 0; i < _message.arguments()[1].size(); i++)
     {
         if (mode_channel.find(_message.arguments()[1].at(i)) == std::string::npos)
