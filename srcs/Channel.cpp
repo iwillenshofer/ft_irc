@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/26 19:07:58 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/27 21:57:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -559,4 +559,20 @@ std::string	Channel::get_names(void)
 	if (names.size() && names.back() == ' ')
 		names.pop_back();
 	return (names);
+}
+
+void		Channel::change_nick(std::string oldnick, std::string newnick)
+{
+	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
+	for (std::vector<std::string>::iterator it = _operators.begin(); it != _operators.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
+	for (std::vector<std::string>::iterator it = _voices.begin(); it != _voices.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
+	for (std::vector<std::string>::iterator it = _invitations.begin(); it != _invitations.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
 }

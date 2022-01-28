@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 21:56:59 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:01:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,7 @@ void	Commands::_cmd_nick(void)
 			_message_user(":" + old_nick + " NICK " + _sender->nickname + "\r\n", _sender); // send message that user changed nickname.
 		else if (!(_sender->username.empty()))
 			_register_user();
+		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
+			it->second.change_nick(old_nick, _sender->nickname);
 	}
 }
