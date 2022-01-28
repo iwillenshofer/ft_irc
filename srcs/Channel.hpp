@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 19:47:38 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/27 20:39:08 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ class Channel
 
 		bool		can_speak(std::string nick);
 		std::string	get_names(void);
+
+		void		change_nick(std::string oldnick, std::string newnick);
 
 	public:
 
