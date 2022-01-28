@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 20:41:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 19:12:31 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ std::vector<std::string>	parse_args(int argc, char **argv)
 
 	if (argc == 2)
 	{
-		args.push_back("ft_irc.42network.com");
+		args.push_back(SRV_SERVERNAME);
 		args.push_back(argv[0]);
 		args.push_back(argv[1]);
 	}

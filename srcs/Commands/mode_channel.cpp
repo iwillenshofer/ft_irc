@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_channel.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:20:03 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 17:59:30 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,21 +102,26 @@ void	Commands::_cmd_mode_channel(void)
     bool        is_arg;
     std::map<std::string, std::string> m;
 	
-	if (_message.arguments().size() > 1)
+	if (_message.arguments().size() > 2)
 	    is_arg = true;
 	else
         is_arg = false;
+    if (_message.arguments().size() == 0)
+    {
+        _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+        return ;
+    }
     if (chan == NULL)
     {
         _message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
         return ;
     }  
-    else if (chan->is_user(_sender->nickname) == false)
+    if (chan->is_user(_sender->nickname) == false)
     {
         _message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
         return ;
     }
-	else if (!(is_arg))
+	if (_message.arguments().size() == 1)
 	{
 		m["channel"] = chan->get_name();
 		m["mode"] = chan->get_modes();
@@ -124,7 +129,6 @@ void	Commands::_cmd_mode_channel(void)
 		_message_user(_generate_reply(RPL_CHANNELMODEIS, m), _sender);
 		return ;
 	}
-
     for (size_t i = 0; i < _message.arguments()[1].size(); i++)
     {
         if (mode_channel.find(_message.arguments()[1].at(i)) == std::string::npos)

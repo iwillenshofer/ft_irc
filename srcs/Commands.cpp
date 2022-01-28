@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 21:59:35 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 19:05:51 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_WHOISTOOMANY] = "Too many results, restrict your query";
 	replies[RPL_WHOWASSERVER] = "<nick> <server> :<last_activity>";
 	replies[329] = "<channel> <creation>"; // creation time
+	replies[RPL_PONG] = "PONG";
 	return (replies);
 }
 
