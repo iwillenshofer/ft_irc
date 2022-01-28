@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 20:27:29 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/27 21:08:46 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_CHANNELMODEIS] = "<channel> <mode> <mode_params>";
 	replies[RPL_NOTOPIC] = "<channel> :No topic is set";
 	replies[RPL_TOPIC] = "<channel> :<topic>";
-	replies[RPL_INVITING] = "<channel> <nick>";
+	replies[RPL_INVITING] = "<invited> <channel>";
 	replies[RPL_SUMMONING] = "<user> :Summoning user to IRC";
 	replies[RPL_INVITELIST] = "<channel> <invitemask>";
 	replies[RPL_ENDOFINVITELIST] = "<channel> :End of channel invite list";

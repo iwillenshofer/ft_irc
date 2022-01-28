@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 21:24:25 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/27 21:27:14 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	Commands::_cmd_invite(void)
 {
     Client     *client =  _get_client_by_nickname(_message.arguments()[0]);
     Channel    *channel =  _get_channel_by_name(_message.arguments()[1]);
+    std::map<std::string, std::string> m;
 
     if (_message.arguments().size() != 2)
     {
@@ -86,11 +87,13 @@ void	Commands::_cmd_invite(void)
         return ;
     }
     channel->add_invitation(client->nickname);
-    std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " +channel->get_name() + MSG_ENDLINE;
+    m["invited"] = client->nickname;
+    m["channel"] = channel->get_name();
+    _message_user(_generate_reply(RPL_INVITING, m), _sender);
+    std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
     _message_user(msg, client);
-    _message_user(_generate_reply(RPL_INVITING), _sender);
-    if (client->is_away() == true)
-    {
-        _message_user(_generate_reply(RPL_AWAY), _sender);
-    }
+    //if (client->is_away() == true)
+    //{
+    //    _message_user(_generate_reply(RPL_AWAY), _sender);
+    //}
 }
