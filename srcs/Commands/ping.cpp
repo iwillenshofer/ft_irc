@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ping.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 19:12:44 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/28 10:04:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	Commands::_cmd_ping(void)
         _message_user(msg, _sender);
     }
     else
-        _message_user("PONG", _sender);
+        _message_user(std::string("PONG") + MSG_ENDLINE, _sender);
 }

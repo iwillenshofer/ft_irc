@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileDescriptors.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 20:31:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 09:36:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,14 @@ class FileDescriptors
 		void disconnect_client(Client *client)
 		{
 			Commands("QUIT :" + client->get_hangup_message(), client, &clients, &channels, server);
-			for (std::map<std::string, Channel>::iterator chanit = channels.begin(); chanit != channels.end(); chanit++)
+			for (std::map<std::string, Channel>::iterator chanit = channels.begin(); chanit != channels.end(); )
+			{
 				chanit->second.remove_user(client->nickname);
+				if (chanit->second.is_empty())
+					chanit = channels.erase(chanit);
+				else
+					chanit++;
+			}
 			/*
 			** here we should disconnect the user entirely from the channels
 			** so more functions may be called.
