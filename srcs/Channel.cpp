@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/26 21:23:15 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:07:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,6 +409,11 @@ void	Channel::remove_ban(std::string chanop, std::string nick)
     }
 }
 
+bool    Channel::is_invitation_only(void) const
+{
+    return (_mode.i);
+}
+
 void	Channel::set_invitation(std::string chanop)
 {
     if (is_operator(chanop) == false)
@@ -541,4 +546,20 @@ bool	Channel::can_speak(std::string nick)
         }
     }
     return true;
+}
+
+void		Channel::change_nick(std::string oldnick, std::string newnick)
+{
+	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
+	for (std::vector<std::string>::iterator it = _operators.begin(); it != _operators.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
+	for (std::vector<std::string>::iterator it = _voices.begin(); it != _voices.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
+	for (std::vector<std::string>::iterator it = _invitations.begin(); it != _invitations.end(); it++)
+		if (*it == oldnick)
+			*it = newnick;
 }

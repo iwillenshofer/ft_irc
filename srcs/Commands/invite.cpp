@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/26 19:13:02 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,37 @@
 
 void	Commands::_cmd_invite(void)
 {
+    Client     *client =  _get_client_by_nickname(_message.arguments()[0]);
+    Channel    *channel =  _get_channel_by_name(_message.arguments()[0]);
 
+    if (_message.arguments().size() != 2)
+    {
+        _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+        return ;
+    }
+    if (client == NULL)
+    {
+        _message_user(_generate_reply(ERR_NOSUCHNICK), _sender);
+        return ;
+    }
+    if (channel == NULL)
+    {
+        _message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
+        return ;
+    }
+    if (channel->is_user(_sender->nickname) == false)
+    {
+        _message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
+        return ;
+    }
+    if (channel->is_invitation_only() == true && channel->is_operator(_sender->nickname) == false)
+    {
+        _message_user(_generate_reply(ERR_CHANOPRIVSNEEDED), _sender);
+        return ;
+    }
+    if (channel->is_user(client->nickname) == true)
+    {
+        _message_user(_generate_reply(ERR_USERONCHANNEL), _sender);
+        return ;
+    }
 }

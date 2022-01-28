@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 23:31:02 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:29:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	Commands::_cmd_who(void)
 {
 	std::map<std::string, std::string> arguments;
 	Client *client;
+	
 	arguments["channel"] = _message.arguments()[0];
 	arguments["name"] = _message.arguments()[0];
 	arguments["server"] = "*.localhost";

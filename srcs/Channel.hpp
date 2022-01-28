@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 21:14:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:07:05 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ class Channel
 		void		add_ban(std::string chanop, std::string nick);
 		void		remove_ban(std::string chanop, std::string nick);
 
+		bool		is_invitation_only(void) const;
 		void		set_invitation(std::string chanop);
 		void		unset_invitation(std::string chanop);
 		bool		is_invitation(std::string nick);
@@ -122,7 +123,8 @@ class Channel
 		void		unset_change_topic(std::string chanop);
 
 		bool		can_speak(std::string nick);
-		std::string	get_names(bool no_invisible = true);
+
+		void		change_nick(std::string oldnick, std::string newnick);
 
 	public:
 

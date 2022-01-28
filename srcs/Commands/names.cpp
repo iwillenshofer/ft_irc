@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 23:40:25 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:45:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ std::vector<std::string> Commands::__perform_names(Channel &channel, bool add_in
 	Client *client;
 	std::vector<std::string> shown_users;
 
-	Debug("Perform Names", DBG_ERROR);
 	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
 	{
 		client = _get_client_by_nickname(*it);
@@ -107,6 +106,7 @@ void	Commands::_cmd_names(void)
 		else
 			tmp = __perform_names(*channel, false, (_message.arguments().size() ? true : false));
 		listed_users.insert(listed_users.end(), tmp.begin(), tmp.end());
+		Debug("HERE");
 	}
 	if (_message.arguments().size())
 		return ;
