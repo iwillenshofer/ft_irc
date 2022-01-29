@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 09:58:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 10:21:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,22 +111,11 @@ void	Commands::_cmd_who(void)
 			&& (Mask::match(it->second, _message.arguments()[0]) || Mask::match_raw(it->second.nickname, _message.arguments()[0]) || 
 			Mask::match_raw(it->second.hostname, _message.arguments()[0]) || Mask::match_raw(it->second.realname, _message.arguments()[0]) || 
 			Mask::match_raw(_server->servername(), _message.arguments()[0])))
+			{
+				if (_message.arguments().size() <= 1 || _message.arguments()[1] != "o" || it->second.is_operator())
 				__perform_who(it->second, arguments);
-		
-			Debug("T1:" + std::string(it->second.is_invisible() ? "TRUE" : "FALSE"), DBG_FATAL);
-			Debug("T2:" + std::string(std::find(shared_channel.begin(), shared_channel.end(), it->second.nickname) != shared_channel.end() ? "TRUE" : "FALSE"), DBG_FATAL);
-			Debug("T3:" + std::string(Mask::match(it->second, _message.arguments()[0]) ? "TRUE" : "FALSE"), DBG_FATAL);
-			Debug("T4:" + std::string(Mask::match_raw(it->second.nickname, _message.arguments()[0]) ? "TRUE" : "FALSE"), DBG_FATAL);
-			Debug("T5:" + std::string(Mask::match_raw(it->second.hostname, _message.arguments()[0]) ? "TRUE" : "FALSE"), DBG_FATAL);
-			Debug("T6:" + std::string(Mask::match_raw(it->second.realname, _message.arguments()[0]) ? "TRUE" : "FALSE"), DBG_FATAL);
-			Debug("T7:" + std::string(Mask::match_raw(_server->servername(), _message.arguments()[0]) ? "TRUE" : "FALSE"), DBG_FATAL);
-
-		
+			}
 		}
-
-
-
-
 	}
 	_message_user(_generate_reply(RPL_ENDOFWHO, arguments), _sender);
 }
