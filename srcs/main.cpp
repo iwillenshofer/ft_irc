@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 20:16:24 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 23:15:35 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ std::vector<std::string>	parse_args(int argc, char **argv)
 
 int main (int argc, char **argv)
 {
-	Debug::setLevel(DBG_DEV);
+	Debug::set_level(DBG_DEV);
 
 	try
 	{

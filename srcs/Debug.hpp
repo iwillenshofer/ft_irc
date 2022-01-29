@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 20:10:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 22:50:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 23:15:36 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@
 ** Debug Class
 ** Will print to std::cout according to the debug level set by the application.
 ** Defautl Level: DBG_INFO.
-** To set the _debug_level, call the setLevel static function as follows:
-**  Debug::setLevel(DBG_WARNING);
+** To set the _debug_level, call the set_level static function as follows:
+**  Debug::set_level(DBG_WARNING);
 ** Any message below the _debug_level will be ignored.
 ** To print a debug message just call: Debug("message", DBG_INFO);
 ** available levels: DBG_INFO, DBG_WARNING, DBG_ERROR, DBG_DEV
@@ -66,16 +66,16 @@ class Debug
 		Debug(std::string s, int level = DBG_INFO);
 		virtual ~Debug();
 		Debug &operator=(Debug const &c);
-		static void setLevel(int level);
+		static void set_level(int level);
 		std::string					get_title(bool show_color = true);
 
 	private:
 		std::string 				_text;
 		int							_msg_level;
 		static int					_debug_level;
-		std::string					_getDate(void);
-		std::string					_getText(void);
-		std::string					_resetColor(void);
+		std::string					_get_date(void);
+		std::string					_get_text(void);
+		std::string					_reset_color(void);
 		void						_print();
 };
 

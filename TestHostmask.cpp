@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestHostmask.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 14:08:12 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:54:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 23:15:35 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int main (int argc, char *argv[])
 {
-	Debug::setLevel(DBG_DEV);
+	Debug::set_level(DBG_DEV);
 	
 	if (argc == 2)
 		Debug(std::string("Result: ") + Mask::create(std::string(argv[1])));
