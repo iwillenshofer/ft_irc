@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 13:53:40 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 15:12:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ class Commands
 		void _cmd_mode(void);
 		void _cmd_oper(void);
 		void _cmd_quit(void);
+		void _cmd_squit(void);
 
 		/*
 		** Channel Operations
@@ -224,7 +225,7 @@ class Commands
          4.2.5 Names message ......................................   OK
          4.2.6 List message .......................................   OK
          4.2.7 Invite message .....................................   OK
-         4.2.8 Kick message .......................................   
+         4.2.8 Kick message .......................................   OK
       4.3 Server queries and commands .............................   
          4.3.1 Version message ....................................   OK
          4.3.2 Stats message ......................................   

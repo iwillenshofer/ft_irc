@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:02 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 17:39:17 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,33 @@
 
 void	Commands::_cmd_kill(void)
 {
+	std::map<std::string, std::string> m;
+	Client *client;
 
+
+	m["command"] = _message.command();
+	m["server"] = _server->servername();
+	if ((_message.arguments().size()) < 2)
+	{
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
+		return ;
+	}
+	else if (_message.arguments()[0] == _server->servername())
+	{
+		_message_user(_generate_reply(ERR_CANTKILLSERVER, m), _sender);
+		return ;
+	}
+	m["nickname"] = _message.arguments()[0];
+	m["message"] = _message.arguments()[1];
+	client = _get_client_by_nickname(_message.arguments()[0]);
+	if (!(_sender->is_operator()))
+		_message_user(_generate_reply(ERR_NOPRIVILEGES, m), _sender);
+	else if (!(client))
+		_message_user(_generate_reply(ERR_NOSUCHNICK, m), _sender);
+	else
+	{
+		client->set_hangup(true, Commands::generate_errormsg(ERR_KILLED, m));
+		client->get_send_queue().clear();
+		_message_user(":" + _server->servername() + " KILL " + _sender->nickname + " :" + _server->servername() + " (" + m["message"] + ")" + MSG_ENDLINE, client);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 13:46:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 16:42:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_PINGTIMEOUT] = "Ping timeout";
 	replies[ERR_REGISTERTIMEOUT] = "Registration Timeout";
 	replies[ERR_EOFFROMCLIENT] = "EOF from client";
+	replies[ERR_KILLED] = "Killed (<server> (<message>))";
 	replies[ERR_WHOISTOOMANY] = "Too many results, restrict your query";
 	replies[RPL_WHOWASSERVER] = "<nick> <server> :<last_activity>";
 	replies[329] = "<channel> <creation>"; // creation time
