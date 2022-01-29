@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 20:01:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 10:06:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,23 @@ class Commands;
 /*
 ** user modes. currently a struct, but will be converted into a class so it can initialize itself.
 */
-typedef struct s_usermode
+class ClientMode
 {
+	public: 
+		ClientMode();
+		ClientMode(ClientMode const &cp);
+		ClientMode &operator=(ClientMode const &cp);
+		virtual ~ClientMode();
 
-	bool i;
-	bool s;
-	bool w;
-	bool o;
-	bool a;
+		bool i;
+		bool s;
+		bool w;
+		bool o;
+		bool a;
 
-	bool r; //  not used
-	bool O; //  not used
-
-} t_usermode;
+		bool r; //  not used
+		bool O; //  not used
+};
 
 class Client
 {
@@ -72,7 +76,7 @@ class Client
 		std::string					password;
 		std::string					away_message;
 		bool						registered;
-		t_usermode					mode;
+		ClientMode					mode;
 		time_t						last_ping;
 		bool						is_ping;
 		time_t						joined_time;

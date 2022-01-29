@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 23:08:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 09:28:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_EXCEPTLIST] = "<channel> <exceptionmask>";
 	replies[RPL_ENDOFEXCEPTLIST] = "<channel> :End of channel exception list";
 	replies[RPL_VERSION] = "<version>.<debuglevel> <server> :<comments>";
-	replies[RPL_WHOREPLY] = "<channel> <user> <host> <server> <nick> H@ :0 <real_name>";
+	replies[RPL_WHOREPLY] = "<channel> <user> <host> <server> <nick> <away><servop><chanop> :<hops> <real_name>";
 	replies[RPL_ENDOFWHO] = "<name> :End of /WHO list";
 	replies[RPL_NAMREPLY] = "= <channel> :<names_list>";
 	replies[RPL_ENDOFNAMES] = "<channel> :End of /NAMES list";

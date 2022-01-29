@@ -6,15 +6,40 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 20:00:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 10:06:54 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
 
+/*
+** ClientMode
+*/
+
+ClientMode::ClientMode(void): i(false), s(false), w(false), o(false), a(false), r(false), O(false) { }
+ClientMode::ClientMode(ClientMode const &cp) { *this = cp; }
+ClientMode &ClientMode::operator=(ClientMode const &cp)
+{
+	i = cp.i;
+	s = cp.s;
+	w = cp.w;
+	o = cp.o;
+	a = cp.a;
+	r = cp.r; //  not used
+	O = cp.O; //  not used
+	return (*this);
+}
+ClientMode::~ClientMode() { }
+
+
+
+/*
+** Client
+*/
+
 Client::Client(int fd): _fd(fd), _hangup(false), registered(false), is_ping(false)
 {
-	bzero(&mode, sizeof(mode));
+//	bzero(&mode, sizeof(mode));
 	last_ping = time(NULL);
 	joined_time = time(NULL);
 }

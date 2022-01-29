@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 21:44:02 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 09:58:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@
 **	WHO jto* o                      ; Command to list all users with a
 **									match against "jto*" if they are an
 **									operator.
+**
+** 352     RPL_WHOREPLY
+**                        "<channel> <user> <host> <server> <nick> \
+**                         <H|G>[*][@|+] :<hopcount> <real name>"
 */
 
 void Commands::__perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel)
@@ -54,6 +58,15 @@ void Commands::__perform_who(Client &client, std::map<std::string, std::string> 
 	arguments["host"] = client.hostname;
 	arguments["nick"] = client.nickname;
 	arguments["real_name"] = client.realname;
+	arguments["away"] = (client.is_away() ? "G" : "H");
+	Debug("Operator: " + ft::to_string(_sender->is_operator()), DBG_ERROR);
+	arguments["servop"] = (client.is_operator() ? "*" : "");
+	arguments["chanop"] = "";
+	if (channel && channel->is_operator(client.nickname))
+		arguments["chanop"] = "@";
+	else if (channel && channel->is_voice(client.nickname))
+		arguments["chanop"] = "+";
+	arguments["hops"] = "0";
 	_message_user(_generate_reply(RPL_WHOREPLY, arguments), _sender);
 }
 
