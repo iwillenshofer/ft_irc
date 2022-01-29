@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 09:28:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:46:06 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>"; //*( ( "@" / "+" ) <channel> " " )";
 	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real_name>";
 	replies[RPL_ENDOFWHOWAS] = "<nickname> :End of WHOWAS";
-	replies[RPL_LIST] = "<channel> <# visible> :<topic>";
+	replies[RPL_LIST] = "<channel> <visible> :<topic>";
 	replies[RPL_LISTEND] = ":End of LIST";
 	replies[RPL_UNIQOPIS] = "<channel> <nickname>";
 	replies[RPL_CHANNELMODEIS] = "<channel> <mode> <mode_params>";

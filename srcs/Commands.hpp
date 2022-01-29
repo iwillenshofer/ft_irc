@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 11:52:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 13:53:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ class Commands
 		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);
 		std::vector<std::string> __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
 		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
+		void __perform_list(Channel &channel);
 
 		/*
 		** Commands not Implemented:
@@ -219,9 +220,9 @@ class Commands
          4.2.3 Mode message .......................................   OK
             4.2.3.1 Channel modes .................................   OK
             4.2.3.2 User modes ....................................   OK
-         4.2.4 Topic message ......................................   
+         4.2.4 Topic message ......................................   OK
          4.2.5 Names message ......................................   OK
-         4.2.6 List message .......................................   
+         4.2.6 List message .......................................   OK
          4.2.7 Invite message .....................................   OK
          4.2.8 Kick message .......................................   
       4.3 Server queries and commands .............................   

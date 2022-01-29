@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 23:07:31 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 14:34:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # define	SRV_MOTD_FILE			"motd.txt"
 # define	SRV_DFLQUITMSG			"Bye!"
 # define	SRV_UNKNOWNHOST			"hostname"
+# define	SRV_DFLKICKMSG			"no reason"
 
 /*
 ** Mode Defaults
