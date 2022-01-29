@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 20:35:27 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/28 23:07:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define	SRV_MAXWHOIS			5
 # define	SRV_MAXNICKLEN			9
 # define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
+# define	SRV_COMMENTS			"Not great, not terrible!"
 # define	SRV_SERVERNAME			"irc.42network.com"
 # define	SRV_MOTD_FILE			"motd.txt"
 # define	SRV_DFLQUITMSG			"Bye!"
@@ -58,7 +59,7 @@
 
 # define	MODE_CHANNEL			"-+opsitnmlbvk"
 # define	MODE_USER   			"-+iswo"
-
+# define	MODE_USER_DFL			"+iw"
 /*
 ** IRC OP Defaults
 */

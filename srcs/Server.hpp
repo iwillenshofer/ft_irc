@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/26 00:21:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 22:40:15 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ class Server
 	
 	
 	private:
-		std::string								_version;
-		std::string								_servername;
-		std::string								_password;
-		std::map<std::string, std::string>		_operators;
-		std::string								_motdfilename;
+		std::string										_version;
+		std::string										_servername;
+		std::string										_password;
+		std::map<std::string, std::string>				_operators;
+		std::string										_motdfilename;
 		std::map<std::string, std::vector<Client> >		_whowaslist;
-		size_t									_highest_connections;
-		time_t									_creation_date;
+		size_t											_highest_connections;
+		time_t											_creation_date;
 
 		void _init(void);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Debug.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 20:10:09 by iwillens          #+#    #+#             */
-/*   Updated: 2021/11/29 09:46:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 22:50:38 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ std::string Debug::_resetColor(void)
 	return (str);
 }
 
-std::string Debug::_getTitle(void)
+std::string Debug::get_title(bool show_color)
 {
 	std::string str("\033[");
 	std::string title;
@@ -67,6 +67,8 @@ std::string Debug::_getTitle(void)
 		title = "FATAL ERROR";
 		color = CLR_MAGENTA;
 	}
+	if (!show_color)
+		return (title);
 	str += ft::to_string(CLR_BOLD) +  ";";
 	str += ft::to_string(color) + "m";
 	str += "[" + title + "]";
@@ -101,7 +103,7 @@ void Debug::_print()
 {
 	if (_msg_level < _debug_level)
 		return ;
-	std::cout << _getDate() << " " <<  _getTitle() << " " << _getText() << std::endl << std::flush;
+	std::cout << _getDate() << " " <<  get_title() << " " << _getText() << std::endl << std::flush;
 }
 
 void Debug::setLevel(int level)

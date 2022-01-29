@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:51 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 22:22:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 22:40:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void								Server::add_whowas(Client &client)
 { 
 	_whowaslist[client.nickname].insert(_whowaslist[client.nickname].begin(), client);
 }
+
 std::map<std::string, std::vector<Client> >	&Server::whowas(void) { return (_whowaslist); }
 size_t								Server::highest_connections(void) { return (_highest_connections); }
 size_t								Server::highest_connections(size_t current_connections)

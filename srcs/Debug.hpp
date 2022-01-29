@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Debug.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 20:10:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/09 09:31:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 22:50:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,24 @@
 
 class Debug
 {	
-	private:
-		Debug();
-		std::string 				_text;
-		int							_msg_level;
-		static int					_debug_level;
-		std::string					_getDate(void);
-		std::string					_getTitle(void);
-		std::string					_getText(void);
-		std::string					_resetColor(void);
-		void						_print();
 
 	public:
+		Debug();
 		Debug(Debug const &c);
 		Debug(std::string s, int level = DBG_INFO);
 		virtual ~Debug();
 		Debug &operator=(Debug const &c);
 		static void setLevel(int level);
+		std::string					get_title(bool show_color = true);
 
+	private:
+		std::string 				_text;
+		int							_msg_level;
+		static int					_debug_level;
+		std::string					_getDate(void);
+		std::string					_getText(void);
+		std::string					_resetColor(void);
+		void						_print();
 };
 
 #endif
