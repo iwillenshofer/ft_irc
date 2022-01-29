@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:13 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 11:55:07 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,57 @@
 **									#test.
 */
 
+void	Commands::__perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast)
+{
+		args["channel"] = channel->get_name();
+		args["topic"] = channel->get_topic();
+		if (!broadcast)
+		{
+			if (channel->get_topic() == "")
+				_message_user(_generate_reply(RPL_NOTOPIC, args), _sender);
+			else
+				_message_user(_generate_reply(RPL_TOPIC, args), _sender);
+		}
+		else
+		{
+			_message_channel(_sender->get_prefix() + " TOPIC " + channel->get_name() + " :" + channel->get_topic() + MSG_ENDLINE, channel->get_name(), true);
+		}
+}
+
+
 void	Commands::_cmd_topic(void)
 {
+	Channel *channel;
+	std::string topic;
+	std::map<std::string, std::string> m;
 
+	if (!_message.arguments().size())
+	{
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		return ;
+	}
+	channel = _get_channel_by_name(_message.arguments()[0]);
+	if (!(channel) || !(channel->is_user(_sender->nickname)))
+		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
+	else if (_message.arguments().size() == 1)
+		__perform_topic(channel, m, false);
+	else
+	{
+		topic = _message.arguments()[1];
+		if (topic.size() >= 2 && ((topic[0] == '\'' && topic[topic.size() - 1] == '\'') || (topic[0] == '\"' && topic[topic.size() - 1] == '\"')))
+		{
+			topic.erase(0, 1);
+			topic.erase(topic.size() - 1);
+		}
+		try
+		{
+			channel->set_topic(_sender->nickname, topic);
+			__perform_topic(channel, m, true);
+		}
+		catch(int error_code)
+		{
+			m["channel"] = channel->get_name();
+			_message_user(_generate_reply(error_code, m), _sender);
+		}
+	}
 }

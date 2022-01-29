@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 22:49:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/29 11:52:23 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ class Commands
 		void __perform_whois(std::vector<std::string> &v);
 		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);
 		std::vector<std::string> __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
+		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
 
 		/*
 		** Commands not Implemented:
@@ -208,8 +209,8 @@ class Commands
          4.1.1 Password message ...................................   OK
          4.1.2 Nickname message ...................................   OK
          4.1.3 User message .......................................   OK
-         4.1.4 Server message .....................................   
-         4.1.5 Operator message ...................................   
+         4.1.4 Server message .....................................   [NOT TO BE IMPLEMENTED]
+         4.1.5 Operator message ...................................   OK
          4.1.6 Quit message .......................................   OK
          4.1.7 Server Quit message ................................   
       4.2 Channel operations ......................................   
@@ -224,7 +225,7 @@ class Commands
          4.2.7 Invite message .....................................   OK
          4.2.8 Kick message .......................................   
       4.3 Server queries and commands .............................   
-         4.3.1 Version message ....................................   
+         4.3.1 Version message ....................................   OK
          4.3.2 Stats message ......................................   
          4.3.3 Links message ......................................   
          4.3.4 Time message .......................................   
