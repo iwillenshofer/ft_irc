@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 17:27:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 20:26:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ class Commands
 		** Single command helpers
 		*/
 		void __perform_whois(std::vector<std::string> &v);
-		void __perform_who(Client &client, std::string channel, std::map<std::string, std::string> &arguments);
+		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);
 		std::vector<std::string> __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
 
 		/*

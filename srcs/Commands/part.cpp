@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 09:45:25 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 21:49:36 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	Commands::_cmd_part(void)
 		_message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
 	else if (!(channel->is_user(_sender->nickname)))
 		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
-
 	else
 	{
 		std::string msg = _sender->get_prefix() + " PART " + _message.arguments()[0] + MSG_ENDLINE;

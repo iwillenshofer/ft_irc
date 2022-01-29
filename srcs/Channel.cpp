@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/28 09:30:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 21:56:21 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ void Channel::remove_user(std::string nick)
     {
         if (*it == nick)
         {
-            it->erase();
+            _operators.erase(it);
             return;
         }
     }
@@ -309,7 +309,7 @@ void Channel::remove_user(std::string nick)
     {
         if (*it == nick)
         {
-            it->erase();
+            _voices.erase(it);
             return;
         }
     }
@@ -577,4 +577,4 @@ void		Channel::change_nick(std::string oldnick, std::string newnick)
 			*it = newnick;
 }
 
-bool		Channel::is_empty(void) { return (users.size()); }
+bool		Channel::is_empty(void) { return (users.size() == 0); }

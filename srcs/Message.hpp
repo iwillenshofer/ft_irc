@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 22:05:20 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/28 21:07:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,9 @@ class Message
 				if (!(_arguments[i].size()))
 					_arguments.erase(_arguments.begin() + i);
 				else
+				{
 					i++;
+				}
 			}
 			ft::uppercase(_command);
 		}

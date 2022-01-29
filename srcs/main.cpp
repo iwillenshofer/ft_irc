@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 19:12:31 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/28 20:16:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int main (int argc, char **argv)
 	{
 		std::vector<std::string> args = parse_args(argc - 1, argv + 1);
 		WebServer p(args.at(0), atoi(args.at(1).c_str()), args.at(2));
+		Debug("Server successfully shut down.", DBG_INFO);
 	}
 	catch(const std::runtime_error& e)
 	{

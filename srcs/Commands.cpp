@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 21:08:46 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/28 22:13:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,8 +434,9 @@ void Commands::_register_user(void)
 	_message_user(_generate_reply(RPL_LUSERME, v), _sender);
 	_cmd_motd();
 	//CALL USER MODE COMMAND, INSTEAD OF SENDING THE FOLLOWING MESSAGE:
-	msg = _sender->get_prefix() + " MODE " + _sender->nickname + " :+iw" + MSG_ENDLINE;
-	_message_user(msg, _sender);
+	msg = _sender->get_prefix() + " MODE " + _sender->nickname + " +iw";
+	Commands(msg, _sender, _clients, _channels, _server);
+	//_message_user(msg, _sender);
 }
 
 /*
