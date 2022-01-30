@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 22:40:15 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 09:23:30 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class Server
 		std::map<std::string, std::vector<Client> >		_whowaslist;
 		size_t											_highest_connections;
 		time_t											_creation_date;
+		std::map<std::string, size_t>					_cmd_stats;
 
 		void _init(void);
 
@@ -58,6 +59,7 @@ class Server
 
 		void								add_whowas(Client &client);
 		std::map<std::string, std::vector<Client> >	&whowas(void);
+		std::map<std::string, size_t >				&commandstats(void);
 		size_t								highest_connections(void);
 		size_t								highest_connections(size_t current_connections);
 

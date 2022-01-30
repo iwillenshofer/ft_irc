@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:29:38 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 09:57:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,24 @@
 **	LINKS *.edu *.bu.edu            ; Command to list servers matching
 **									*.bu.edu as seen by the first server
 **									matching *.edu.
+** [IMPLEMENTATION NOTES]
+** as there are no server-server communication, only returns the local
+** server. Second argument is ignored.
 */
 
 void	Commands::_cmd_links(void)
 {
+	std::string mask;
+	std::map<std::string, std::string> m;
 
+	mask = (_message.arguments().size() ? _message.arguments()[0] : std::string("*"));
+	m["mask"] = mask;
+	if (Mask::match_raw(_server->servername(), mask))
+	{
+		m["server"] = _server->servername();
+		m["server_info"] = std::string(MSG_NAME_SERVER);
+		m["hopcount"] = ft::to_string(0);
+		_message_user(_generate_reply(RPL_LINKS, m), _sender);
+	}
+	_message_user(_generate_reply(RPL_ENDOFLINKS, m), _sender);
 }

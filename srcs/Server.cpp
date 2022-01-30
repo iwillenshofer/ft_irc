@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:51 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 22:40:11 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 08:55:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Server &Server::operator=(Server const &cp)
 	_operators = cp._operators;
 	_motdfilename = cp._motdfilename;
 	_whowaslist = cp._whowaslist;
+	_cmd_stats = cp._cmd_stats;
 	return (*this);
 }
 
@@ -54,6 +55,7 @@ void								Server::add_whowas(Client &client)
 }
 
 std::map<std::string, std::vector<Client> >	&Server::whowas(void) { return (_whowaslist); }
+std::map<std::string, size_t >				&Server::commandstats(void) { return (_cmd_stats); }
 size_t								Server::highest_connections(void) { return (_highest_connections); }
 size_t								Server::highest_connections(size_t current_connections)
 {

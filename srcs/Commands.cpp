@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 16:42:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 09:55:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_TRACELOG] = "File <logfile> <debug level>";
 	replies[RPL_TRACEEND] = "<server name> <version & debug level> :End of TRACE";
 	replies[RPL_STATSLINKINFO] = "<linkname> <sendq> <sent messages> <sent Kbytes> <received messages> <received Kbytes> <time open>";
-	replies[RPL_STATSCOMMANDS] = "<command> <count> <byte count> <remote count>";
-	replies[RPL_ENDOFSTATS] = "<stats letter> :End of STATS report";
-	replies[RPL_STATSUPTIME] = ":Server Up %d days %d:%02d:%02d";
+	replies[RPL_STATSCOMMANDS] = "<command> <count>";
+	replies[RPL_ENDOFSTATS] = "<stats_letter> :End of STATS report";
+	replies[RPL_STATSUPTIME] = ":Server Up <days> days <hours>:<minutes>:<seconds>";
 	replies[RPL_STATSOLINE] = "O <hostmask> * <name>";
 	replies[RPL_UMODEIS] = "<user mode string>";
 	replies[RPL_SERVLIST] = "<name> <server> <mask> <type> <hopcount> <info>";
@@ -297,7 +297,10 @@ void Commands::_run_command(std::string &cmd_name)
 	if (cmd_it == _commands.end())
 		_cmd_unknown();
 	else
+	{
 		(*this.*(cmd_it->second))();
+		_server->commandstats()[cmd_it->first] = ++(_server->commandstats()[cmd_it->first]);
+	}
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:20 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 09:35:32 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,56 @@
 **	Examples:
 **	STATS m                         ; Command to check the command usage
 **									for the server you are connected to
+** [IMPLEMENTATION NOTES]
+** Although undernet limits the l,m and o commands only to operators,
+**  we chose not to, as it is not specified in the RFC.
+** No link information is provided, as there are no server connections.
 */
 
 void	Commands::_cmd_stats(void)
 {
+	std::map<std::string, std::string> m;
+	std::string valid(MSG_ALLOWEDSTATS);
+	char cmd;
+	size_t diff;
 
+	m["stats_letter"] = "*";
+	if (!(_message.arguments().size()) || _message.arguments()[0].size() != 1
+	|| valid.find(_message.arguments()[0][0]) == std::string::npos)
+	{
+		_message_user(_generate_reply(RPL_ENDOFSTATS, m), _sender);
+		return ;
+	}
+	cmd = _message.arguments()[0][0];
+	m["stats_letter"] = cmd;
+	if (cmd == 'm')
+	{
+		for (std::map<std::string, size_t>::iterator it = _server->commandstats().begin(); it != _server->commandstats().end(); it++)
+		{
+			m["command"] = it->first;
+			m["count"] = ft::to_string(it->second);
+			_message_user(_generate_reply(RPL_STATSCOMMANDS, m), _sender);
+		}
+	}
+	else if (cmd == 'o')
+	{
+		for (std::map<std::string, std::string>::iterator it = _server->operators().begin(); it != _server->operators().end(); it++)
+		{
+			m["hostmask"] = Mask::create("*");
+			m["name"] = it->first;
+			_message_user(_generate_reply(RPL_STATSOLINE, m), _sender);
+		}
+	}
+	else if (cmd == 'u')
+	{
+		diff = static_cast<size_t>(std::difftime(time(NULL), _server->creation_date()));
+		m["days"] = ft::to_string(diff / (60 * 60 * 24));
+		m["hours"] = ft::to_string((diff / (60 * 60)) % 24);
+		m["minutes"] = ft::to_string((diff / 60) % (60));
+		m["seconds"] = ft::to_string((diff) % (60));
+		if (m["minutes"].size() == 1) m["minutes"] = "0" + m["minutes"];
+		if (m["seconds"].size() == 1) m["seconds"] = "0" + m["seconds"];
+		_message_user(_generate_reply(RPL_STATSUPTIME, m), _sender);
+	}
+	_message_user(_generate_reply(RPL_ENDOFSTATS, m), _sender);
 }

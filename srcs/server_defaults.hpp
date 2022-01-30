@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 16:42:54 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 08:31:54 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define	MSG_BNF_CHANNELIDSIZE		5
 # define	MSG_BNF_CHANNELSTRFORBIDDEN	"\a\r\n ,:\0"
 # define	MSG_BNF_CHANNELTYPES		"#+!&"
+# define	MSG_ALLOWEDSTATS			"lmou"
 
 /*
 ** Admin Infos
