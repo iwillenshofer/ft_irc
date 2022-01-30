@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 12:15:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:09:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ class Commands
 		void _cmd_pass(void);
 		void _cmd_nick(void);
 		void _cmd_user(void);
+		void _cmd_server(void);
 		void _cmd_mode(void);
 		void _cmd_oper(void);
 		void _cmd_quit(void);
@@ -234,7 +235,7 @@ class Commands
          4.3.3 Links message ......................................   OK
          4.3.4 Time message .......................................   OK
          4.3.5 Connect message ....................................   OK
-         4.3.6 Trace message ......................................   
+         4.3.6 Trace message ......................................   OK
          4.3.7 Admin message ......................................   OK
          4.3.8 Info message .......................................   OK
       4.4 Sending messages ........................................   

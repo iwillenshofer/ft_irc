@@ -6,7 +6,7 @@
 #    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/30 11:27:50 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/30 13:16:29 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/oper.cpp \
 			${SRC_DIR}/Commands/mode.cpp \
 			${SRC_DIR}/Commands/quit.cpp \
+			${SRC_DIR}/Commands/squit.cpp \
+			${SRC_DIR}/Commands/server.cpp \
 			${SRC_DIR}/Commands/join.cpp \
 			${SRC_DIR}/Commands/part.cpp \
 			${SRC_DIR}/Commands/mode_channel.cpp \

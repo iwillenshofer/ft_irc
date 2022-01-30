@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 12:11:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:11:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["OPER"] = &Commands::_cmd_oper;
 	cmd["MODE"] = &Commands::_cmd_mode;
 	cmd["QUIT"] = &Commands::_cmd_quit;
+	cmd["SERVER"] = &Commands::_cmd_server;
+	cmd["SQUIT"] = &Commands::_cmd_squit;
 	cmd["JOIN"] = &Commands::_cmd_join;
 	cmd["PART"] = &Commands::_cmd_part;
 	cmd["MODE"] = &Commands::_cmd_mode;
@@ -283,7 +285,7 @@ void	Commands::_process()
 	std::string cmd = _message.command();	
 
 	if (!(_sender->registered) && (cmd != "ADMIN" && cmd != "NICK" && cmd != "PASS"
-		&& cmd != "PONG" && cmd != "QUIT" && cmd != "USER" && cmd != "VERSION"))
+		&& cmd != "PONG" && cmd != "QUIT" && cmd != "USER" && cmd != "VERSION" && cmd != "SERVER"))
 		_message_user(_generate_reply(ERR_NOTREGISTERED), _sender);
 	else
 		_run_command(cmd);
