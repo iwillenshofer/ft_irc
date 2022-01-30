@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 09:55:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 11:03:15 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_YOUREOPER] = ":You are now an IRC operator";
 	replies[RPL_REHASHING] = "<config file> :Rehashing";
 	replies[RPL_YOURESERVICE] = "You are service <servicename>";
-	replies[RPL_TIME] = "<server> :<string showing server's local time>";
+	replies[RPL_TIME] = "<server> :<time>";
 	replies[RPL_USERSSTART] = ":UserID   Terminal  Host";
 	replies[RPL_USERS] = ":<username> <ttyline> <hostname>";
 	replies[RPL_ENDOFUSERS] = ":End of users";

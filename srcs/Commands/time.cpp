@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 11:03:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,19 @@
 
 void	Commands::_cmd_time(void)
 {
+	std::string mask;
+	std::map<std::string, std::string> m;
 
+	if (!(_message.arguments().size())
+	|| (Mask::match_raw(_server->servername(), _message.arguments()[0])))
+	{
+		m["server"] = _server->servername();
+		m["time"] = ft::get_current_date();
+		_message_user(_generate_reply(RPL_TIME, m), _sender);
+	}
+	else
+	{
+		m["server name"] = _message.arguments()[0];
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
+	}
 }
