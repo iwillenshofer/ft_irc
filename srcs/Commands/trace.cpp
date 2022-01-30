@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:15 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:24 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:49:02 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,80 @@
 **	Examples:
 **	TRACE *.oulu.fi                 ; TRACE to a server matching
 **									*.oulu.fi
+**
+** As there is no implementation of server-server communication, 
+** the trace commands will not match other servers.
+** Just like in UnderNet, it is limited to operators.
 */
+
+void	Commands::__perform_trace(Client &client, std::map<std::string, std::string> &m)
+{
+	m["nick"] = client.nickname;
+	if (client.is_operator())
+	{
+		m["class"] = "Oper";
+		_message_user(_generate_reply(RPL_TRACEOPERATOR, m), _sender);
+	}
+	else
+	{
+		m["class"] = "Local";
+		_message_user(_generate_reply(RPL_TRACEUSER, m), _sender);
+	}
+}
 
 void	Commands::_cmd_trace(void)
 {
+	std::map<std::string, std::string> m;
+	std::string mask;
+	bool found = false;
+	size_t user = 0;
+	size_t oper = 0;
+	Debug dbg;
 
+	if (!(_sender->is_operator()))
+	{
+		_message_user(_generate_reply(ERR_NOPRIVILEGES, m), _sender);
+		return ;
+	}
+	if (!(_message.arguments().size()))
+		mask = "*";
+	else
+		mask = _message.arguments()[0];
+	if (Mask::match_raw(_server->servername(), mask))
+	{
+		found = true;
+		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
+		{
+			__perform_trace(it->second, m);
+			if (it->second.is_operator()) oper++;
+			user++;
+		}
+		m["class"] = "Oper";
+		m["count"] = ft::to_string(oper);
+		_message_user(_generate_reply(RPL_TRACECLASS, m), _sender);
+		m["class"] = "Local";			
+		m["count"] = ft::to_string(user);
+		_message_user(_generate_reply(RPL_TRACECLASS, m), _sender);
+	}
+	else
+	{
+		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
+		{
+			if (Mask::match_raw(it->second.nickname, mask))
+			{
+				found = true;
+				__perform_trace(it->second, m);
+			}
+		}
+	}
+	m["server name"] = mask;
+	if (!(found))
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
+	else
+	{
+		m["server_name"] = _server->servername();
+		m["version"] = _server->version();
+		m["debug_level"] = dbg.debug_level();
+		_message_user(_generate_reply(RPL_TRACEEND, m), _sender);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 20:10:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 23:15:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:43:04 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ class Debug
 		virtual ~Debug();
 		Debug &operator=(Debug const &c);
 		static void set_level(int level);
-		std::string					get_title(bool show_color = true);
+		static std::string			debug_level(void);
 
 	private:
 		std::string 				_text;
@@ -76,7 +76,8 @@ class Debug
 		std::string					_get_date(void);
 		std::string					_get_text(void);
 		std::string					_reset_color(void);
-		void						_print();
+		void						_print(void);
+		std::string					_get_title(void);
 };
 
 #endif

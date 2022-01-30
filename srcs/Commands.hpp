@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 11:26:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:15:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ class Commands
 		std::vector<std::string> __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
 		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
 		void __perform_list(Channel &channel);
+		void __perform_trace(Client &client, std::map<std::string, std::string> &m);
 
 		/*
 		** Commands not Implemented:
@@ -232,7 +233,7 @@ class Commands
          4.3.2 Stats message ......................................   OK
          4.3.3 Links message ......................................   OK
          4.3.4 Time message .......................................   OK
-         4.3.5 Connect message ....................................   
+         4.3.5 Connect message ....................................   OK
          4.3.6 Trace message ......................................   
          4.3.7 Admin message ......................................   OK
          4.3.8 Info message .......................................   OK

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 20:10:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 23:15:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:42:53 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,28 @@ Debug &Debug::operator=(Debug const &c)
 	return (*this);
 }
 
+std::string Debug::debug_level(void)
+{
+	if (_debug_level == DBG_INFO)
+		return("INFO");
+	else if (_debug_level == DBG_WARNING)
+		return("WARNING");
+	else if (_debug_level == DBG_ERROR)
+		return("ERROR");
+	else if (_debug_level == DBG_DEV)
+		return("DEV");
+	else if (_debug_level == DBG_FATAL)
+		return("FATAL ERROR");
+	return ("");
+}
+
 std::string Debug::_reset_color(void)
 {
 	std::string str("\033[0m");
 	return (str);
 }
 
-std::string Debug::get_title(bool show_color)
+std::string Debug::_get_title(void)
 {
 	std::string str("\033[");
 	std::string title;
@@ -67,8 +82,6 @@ std::string Debug::get_title(bool show_color)
 		title = "FATAL ERROR";
 		color = CLR_MAGENTA;
 	}
-	if (!show_color)
-		return (title);
 	str += ft::to_string(CLR_BOLD) +  ";";
 	str += ft::to_string(color) + "m";
 	str += "[" + title + "]";
@@ -103,7 +116,7 @@ void Debug::_print()
 {
 	if (_msg_level < _debug_level)
 		return ;
-	std::cout << _get_date() << " " <<  get_title() << " " << _get_text() << std::endl << std::flush;
+	std::cout << _get_date() << " " <<  _get_title() << " " << _get_text() << std::endl << std::flush;
 }
 
 void Debug::set_level(int level)

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 11:20:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 12:11:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_TRACECLASS] = "Class <class> <count>";
 	replies[RPL_TRACERECONNECT] = "";
 	replies[RPL_TRACELOG] = "File <logfile> <debug level>";
-	replies[RPL_TRACEEND] = "<server name> <version & debug level> :End of TRACE";
+	replies[RPL_TRACEEND] = "<server_name> <version>.<debug_level> :End of TRACE";
 	replies[RPL_STATSLINKINFO] = "<linkname> <sendq> <sent messages> <sent Kbytes> <received messages> <received Kbytes> <time open>";
 	replies[RPL_STATSCOMMANDS] = "<command> <count>";
 	replies[RPL_ENDOFSTATS] = "<stats_letter> :End of STATS report";

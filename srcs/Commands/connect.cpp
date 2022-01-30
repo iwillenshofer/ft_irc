@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:21:33 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 11:26:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 11:31:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 **Examples:
 **CONNECT tolsun.oulu.fi          ; Attempt to connect a server to
 **                                tolsun.oulu.fi
+** [IMPLEMENTATION NOTES]
+** as there is no server-server communication, this command
+** only verifies the required parameters.
 */
 
 void Commands::_cmd_connect(void)
