@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 11:01:59 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 11:26:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ class Commands
 		void _cmd_stats(void);
 		void _cmd_links(void);
 		void _cmd_time(void);
+		void _cmd_connect(void);
 		void _cmd_trace(void);
 		void _cmd_admin(void);
 		void _cmd_info(void);
@@ -230,7 +231,7 @@ class Commands
          4.3.1 Version message ....................................   OK
          4.3.2 Stats message ......................................   OK
          4.3.3 Links message ......................................   OK
-         4.3.4 Time message .......................................   s
+         4.3.4 Time message .......................................   OK
          4.3.5 Connect message ....................................   
          4.3.6 Trace message ......................................   
          4.3.7 Admin message ......................................   OK

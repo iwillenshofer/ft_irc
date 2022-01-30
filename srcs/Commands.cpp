@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 11:03:15 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 11:20:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["STATS"] = &Commands::_cmd_stats;
 	cmd["LINKS"] = &Commands::_cmd_links;
 	cmd["TIME"] = &Commands::_cmd_time;
+	cmd["CONNECT"] = &Commands::_cmd_connect;
 	cmd["TRACE"] = &Commands::_cmd_trace;
 	cmd["ADMIN"] = &Commands::_cmd_admin;
 	cmd["INFO"] = &Commands::_cmd_info;

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/26 20:10:04 by roman            ###   ########.fr        #
+#    Updated: 2022/01/30 11:27:50 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/stats.cpp \
 			${SRC_DIR}/Commands/links.cpp \
 			${SRC_DIR}/Commands/time.cpp \
+			${SRC_DIR}/Commands/connect.cpp \
 			${SRC_DIR}/Commands/trace.cpp \
 			${SRC_DIR}/Commands/admin.cpp \
 			${SRC_DIR}/Commands/info.cpp \
