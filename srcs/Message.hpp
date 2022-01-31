@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 21:07:24 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 21:27:53 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,30 @@ class Message
 			return (false);
 		}
 
+		static bool is_bnf_ipv4addr_mask(std::string const &key)
+		{
+			std::vector<std::string> v;
+
+			if (!(key.size()))
+				return (false);
+			if (key[0] == '.' || key[key.size() - 1] == '.')
+				return (false);
+			if (std::count(key.begin(), key.end(), '.') != 3)
+			 	return (false);
+			v = ft::split(key, '.');
+			if (v.size() != 4)
+				return (false);
+			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+			{
+				if (it->size() < 1 || it->size() > 3)
+					return (false);
+				for (std::string::iterator sit = it->begin(); sit != it->end(); sit++)
+					if (!(is_bnf_digit(*sit)) && !(*sit == '*') && !(*sit == '?'))
+						return (false);
+			}
+			return (true);
+		}
+
 		static bool is_bnf_ipv4addr(std::string const &key)
 		{
 			std::vector<std::string> v;
@@ -324,30 +348,40 @@ class Message
 			return (true);
 		}
 
-		static bool is_bnf_targetmask(std::string const &key)
+		/*
+		** Responses:
+		**  BNF_TARGETMSK_INVALID
+		**  BNF_TARGETMSK_VALID
+		**  BNF_TARGETMSK_NOTOPLEVEL
+		**  BNF_TARGETMSK_WILDTOPLEVEL
+		*/
+
+		static int is_bnf_targetmask(std::string const &key)
 		{
 			std::vector<std::string> v;
 
 			if ((key.size()) < 2)
-				return (false);
+				return (BNF_TARGETMSK_INVALID);
 			if (key[0] != '$' && key[0] != '#')
-				return (false);
+				return (BNF_TARGETMSK_INVALID);
 			if (key.find('.') == std::string::npos || key[1] == '.' || key[key.size() - 1] == '.')
-				return (false);
+				return (BNF_TARGETMSK_INVALID);
 			v = ft::split(key, '.');
 			if (!(v.size()))
-				return (false);
-			if (std::count(v.back().begin(), v.back().end(), '*') || std::count(v.back().begin(), v.back().end(), '?'))
-				return (false);
+				return (BNF_TARGETMSK_NOTOPLEVEL);
+			if (is_bnf_ipv4addr_mask(key) && (std::count(v.front().begin(), v.front().end(), '*') || std::count(v.front().begin(), v.front().end(), '?')))
+				return (BNF_TARGETMSK_WILDTOPLEVEL);
+			if (!(is_bnf_ipv4addr_mask(key)) && (std::count(v.back().begin(), v.back().end(), '*') || std::count(v.back().begin(), v.back().end(), '?')))
+				return (BNF_TARGETMSK_WILDTOPLEVEL);
 			for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 			{
 				if (it->find("**") != std::string::npos)
-					return (false);
+					return (BNF_TARGETMSK_INVALID);
  				for (std::string::iterator sit = it->begin(); sit != it->end(); sit++)
 				 	if (*sit == '?' || *sit == '*')
 						*sit = 'a';
 				if (!(is_bnf_shortname(*it)))
-					return (false);
+					return (BNF_TARGETMSK_INVALID);
 			}
 			return (true);
 		}

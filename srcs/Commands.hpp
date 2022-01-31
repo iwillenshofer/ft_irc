@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 13:09:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 21:17:01 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,12 @@ class Commands
 		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
 		void __perform_list(Channel &channel);
 		void __perform_trace(Client &client, std::map<std::string, std::string> &m);
+		void __priv_msg_reply(int msg, std::map<std::string, std::string> *m = NULL);
+		void __priv_msg_send(std::string target);
+		void __priv_msg_send(Client &client);
+		void __priv_msg_process_mask(std::string &target);
+		void __priv_msg_process_channel(std::string &target);
+		void __priv_msg_process_nick(std::string &target);
 
 		/*
 		** Commands not Implemented:
@@ -210,14 +216,14 @@ class Commands
 
 /*
 **
-	  4.1 Connection Registration .................................   
+	  4.1 Connection Registration .................................   [done]
          4.1.1 Password message ...................................   OK
          4.1.2 Nickname message ...................................   OK
          4.1.3 User message .......................................   OK
-         4.1.4 Server message .....................................   [NOT TO BE IMPLEMENTED]
+         4.1.4 Server message .....................................   OK
          4.1.5 Operator message ...................................   OK
          4.1.6 Quit message .......................................   OK
-         4.1.7 Server Quit message ................................   [NOT TO BE IMPLEMENTED]
+         4.1.7 Server Quit message ................................   OK
       4.2 Channel operations ......................................   [done]
          4.2.1 Join message .......................................   OK
          4.2.2 Part message .......................................   OK
@@ -229,7 +235,7 @@ class Commands
          4.2.6 List message .......................................   OK
          4.2.7 Invite message .....................................   OK
          4.2.8 Kick message .......................................   OK
-      4.3 Server queries and commands .............................   
+      4.3 Server queries and commands .............................   [done]
          4.3.1 Version message ....................................   OK
          4.3.2 Stats message ......................................   OK
          4.3.3 Links message ......................................   OK

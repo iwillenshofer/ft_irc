@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/17 23:37:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 21:38:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,178 @@
 **									*.edu.
 */
 
+
+std::pair<std::string, std::string> __split_str(std::string const &key, char c)
+{
+	size_t pos;
+	std::string first;
+	std::string second;
+
+	pos = key.find(c);
+	if (pos != std::string::npos)
+	{
+		first = key.substr(0, pos);
+		second = key.substr(pos + 1);
+	}
+	else
+		first = key;
+	return (std::make_pair(first, second));
+}
+
+std::map<std::string, std::string> __split_nick(std::string const &key)
+{
+
+	std::map<std::string, std::string> m;
+	std::pair<std::string, std::string> v;
+
+	m["nick"] = "";
+	m["user"] = "*";
+	m["host"] = "*";
+	m["server"] = "";
+	v = __split_str(key, '@');
+	m["server"] = v.second;
+	v = __split_str(v.first, '%');
+	m["host"] = v.second;
+	v = __split_str(v.first, '!');
+	m["user"] = v.second;
+	m["nick"] = v.first;
+	return (m);
+}
+
+void	Commands::__priv_msg_reply(int msg, std::map<std::string, std::string> *m)
+{
+	if (_message.command() != "NOTICE")
+		_message_user(_generate_reply(msg), _sender);
+	(void)m;
+}
+
+void	Commands::__priv_msg_send(std::string target)
+{
+	if (Message::is_bnf_channel(target))
+	{
+		std::string msg = _sender->get_prefix() + " " + _message.command() + " " + target + " " + _message.arguments()[_message.arguments().size() - 1] + MSG_ENDLINE;
+		_message_channel(msg, _message.arguments()[0], false);
+	}
+	else if (Message::is_bnf_nickname(target))
+		__priv_msg_send(*(_get_client_by_nickname(target)));
+}
+
+void	Commands::__priv_msg_send(Client &client)
+{
+	std::map<std::string, std::string> m;
+	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client.nickname + " " + _message.arguments()[_message.arguments().size() - 1] + MSG_ENDLINE;
+
+	_message_user(msg, _message.arguments()[0]);
+	if (client.is_away())
+	{
+		m["nick"] = client.nickname;
+		m["away message"] = client.away_message;
+		__priv_msg_reply(RPL_AWAY, &m);
+	}
+}
+
+void	Commands::__priv_msg_process_mask(std::string &target)
+{
+	char masktype;
+	std::vector<Client> targets;
+	std::map<std::string, std::string> m;
+	int is_targetmask = Message::is_bnf_targetmask(target);
+
+	m["channel name"] = target;
+	Debug("PRIVMSG Process Mask", DBG_DEV);
+	if (is_targetmask == BNF_TARGETMSK_NOTOPLEVEL)
+		__priv_msg_reply(ERR_NOTOPLEVEL);
+	else if (is_targetmask && is_targetmask == BNF_TARGETMSK_WILDTOPLEVEL)
+		__priv_msg_reply(ERR_WILDTOPLEVEL);
+	else
+	{
+		masktype = target[0];
+		target.erase(0, 1);
+		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
+		{
+			if ((masktype == '#' && Mask::match_raw(target, it->second.hostname))
+			|| (masktype == '$' && Mask::match_raw(target, _server->servername())))
+				targets.push_back(it->second);
+		}
+		if (targets.size() > SRV_MAXTARGETS && !(_sender->is_operator()))
+			__priv_msg_reply(ERR_TOOMANYTARGETS);
+		else
+		{
+			for (std::vector<Client>::iterator it = targets.begin(); it != targets.end(); it++)
+				__priv_msg_send(it->nickname);
+		}
+	}
+}
+
+void	Commands::__priv_msg_process_channel(std::string &target)
+{
+	Channel *channel;
+	std::map<std::string, std::string> m;
+
+	Debug("PRIVMSG Process Channel", DBG_DEV);
+	m["channel name"] = target;
+	channel = _get_channel_by_name(target);
+	if (!(channel))
+		__priv_msg_reply(ERR_NOSUCHCHANNEL, &m);
+	else if (channel->is_banned(*_sender) || (!(channel->is_user(_sender->nickname)) && (channel->is_moderated() || channel->is_no_outside())))
+		__priv_msg_reply(ERR_CANNOTSENDTOCHAN, &m);
+	else
+		__priv_msg_send(target);
+}
+
+void	Commands::__priv_msg_process_nick(std::string &target)
+{
+	Client *client;
+	std::map<std::string, std::string> m;
+	std::map<std::string, std::string> targetmap = __split_nick(target);
+	
+	m["nickname"] = target;
+	m["nick"] = target;
+	Debug("PRIVMSG Process Nick", DBG_DEV);
+	if (!(Message::is_bnf_nickname(targetmap["nick"])) || (targetmap["server"] != "" && targetmap["server"] != _server->servername()))
+		__priv_msg_reply(ERR_NOSUCHNICK, &m);
+	else
+	{
+		client = NULL;
+		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
+		{
+			if (Mask::match(it->second, targetmap["nick"] + "!" + targetmap["user"] + "@" + targetmap["host"]))
+			{
+				client = &(it->second);
+				break ;
+			}
+		}
+		if (!client)
+			__priv_msg_reply(ERR_NOSUCHNICK, &m);
+		else
+			__priv_msg_send(*client);
+	}
+}
+
 void	Commands::_cmd_privmsg(void)
 {
-	std::string destination = _message.arguments().front();
-	std::string msg = _sender->get_prefix() + " PRIVMSG " + _message.arguments().front() + " " + _message.arguments().back() + MSG_ENDLINE;
-
-	if (destination.at(0) == '#')
-		_message_channel(msg, _message.arguments().front(), false);
+	int is_targetmask;
+	std::string target;
+	std::map<std::string, std::string> m;
+	
+	Debug("PRIVMSG", DBG_DEV);
+	m["command"] = _message.command();
+	if (!(_message.arguments().size()))
+		__priv_msg_reply(ERR_NORECIPIENT, &m);
+	else if (_message.arguments().size() == 1)
+		__priv_msg_reply(ERR_NOTEXTTOSEND);
 	else
-		_message_user(msg, _message.arguments().front());
+	{
+		target = _message.arguments()[0];
+		m["nickname"] = target;
+		is_targetmask = Message::is_bnf_targetmask(target);
+		if (is_targetmask)
+			__priv_msg_process_mask(target);
+		else if (Message::is_bnf_channel(target))
+			__priv_msg_process_channel(target);
+		else if (!(Message::is_bnf_msgto(target)))
+			__priv_msg_reply(ERR_NOSUCHNICK, &m);
+		else
+			__priv_msg_process_nick(target);
+	}
 }

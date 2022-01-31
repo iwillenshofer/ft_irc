@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 09:25:04 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 19:36:21 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ class Channel
 		void		add_voice(std::string chanop, std::string nick);
 		void		remove_voice(std::string chanop, std::string nick);
 
+		bool		is_banned(Client &client);
 		bool		is_banned(std::string nick);
 		void		add_ban(std::string chanop, std::string nick);
 		void		remove_ban(std::string chanop, std::string nick);
@@ -106,9 +107,11 @@ class Channel
 		void		add_invitation(std::string nick);
 		void		remove_invitation(std::string nick);
 
+		bool		is_moderated(void);
 		void		set_moderated(std::string chanop);
 		void		unset_moderated(std::string chanop);
 
+		bool		is_no_outside(void);
 		void		set_no_outside(std::string chanop);
 		void		unset_no_outside(std::string chanop);
 

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 08:31:54 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:28:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@
 # define	MSG_BNF_CHANNELTYPES		"#+!&"
 # define	MSG_ALLOWEDSTATS			"lmou"
 
+# define	BNF_TARGETMSK_INVALID		0
+# define	BNF_TARGETMSK_VALID			1
+# define	BNF_TARGETMSK_NOTOPLEVEL	2
+# define	BNF_TARGETMSK_WILDTOPLEVEL	3
+
 /*
 ** Admin Infos
 */
@@ -46,6 +51,7 @@
 # define	SRV_REGISTERWAIT		45
 # define 	BUFFERSIZE 				1024
 # define	SRV_MAXWHOIS			5
+# define	SRV_MAXTARGETS			5
 # define	SRV_MAXNICKLEN			9
 # define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
 # define	SRV_COMMENTS			"Not great, not terrible!"

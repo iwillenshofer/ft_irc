@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 13:11:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 21:44:39 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_NOLOGIN] = "<user> :User not logged in";
 	replies[ERR_SUMMONDISABLED] = ":SUMMON has been disabled";
 	replies[ERR_USERSDISABLED] = ":USERS has been disabled";
-	replies[ERR_NOTREGISTERED] = ":You have not registered";
+	replies[ERR_NOTREGISTERED] = "<user> :You have not registered";
 	replies[ERR_NEEDMOREPARAMS] = "<command> :Not enough parameters";
 	replies[ERR_ALREADYREGISTRED] = ":Unauthorized command (already registered)";
 	replies[ERR_NOPERMFORHOST] = ":Your host isn't among the privileged";
@@ -283,10 +283,12 @@ Channel *Commands::_get_channel_by_name(std::string name)
 void	Commands::_process()
 {
 	std::string cmd = _message.command();	
-
+	std::map<std::string, std::string> m;
+	
+	m["user"] = (_sender->nickname != "") ? _sender->nickname : std::string("*");
 	if (!(_sender->registered) && (cmd != "ADMIN" && cmd != "NICK" && cmd != "PASS"
 		&& cmd != "PONG" && cmd != "QUIT" && cmd != "USER" && cmd != "VERSION" && cmd != "SERVER"))
-		_message_user(_generate_reply(ERR_NOTREGISTERED), _sender);
+		_message_user(_generate_reply(ERR_NOTREGISTERED, m), _sender);
 	else
 		_run_command(cmd);
 }

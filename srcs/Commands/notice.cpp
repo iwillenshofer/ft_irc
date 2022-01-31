@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/16 20:30:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 21:49:36 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@
 
 void	Commands::_cmd_notice(void)
 {
-
+	_cmd_privmsg();
 }

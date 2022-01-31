@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/28 21:56:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:50:06 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,6 +383,17 @@ void	Channel::remove_voice(std::string chanop, std::string nick)
     throw (ERR_NOSUCHNICK);
 }
 
+bool	Channel::is_banned(Client &client)
+{
+    // TO do : Add mask : *
+    for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
+    {
+        if (Mask::match(client, *it))
+            return true;
+    }
+    return false;
+}
+
 bool	Channel::is_banned(std::string nick)
 {
     // TO do : Add mask : *
@@ -473,6 +484,8 @@ void	Channel::remove_invitation(std::string nick)
     }
 }
 
+bool	Channel::is_moderated(void) { return (_mode.m); }
+
 void	Channel::set_moderated(std::string chanop)
 {
     if (is_operator(chanop) == false)
@@ -486,6 +499,8 @@ void	Channel::unset_moderated(std::string chanop)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.m = false;
 }
+
+bool	Channel::is_no_outside(void) { return (_mode.n); }
 
 void	Channel::set_no_outside(std::string chanop)
 {
