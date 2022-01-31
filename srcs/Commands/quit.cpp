@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 13:25:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:07:08 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 ** Example of a normal quit message:
 ** -> Users send QUIT command
 ** -> _cmd_quit() sets hangup to true;
-** -> FileDescriptors, in turn, call remove_queued()
+** -> Connections, in turn, call remove_queued()
 ** -> queue runs a QUIT command again on behalf of the user;
 ** -> _cmd_quit() sends a message to all channels.
 ** -> the user is erased

@@ -6,12 +6,12 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/21 14:54:31 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:21:30 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_HPP
-# define UTILS_HPP
+#ifndef UTILITIES_HPP
+# define UTILITIES_HPP
 
 # include <string>
 # include <string>

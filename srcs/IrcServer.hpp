@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WebServer.hpp                                      :+:      :+:    :+:   */
+/*   IrcServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:21:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:20:41 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WEBSERV_HPP
-# define WEBSERV_HPP
+#ifndef IRCSERVER_HPP
+# define IRCSERVER_HPP
 
 # include <vector>
 # include <map>
@@ -19,14 +19,14 @@
 # include <cerrno>
 # include "Socket.hpp"
 # include "Server.hpp"
-# include "FileDescriptors.hpp"
+# include "Connections.hpp"
 # include "Debug.hpp"
 # include <poll.h>
 # include <fcntl.h>
  #include <sys/ioctl.h>
  #include <unistd.h>
  
-class WebServer
+class IrcServer
 {
 	public:
 
@@ -34,10 +34,10 @@ class WebServer
 			/*
 			** Coplien Form
 			*/
-			WebServer(std::string host, int port, std::string password);
-			WebServer(WebServer const &cp);
-			WebServer &operator=(WebServer const &cp);
-			virtual ~WebServer();
+			IrcServer(std::string host, int port, std::string password);
+			IrcServer(IrcServer const &cp);
+			IrcServer &operator=(IrcServer const &cp);
+			virtual ~IrcServer();
 
 
 		private:
@@ -45,14 +45,14 @@ class WebServer
 			** private member functions and variables
 			*/
 			Socket							_socket;
-			FileDescriptors		 			_connections;
+			Connections		 				_connections;
 			Server							_server;
 			void							_init(int port);
 
 			/*
 			** variables and functions for signal handler.
 			*/
-			static std::vector<WebServer *> _instances; // instances of self to be used in SignalHandler
+			static std::vector<IrcServer *> _instances; // instances of self to be used in SignalHandler
 			static bool 					_stop_server; 	// instances of self to be used in SignalHandler
 			static void 	_signalHandler( int signal );
 

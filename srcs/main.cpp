@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 23:15:35 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:07:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "WebServer.hpp"
+#include "IrcServer.hpp"
 #include <unistd.h>
 
 bool	check_port(std::string port)
@@ -96,7 +96,7 @@ int main (int argc, char **argv)
 	try
 	{
 		std::vector<std::string> args = parse_args(argc - 1, argv + 1);
-		WebServer p(args.at(0), atoi(args.at(1).c_str()), args.at(2));
+		IrcServer p(args.at(0), atoi(args.at(1).c_str()), args.at(2));
 		Debug("Server successfully shut down.", DBG_INFO);
 	}
 	catch(const std::runtime_error& e)

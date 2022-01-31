@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 21:17:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:43:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 class Channel;
 class Client;
 class Server;
+class Message;
+
 /*
 ** the command Class parses the command, creates a response,
 ** and adds it to the appropriate clients send queue.

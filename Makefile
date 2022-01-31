@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/01/30 13:16:29 by iwillens         ###   ########.fr        #
+#    Updated: 2022/01/31 14:53:20 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,10 @@ INC_DIR = ./${SRC_DIR}
 SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Debug.cpp \
 			${SRC_DIR}/Socket.cpp \
-			${SRC_DIR}/FileDescriptors.cpp \
+			${SRC_DIR}/Connections.cpp \
+			${SRC_DIR}/Message.cpp \
 			${SRC_DIR}/utilities.cpp \
-			${SRC_DIR}/WebServer.cpp \
+			${SRC_DIR}/IrcServer.cpp \
 			${SRC_DIR}/Client.cpp \
 			${SRC_DIR}/Commands.cpp \
 			${SRC_DIR}/Commands/pass.cpp \

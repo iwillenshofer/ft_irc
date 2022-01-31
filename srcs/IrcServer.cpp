@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   WebServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 21:39:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:07:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "WebServer.hpp"
+#include "IrcServer.hpp"
 
-std::vector<WebServer *> WebServer::_instances; //static members must be defined
-bool WebServer::_stop_server = false;
+std::vector<IrcServer *> IrcServer::_instances; //static members must be defined
+bool IrcServer::_stop_server = false;
 
-WebServer::WebServer(std::string host, int port, std::string password)
+IrcServer::IrcServer(std::string host, int port, std::string password)
 {
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 
 //	signal(SIGTSTP, _signalHandler);
 	_instances.push_back(this);
 	_server = Server(host, password);
-	_connections = FileDescriptors(&_server);
+	_connections = Connections(&_server);
 	_init(port);
 }
 
-WebServer::WebServer(WebServer const &cp)
+IrcServer::IrcServer(IrcServer const &cp)
 {
 	_instances.push_back(this);
 	*this = cp;
 }
 
-WebServer &WebServer::operator=(WebServer const &cp)
+IrcServer &IrcServer::operator=(IrcServer const &cp)
 {
 	this->_socket = cp._socket;
 	this->_server = cp._server;
@@ -40,16 +40,16 @@ WebServer &WebServer::operator=(WebServer const &cp)
 	return (*this);
 }
 
-WebServer::~WebServer(void)
+IrcServer::~IrcServer(void)
 {
-	WebServer::_instances.erase(std::remove(WebServer::_instances.begin(), WebServer::_instances.end(), this), WebServer::_instances.end());
+	IrcServer::_instances.erase(std::remove(IrcServer::_instances.begin(), IrcServer::_instances.end(), this), IrcServer::_instances.end());
 }
 
 /*
 ** initializes Socket and adds it as the first elements on _connections list.
 */
 
-void WebServer::_init(int port)
+void IrcServer::_init(int port)
 {
 	_socket = Socket(port);
 	_connections.add(_socket.get_server_socket());
@@ -61,7 +61,7 @@ void WebServer::_init(int port)
 ** Accepts a new connections if POLLIN triggered on Socket 
 */
 
-void WebServer::_accept_connections(int fd)
+void IrcServer::_accept_connections(int fd)
 {
 	Debug("Accept FD?", DBG_DEV);
 	int acc_fd;
@@ -79,7 +79,7 @@ void WebServer::_accept_connections(int fd)
 ** and process queued messages.
 */
 
-void WebServer::RunServer(void)
+void IrcServer::RunServer(void)
 {
 	Debug("Running Server...", DBG_INFO);
 	while (!(_stop_server))
@@ -121,15 +121,15 @@ void WebServer::RunServer(void)
 ** _signalHandler and _close_all_connections are called upon CTRL+C, CTRL+\, CTRL+Z
 */
 
-void WebServer::_signalHandler( int signal )
+void IrcServer::_signalHandler( int signal )
 {
 	Debug("Interrupt Signal Received: " + ft::to_string(signal) + "... Closing Server.", DBG_WARNING);
-	for (std::vector<WebServer *>::iterator it = WebServer::_instances.begin(); it !=  WebServer::_instances.end(); it++)
+	for (std::vector<IrcServer *>::iterator it = IrcServer::_instances.begin(); it !=  IrcServer::_instances.end(); it++)
 		(*it)->_close_all_connections();
 	_stop_server = true;
 }
 
-void WebServer::_close_all_connections(void)
+void IrcServer::_close_all_connections(void)
 {
 	pollfd *lst = _connections.list();
 	for (size_t idx = 1; idx < _connections.size(); idx++)
