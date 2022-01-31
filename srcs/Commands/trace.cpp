@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:15 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 12:49:02 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	Commands::_cmd_trace(void)
 	if (!(_message.arguments().size()))
 		mask = "*";
 	else
-		mask = _message.arguments()[0];
+		mask = _message.arguments(0);
 	if (Mask::match_raw(_server->servername(), mask))
 	{
 		found = true;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_channel.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 22:53:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:29:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@
 
 void	Commands::_cmd_mode_channel(void)
 {
-    Channel     *chan =  _get_channel_by_name(_message.arguments()[0]);
+    Channel     *chan =  _get_channel_by_name(_message.arguments(0));
     std::string mode_channel = MODE_CHANNEL;
     char        prefix = '+';
     bool        is_arg;
@@ -131,17 +131,17 @@ void	Commands::_cmd_mode_channel(void)
 		_message_user(_generate_reply(RPL_CHANNELMODEIS, m), _sender);
 		return ;
 	}
-    for (size_t i = 0; i < _message.arguments()[1].size(); i++)
+    for (size_t i = 0; i < _message.arguments(1).size(); i++)
     {
-        if (mode_channel.find(_message.arguments()[1].at(i)) == std::string::npos)
+        if (mode_channel.find(_message.arguments(1).at(i)) == std::string::npos)
         {
             _message_user(_generate_reply(ERR_UNKNOWNMODE), _sender);
             continue;
         }
             
-        if (_message.arguments()[1].at(i) == '+' || _message.arguments()[1].at(i) == '-')
+        if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
         {
-            prefix = _message.arguments()[1].at(i);
+            prefix = _message.arguments(1).at(i);
             continue;
         }
         if (prefix == '+')
@@ -151,15 +151,15 @@ void	Commands::_cmd_mode_channel(void)
                 std::string msg;
                 if (is_arg == true)
                 {
-                    chan->activate_mode(_sender->nickname, _message.arguments()[1].at(i), _message.arguments()[2]);
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +" + _message.arguments()[1].at(i) + " " + _message.arguments()[2] + MSG_ENDLINE;
+                    chan->activate_mode(_sender->nickname, _message.arguments(1).at(i), _message.arguments(2));
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " +" + _message.arguments(1).at(i) + " " + _message.arguments(2) + MSG_ENDLINE;
                 }
                 else
                 {
-                    chan->activate_mode(_sender->nickname, _message.arguments()[1].at(i));
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +" + _message.arguments()[1].at(i) + MSG_ENDLINE;
+                    chan->activate_mode(_sender->nickname, _message.arguments(1).at(i));
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " +" + _message.arguments(1).at(i) + MSG_ENDLINE;
                 }
-	            _message_channel(msg, _message.arguments()[0], true);
+	            _message_channel(msg, _message.arguments(0), true);
             }
             catch(int code_error)
             {
@@ -173,15 +173,15 @@ void	Commands::_cmd_mode_channel(void)
                 std::string msg;
                 if (is_arg == true)
                 {
-                    chan->deactivate_mode(_sender->nickname, _message.arguments()[1].at(i), _message.arguments()[2]);
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " -" + _message.arguments()[1].at(i) + " " + _message.arguments()[2] + MSG_ENDLINE;
+                    chan->deactivate_mode(_sender->nickname, _message.arguments(1).at(i), _message.arguments(2));
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " -" + _message.arguments(1).at(i) + " " + _message.arguments(2) + MSG_ENDLINE;
                 }
                 else
                 {
-                    chan->deactivate_mode(_sender->nickname, _message.arguments()[1].at(i));
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " -" + _message.arguments()[1].at(i) + MSG_ENDLINE;
+                    chan->deactivate_mode(_sender->nickname, _message.arguments(1).at(i));
+                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " -" + _message.arguments(1).at(i) + MSG_ENDLINE;
                 }
-	            _message_channel(msg, _message.arguments()[0], true);
+	            _message_channel(msg, _message.arguments(0), true);
             }
             catch(int code_error)
             {

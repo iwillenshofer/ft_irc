@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:25 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 22:14:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:30:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	Commands::_cmd_whois(void)
 	}
 	if (_message.arguments().size() >= 2)
 		first_arg = 1;
-	masks = ft::split(_message.arguments()[first_arg], ',');
+	masks = ft::split(_message.arguments(first_arg), ',');
 	for (std::vector<std::string>::iterator it = masks.begin(); it != masks.end(); it++)
 	{
 		if (!(Message::is_bnf_mask(*it)))

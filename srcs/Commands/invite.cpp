@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 21:27:14 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@
 
 void	Commands::_cmd_invite(void)
 {
-    Client     *client =  _get_client_by_nickname(_message.arguments()[0]);
-    Channel    *channel =  _get_channel_by_name(_message.arguments()[1]);
+    Client     *client =  _get_client_by_nickname(_message.arguments(0));
+    Channel    *channel =  _get_channel_by_name(_message.arguments(1));
     std::map<std::string, std::string> m;
 
     if (_message.arguments().size() != 2)

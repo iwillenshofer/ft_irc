@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   oper.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 09:57:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	Commands::_cmd_oper(void)
         _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
         return ;
     }
-    it = _server->operators().find(_message.arguments()[0]);
+    it = _server->operators().find(_message.arguments(0));
     if (it == _server->operators().end())
     {
         _message_user(_generate_reply(ERR_NOOPERHOST), _sender);
         return ;
     }
-    if (_message.arguments()[1] != it->second)
+    if (_message.arguments(1) != it->second)
     {
         _message_user(_generate_reply(ERR_PASSWDMISMATCH), _sender);
         return ;

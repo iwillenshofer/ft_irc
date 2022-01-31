@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 10:04:00 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	Commands::_cmd_ping(void)
 {
     if (_message.arguments().size() >= 1)
     {
-        std::string msg = ":" + std::string(SRV_SERVERNAME) + " PONG " + std::string(SRV_SERVERNAME) + " :" + _message.arguments()[0] + MSG_ENDLINE;
+        std::string msg = ":" + std::string(SRV_SERVERNAME) + " PONG " + std::string(SRV_SERVERNAME) + " :" + _message.arguments(0) + MSG_ENDLINE;
         _message_user(msg, _sender);
     }
     else

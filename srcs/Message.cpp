@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:09:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:35:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ Message::~Message() { };
 /*
 ** getters
 */
-std::string					&Message::message(void) {return (_message); }
-std::string					&Message::prefix(void) {return (_prefix); }
-std::string					&Message::command(void) {return (_command); }
-std::vector<std::string>	&Message::arguments(void) {return (_arguments); }
+std::string					&Message::message(void) { return (_message); }
+std::string					&Message::prefix(void) { return (_prefix); }
+std::string					&Message::command(void) { return (_command); }
+std::vector<std::string>	&Message::arguments(void) { return (_arguments); }
+std::string					&Message::arguments(size_t idx) { return (_arguments[idx]); };
 
 /*
 ** disassembles _message into _prefix, _command and [_arguments]

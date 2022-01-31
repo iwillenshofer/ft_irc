@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:13 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 11:55:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,14 @@ void	Commands::_cmd_topic(void)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
 		return ;
 	}
-	channel = _get_channel_by_name(_message.arguments()[0]);
+	channel = _get_channel_by_name(_message.arguments(0));
 	if (!(channel) || !(channel->is_user(_sender->nickname)))
 		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
 	else if (_message.arguments().size() == 1)
 		__perform_topic(channel, m, false);
 	else
 	{
-		topic = _message.arguments()[1];
+		topic = _message.arguments(1);
 		if (topic.size() >= 2 && ((topic[0] == '\'' && topic[topic.size() - 1] == '\'') || (topic[0] == '\"' && topic[topic.size() - 1] == '\"')))
 		{
 			topic.erase(0, 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/25 23:37:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	Commands::_cmd_join(void)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
 		return ;
 	}
-	if (_message.arguments()[0] == "0")
+	if (_message.arguments(0) == "0")
 	{
-		Debug("ARGUMENT: " + _message.arguments()[0], DBG_ERROR);
+		Debug("ARGUMENT: " + _message.arguments(0), DBG_ERROR);
 		for (Commands::channel_iterator it = _channels->begin(); it != _channels->end(); it++)
 		{
 			if (it->second.is_user(_sender->nickname))
@@ -100,12 +100,12 @@ void	Commands::_cmd_join(void)
 		}
 		return;
 	}
-	Message::remove_double_commas(_message.arguments()[0]);
-	u = ft::split(_message.arguments()[0], ',');
+	Message::remove_double_commas(_message.arguments(0));
+	u = ft::split(_message.arguments(0), ',');
 	if (_message.arguments().size() > 1)
 	{
-		Message::remove_double_commas(_message.arguments()[1]);
-		p = ft::split(_message.arguments()[1], ',');
+		Message::remove_double_commas(_message.arguments(1));
+		p = ft::split(_message.arguments(1), ',');
 	}
 	while (p.size() < u.size())
 		p.push_back("");

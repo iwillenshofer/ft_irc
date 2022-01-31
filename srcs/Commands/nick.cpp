@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 22:01:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,22 @@
 void	Commands::_cmd_nick(void)
 {
 	std::string old_nick = _sender->nickname;
-	if (_message.arguments().size() == 0 || _message.arguments()[0].empty())
+	if (_message.arguments().size() == 0 || _message.arguments(0).empty())
 	{
 		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
 		return ;
 	}
-	if (_get_client_by_nickname(_message.arguments()[0]) != NULL && _sender->nickname != _message.arguments()[0])
+	if (_get_client_by_nickname(_message.arguments(0)) != NULL && _sender->nickname != _message.arguments(0))
 		_message_user(_generate_reply(ERR_NICKNAMEINUSE), _sender);
-	else if (_sender->nickname == _message.arguments()[0])
+	else if (_sender->nickname == _message.arguments(0))
 		return;
-	else if (!(Message::is_bnf_nickname(_message.arguments()[0])))
+	else if (!(Message::is_bnf_nickname(_message.arguments(0))))
 		_message_user(_generate_reply(ERR_ERRONEUSNICKNAME), _sender);
 	else
 	{
 		if (_sender->registered)
 			_server->add_whowas(*_sender);
-		_sender->nickname = _message.arguments()[0];
+		_sender->nickname = _message.arguments(0);
 		_truncate_nick(_sender->nickname);
 		if (_sender->registered)
 			_message_user(":" + old_nick + " NICK " + _sender->nickname + "\r\n", _sender); // send message that user changed nickname.

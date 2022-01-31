@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:50 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 21:38:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ void	Commands::_cmd_pass(void)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
     else
     {
-        _sender->password = _message.arguments()[0];
+        _sender->password = _message.arguments(0);
     }
 }

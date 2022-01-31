@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_user.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:58:45 by roman             #+#    #+#             */
-/*   Updated: 2022/01/28 21:25:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	Commands::_cmd_mode_user(void)
 {
-    Client     *client =  _get_client_by_nickname(_message.arguments()[0]);
+    Client     *client =  _get_client_by_nickname(_message.arguments(0));
     std::string mode_user = MODE_USER;
     char        prefix = '+';
 
@@ -28,17 +28,17 @@ void	Commands::_cmd_mode_user(void)
         _message_user(_generate_reply(ERR_USERSDONTMATCH), _sender);
         return ;
     }
-	Debug("Message Size: " + ft::to_string(_message.arguments()[1].size()), DBG_ERROR);
-    for (size_t i = 0; i < _message.arguments()[1].size(); i++)
+	Debug("Message Size: " + ft::to_string(_message.arguments(1).size()), DBG_ERROR);
+    for (size_t i = 0; i < _message.arguments(1).size(); i++)
     {
-        if (mode_user.find(_message.arguments()[1].at(i)) == std::string::npos)
+        if (mode_user.find(_message.arguments(1).at(i)) == std::string::npos)
         {
             _message_user(_generate_reply(ERR_UMODEUNKNOWNFLAG), _sender);
             continue;
         }
-        if (_message.arguments()[1].at(i) == '+' || _message.arguments()[1].at(i) == '-')
+        if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
         {
-            prefix = _message.arguments()[1].at(i);
+            prefix = _message.arguments(1).at(i);
             continue;
         }
         if (prefix == '+')
@@ -47,9 +47,9 @@ void	Commands::_cmd_mode_user(void)
             {
 				Debug("PREFIX +", DBG_ERROR);
                 std::string msg;
-                client->activate_mode(_message.arguments()[1].at(i));
-                msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " +" + _message.arguments()[1].at(i) + MSG_ENDLINE;
-	            //_message_channel(msg, _message.arguments()[0], true);
+                client->activate_mode(_message.arguments(1).at(i));
+                msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " +" + _message.arguments(1).at(i) + MSG_ENDLINE;
+	            //_message_channel(msg, _message.arguments(0), true);
 				_message_user(msg, _sender);
             }
             catch(int code_error)
@@ -65,9 +65,9 @@ void	Commands::_cmd_mode_user(void)
             {
 				Debug("PREFIX -: ", DBG_ERROR);
                 std::string msg;
-                client->deactivate_mode(_message.arguments()[1].at(i));
-                msg = _sender->get_prefix() + " MODE " + _message.arguments()[0] + " -" + _message.arguments()[1].at(i) + MSG_ENDLINE;
-//	            _message_channel(msg, _message.arguments()[0], true);
+                client->deactivate_mode(_message.arguments(1).at(i));
+                msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " -" + _message.arguments(1).at(i) + MSG_ENDLINE;
+//	            _message_channel(msg, _message.arguments(0), true);
                 _message_user(msg, _sender);
 
             }

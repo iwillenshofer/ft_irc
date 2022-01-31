@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   whowas.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/24 22:52:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void	Commands::_cmd_whowas(void)
 		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
 		return ;
 	}
-	if (_message.arguments().size() > 1 && ft::isNumeric(_message.arguments()[1]))
-		max = std::atoi(_message.arguments()[1].c_str());
-	Message::clear_commas(_message.arguments()[0]);
-	v = ft::split(_message.arguments()[0], ',');
+	if (_message.arguments().size() > 1 && ft::isNumeric(_message.arguments(1)))
+		max = std::atoi(_message.arguments(1).c_str());
+	Message::clear_commas(_message.arguments(0));
+	v = ft::split(_message.arguments(0), ',');
 	m["server"] = _server->servername();
-	m["nickname"] = _message.arguments()[0];
+	m["nickname"] = _message.arguments(0);
 	for (std::vector<std::string>::iterator vit = v.begin(); vit != v.end(); vit++)
 	{
 		m["nick"] = *vit;

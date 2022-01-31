@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   who.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 10:21:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ void	Commands::_cmd_who(void)
 
 	if (!(_message.arguments().size()))
 		_message.arguments().push_back("*");
-	else if (_message.arguments()[0] == "0")
-		_message.arguments()[0] = "*";
-	arguments["name"] = _message.arguments()[0];
+	else if (_message.arguments(0) == "0")
+		_message.arguments(0) = "*";
+	arguments["name"] = _message.arguments(0);
 	arguments["server"] = _server->servername();
-	if (Message::is_bnf_channel(_message.arguments()[0]))
+	if (Message::is_bnf_channel(_message.arguments(0)))
 	{
-		channel = _get_channel_by_name(_message.arguments()[0]);
+		channel = _get_channel_by_name(_message.arguments(0));
 		if ((channel) && !(channel->is_secret()))
 		{
 			if (channel->is_user(_sender->nickname))
@@ -108,11 +108,11 @@ void	Commands::_cmd_who(void)
 		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
 		{
 			if (!(it->second.is_invisible()) && std::find(shared_channel.begin(), shared_channel.end(), it->second.nickname) == shared_channel.end()
-			&& (Mask::match(it->second, _message.arguments()[0]) || Mask::match_raw(it->second.nickname, _message.arguments()[0]) || 
-			Mask::match_raw(it->second.hostname, _message.arguments()[0]) || Mask::match_raw(it->second.realname, _message.arguments()[0]) || 
-			Mask::match_raw(_server->servername(), _message.arguments()[0])))
+			&& (Mask::match(it->second, _message.arguments(0)) || Mask::match_raw(it->second.nickname, _message.arguments(0)) || 
+			Mask::match_raw(it->second.hostname, _message.arguments(0)) || Mask::match_raw(it->second.realname, _message.arguments(0)) || 
+			Mask::match_raw(_server->servername(), _message.arguments(0))))
 			{
-				if (_message.arguments().size() <= 1 || _message.arguments()[1] != "o" || it->second.is_operator())
+				if (_message.arguments().size() <= 1 || _message.arguments(1) != "o" || it->second.is_operator())
 				__perform_who(it->second, arguments);
 			}
 		}

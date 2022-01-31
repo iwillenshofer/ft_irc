@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 21:38:31 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:30:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ void	Commands::__priv_msg_send(std::string target)
 {
 	if (Message::is_bnf_channel(target))
 	{
-		std::string msg = _sender->get_prefix() + " " + _message.command() + " " + target + " " + _message.arguments()[_message.arguments().size() - 1] + MSG_ENDLINE;
-		_message_channel(msg, _message.arguments()[0], false);
+		std::string msg = _sender->get_prefix() + " " + _message.command() + " " + target + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
+		_message_channel(msg, _message.arguments(0), false);
 	}
 	else if (Message::is_bnf_nickname(target))
 		__priv_msg_send(*(_get_client_by_nickname(target)));
@@ -139,9 +139,9 @@ void	Commands::__priv_msg_send(std::string target)
 void	Commands::__priv_msg_send(Client &client)
 {
 	std::map<std::string, std::string> m;
-	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client.nickname + " " + _message.arguments()[_message.arguments().size() - 1] + MSG_ENDLINE;
+	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client.nickname + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
 
-	_message_user(msg, _message.arguments()[0]);
+	_message_user(msg, _message.arguments(0));
 	if (client.is_away())
 	{
 		m["nick"] = client.nickname;
@@ -242,7 +242,7 @@ void	Commands::_cmd_privmsg(void)
 		__priv_msg_reply(ERR_NOTEXTTOSEND);
 	else
 	{
-		target = _message.arguments()[0];
+		target = _message.arguments(0);
 		m["nickname"] = target;
 		is_targetmask = Message::is_bnf_targetmask(target);
 		if (is_targetmask)

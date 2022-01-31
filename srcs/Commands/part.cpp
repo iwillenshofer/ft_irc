@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/28 21:49:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ void	Commands::_cmd_part(void)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
 		return;
 	}
-	channel = _get_channel_by_name(_message.arguments()[0]);
+	channel = _get_channel_by_name(_message.arguments(0));
 	if ((!channel))
 		_message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
 	else if (!(channel->is_user(_sender->nickname)))
 		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
 	else
 	{
-		std::string msg = _sender->get_prefix() + " PART " + _message.arguments()[0] + MSG_ENDLINE;
-		_message_channel(msg, _message.arguments()[0], true);
+		std::string msg = _sender->get_prefix() + " PART " + _message.arguments(0) + MSG_ENDLINE;
+		_message_channel(msg, _message.arguments(0), true);
 		channel->remove_user(_sender->nickname);
 		if (channel->is_empty())
 			_channels->erase(channel->get_name());

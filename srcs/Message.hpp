@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:11:19 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:35:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ class Message
 		std::string					&prefix(void);
 		std::string					&command(void);
 		std::vector<std::string>	&arguments(void);
-		
+		std::string					&arguments(size_t idx);
+
 	private:
 		/*
 		** disassembles _message into _prefix, _command and [_arguments]
 		*/
-		
 		void _disassemble(void);
 		void _validate(void);
 

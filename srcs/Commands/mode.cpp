@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:12 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 19:59:45 by roman            ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,19 +163,19 @@ void	Commands::_cmd_mode(void)
 
 	_message.print();
 
-	if (_message.arguments()[0].at(0) == '#' || _message.arguments()[0].at(0) == '&')
+	if (_message.arguments(0).at(0) == '#' || _message.arguments(0).at(0) == '&')
 		_cmd_mode_channel();
 	else
 		_cmd_mode_user();
 	//std::string users;
 	//std::map<std::string, std::string> arguments;
 //
-	//for (std::vector<std::string>::iterator it = (*_channels)[_message.arguments()[0]].users.begin(); it != (*_channels)[_message.arguments()[0]].users.end(); it++ )
+	//for (std::vector<std::string>::iterator it = (*_channels)[_message.arguments(0)].users.begin(); it != (*_channels)[_message.arguments(0)].users.end(); it++ )
 	//	users += "@" + *it + ' ';
 	//if (users.size())
 	//	users.erase(users.length() - 1);
-	//arguments["channel"] = _message.arguments()[0];
-	//arguments["name"] = _message.arguments()[0];
+	//arguments["channel"] = _message.arguments(0);
+	//arguments["name"] = _message.arguments(0);
 	//arguments["names_list"] = users;
 	//arguments["mode"] = "+";
 	//arguments["mode_params"] = "";

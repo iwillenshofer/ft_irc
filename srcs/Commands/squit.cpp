@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   squit.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 12:54:40 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 13:21:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ void	Commands::_cmd_squit(void)
 		_message_user(_generate_reply(ERR_NOPRIVILEGES), _sender);
 	else if ((_message.arguments().size()) < 2)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
-	else if (!(Mask::match_raw(_server->servername(), _message.arguments()[0])))
+	else if (!(Mask::match_raw(_server->servername(), _message.arguments(0))))
 	{
-		m["server name"] = _message.arguments()[0];
+		m["server name"] = _message.arguments(0);
 		_message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
 	}
 }

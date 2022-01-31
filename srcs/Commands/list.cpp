@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:07 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 13:53:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	Commands::_cmd_list(void)
 	}	
 	else
 	{
-		v = Message::split_commas(_message.arguments()[0], true);		
+		v = Message::split_commas(_message.arguments(0), true);		
 		for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 		{
 			channel = _get_channel_by_name(*it);

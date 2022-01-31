@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kill.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:02 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 17:39:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ void	Commands::_cmd_kill(void)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
 		return ;
 	}
-	else if (_message.arguments()[0] == _server->servername())
+	else if (_message.arguments(0) == _server->servername())
 	{
 		_message_user(_generate_reply(ERR_CANTKILLSERVER, m), _sender);
 		return ;
 	}
-	m["nickname"] = _message.arguments()[0];
-	m["message"] = _message.arguments()[1];
-	client = _get_client_by_nickname(_message.arguments()[0]);
+	m["nickname"] = _message.arguments(0);
+	m["message"] = _message.arguments(1);
+	client = _get_client_by_nickname(_message.arguments(0));
 	if (!(_sender->is_operator()))
 		_message_user(_generate_reply(ERR_NOPRIVILEGES, m), _sender);
 	else if (!(client))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stats.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 09:35:32 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ void	Commands::_cmd_stats(void)
 	size_t diff;
 
 	m["stats_letter"] = "*";
-	if (!(_message.arguments().size()) || _message.arguments()[0].size() != 1
-	|| valid.find(_message.arguments()[0][0]) == std::string::npos)
+	if (!(_message.arguments().size()) || _message.arguments(0).size() != 1
+	|| valid.find(_message.arguments(0)[0]) == std::string::npos)
 	{
 		_message_user(_generate_reply(RPL_ENDOFSTATS, m), _sender);
 		return ;
 	}
-	cmd = _message.arguments()[0][0];
+	cmd = _message.arguments(0)[0];
 	m["stats_letter"] = cmd;
 	if (cmd == 'm')
 	{

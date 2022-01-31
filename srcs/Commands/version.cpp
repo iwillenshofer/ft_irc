@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   version.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:19 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 12:43:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	Commands::_cmd_version(void)
 	m["version"] = _server->version();
 	m["debuglevel"] = dbg.debug_level();
 	m["comments"] = SRV_COMMENTS;
-	if (_message.arguments().size() && _message.arguments()[0] != _server->servername())
+	if (_message.arguments().size() && _message.arguments(0) != _server->servername())
 	{
-		m["server name"] = _message.arguments()[0];
+		m["server name"] = _message.arguments(0);
 		_message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
 	}
 	else

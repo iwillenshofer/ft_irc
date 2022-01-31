@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 14:49:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 16:29:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void	Commands::_cmd_kick(void)
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
 	else
 	{
-		reason = (_message.arguments().size() > 2) ? _message.arguments()[2] : std::string(SRV_DFLKICKMSG);
-		channels = Message::split_commas(_message.arguments()[0], true);
-		users = Message::split_commas(_message.arguments()[1], true);
+		reason = (_message.arguments().size() > 2) ? _message.arguments(2) : std::string(SRV_DFLKICKMSG);
+		channels = Message::split_commas(_message.arguments(0), true);
+		users = Message::split_commas(_message.arguments(1), true);
 		for (std::vector<std::string>::iterator cit = channels.begin(); cit != channels.end(); cit++)
 		{
 			m["channel name"] = *cit;

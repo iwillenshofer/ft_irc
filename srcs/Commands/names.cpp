@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   names.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 23:02:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void	Commands::_cmd_names(void)
 	Channel *channel;
 
 	Debug("Names", DBG_ERROR);
-	if (_message.arguments().size() == 1 && _message.arguments()[0] == _server->servername())
+	if (_message.arguments().size() == 1 && _message.arguments(0) == _server->servername())
 		_message.arguments().clear();
 	if (!(_message.arguments().size()))
 		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
 			v.push_back(it->first);
 	else
-		v = Message::split_commas(_message.arguments()[0]);
+		v = Message::split_commas(_message.arguments(0));
 	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 	{
 		Debug("Channels:" + *it, DBG_ERROR);
