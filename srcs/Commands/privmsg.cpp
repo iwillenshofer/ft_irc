@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:30:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:41:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 		__priv_msg_reply(ERR_WILDTOPLEVEL);
 	else
 	{
+		Debug("AREWEHERE:");
 		masktype = target[0];
 		target.erase(0, 1);
 		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
@@ -175,6 +176,8 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 		}
 		if (targets.size() > SRV_MAXTARGETS && !(_sender->is_operator()))
 			__priv_msg_reply(ERR_TOOMANYTARGETS);
+		else if (!(targets.size()))
+			__priv_msg_reply(ERR_NOSUCHCHANNEL);
 		else
 		{
 			for (std::vector<Client>::iterator it = targets.begin(); it != targets.end(); it++)
@@ -245,6 +248,7 @@ void	Commands::_cmd_privmsg(void)
 		target = _message.arguments(0);
 		m["nickname"] = target;
 		is_targetmask = Message::is_bnf_targetmask(target);
+		Debug("TARGETMASK:" + ft::to_string(is_targetmask));
 		if (is_targetmask)
 			__priv_msg_process_mask(target);
 		else if (Message::is_bnf_channel(target))

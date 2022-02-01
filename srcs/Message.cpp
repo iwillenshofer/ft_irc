@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:35:43 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/01 19:37:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,9 +336,10 @@ bool Message::is_bnf_nickname(std::string const &nickname)
 **  BNF_TARGETMSK_WILDTOPLEVEL
 */
 
-int Message::is_bnf_targetmask(std::string const &key)
+int Message::is_bnf_targetmask(std::string const &_key)
 {
 	std::vector<std::string> v;
+	std::string key = _key;
 
 	if ((key.size()) < 2)
 		return (BNF_TARGETMSK_INVALID);
@@ -346,6 +347,7 @@ int Message::is_bnf_targetmask(std::string const &key)
 		return (BNF_TARGETMSK_INVALID);
 	if (key.find('.') == std::string::npos || key[1] == '.' || key[key.size() - 1] == '.')
 		return (BNF_TARGETMSK_INVALID);
+	key.erase(key.begin());
 	v = ft::split(key, '.');
 	if (!(v.size()))
 		return (BNF_TARGETMSK_NOTOPLEVEL);
