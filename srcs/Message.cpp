@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/01 19:37:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/02 22:06:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,23 +240,28 @@ bool Message::is_bnf_ipv4addr_mask(std::string const &key)
 {
 	std::vector<std::string> v;
 
+	Debug("IS_IPV4", DBG_WARNING);
 	if (!(key.size()))
 		return (false);
 	if (key[0] == '.' || key[key.size() - 1] == '.')
 		return (false);
-	if (std::count(key.begin(), key.end(), '.') != 3)
-		return (false);
 	v = ft::split(key, '.');
-	if (v.size() != 4)
+	if (v.size() < 2)
 		return (false);
 	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 	{
 		if (it->size() < 1 || it->size() > 3)
 			return (false);
 		for (std::string::iterator sit = it->begin(); sit != it->end(); sit++)
+		{
 			if (!(is_bnf_digit(*sit)) && !(*sit == '*') && !(*sit == '?'))
 				return (false);
+			if (*sit == '*' && it->size() != 1)
+				return (false);
+		}	
 	}
+	if (v[0].find('*') != std::string::npos || v[0].find('?') != std::string::npos || !(v.size()))
+		return (false);
 	return (true);
 }
 

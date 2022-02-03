@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/02 21:07:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/02 21:47:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,19 +133,22 @@ void	Commands::__priv_msg_send(std::string target)
 		_message_channel(msg, _message.arguments(0), false);
 	}
 	else if (Message::is_bnf_nickname(target))
-		__priv_msg_send(*(_get_client_by_nickname(target)));
+		__priv_msg_send((_get_client_by_nickname(target)));
 }
 
-void	Commands::__priv_msg_send(Client &client)
+void	Commands::__priv_msg_send(Client *client)
 {
 	std::map<std::string, std::string> m;
-	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client.nickname + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
-
-	_message_user(msg, _message.arguments(0));
-	if (client.is_away())
+	std::string msg;
+	
+	if (!(client))
+		return ;
+	msg = _sender->get_prefix() + " " + _message.command() + " " + client->nickname + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
+	_message_user(msg, client);
+	if (client->is_away())
 	{
-		m["nick"] = client.nickname;
-		m["away message"] = client.away_message;
+		m["nick"] = client->nickname;
+		m["away message"] = client->away_message;
 		__priv_msg_reply(RPL_AWAY, &m);
 	}
 }
@@ -170,8 +173,8 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 		target.erase(0, 1);
 		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
 		{
-			if ((masktype == '#' && Mask::match_raw(target, it->second.hostname))
-			|| (masktype == '$' && Mask::match_raw(target, _server->servername())))
+			if ((masktype == '#' && Mask::match_raw(it->second.hostname, target))
+			|| (masktype == '$' && Mask::match_raw(_server->servername(), target)))
 				targets.push_back(it->second.nickname);
 		}
 		if (targets.size() > SRV_MAXTARGETS && !(_sender->is_operator()))
@@ -227,7 +230,7 @@ void	Commands::__priv_msg_process_nick(std::string &target)
 		if (!client)
 			__priv_msg_reply(ERR_NOSUCHNICK, &m);
 		else
-			__priv_msg_send(*client);
+			__priv_msg_send(client);
 	}
 }
 
