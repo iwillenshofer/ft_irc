@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/02 21:04:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/02 21:07:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void	Commands::__priv_msg_send(Client &client)
 void	Commands::__priv_msg_process_mask(std::string &target)
 {
 	char masktype;
-	std::vector<Client> targets;
+	std::vector<std::string> targets;
 	std::map<std::string, std::string> m;
 	int is_targetmask = Message::is_bnf_targetmask(target);
 
@@ -172,7 +172,7 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 		{
 			if ((masktype == '#' && Mask::match_raw(target, it->second.hostname))
 			|| (masktype == '$' && Mask::match_raw(target, _server->servername())))
-				targets.push_back(it->second);
+				targets.push_back(it->second.nickname);
 		}
 		if (targets.size() > SRV_MAXTARGETS && !(_sender->is_operator()))
 			__priv_msg_reply(ERR_TOOMANYTARGETS);
@@ -180,8 +180,8 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 			__priv_msg_reply(ERR_NOSUCHCHANNEL);
 		else
 		{
-			for (std::vector<Client>::iterator it = targets.begin(); it != targets.end(); it++)
-				__priv_msg_send(it->nickname);
+			for (std::vector<std::string>::iterator it = targets.begin(); it != targets.end(); it++)
+				__priv_msg_send(*it);
 		}
 	}
 }
