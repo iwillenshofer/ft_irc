@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_channel.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:29:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 20:36:23 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,36 +93,52 @@
 **	MODE !12345ircd O               ; Command to ask who the channel
 **									creator for "!12345ircd" is
 **
-** TODO: FIX args segfault
 */
+
+void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument)
+{
+	std::string msg;
+
+	try
+	{
+		if (prefix == '+')
+			channel->activate_mode(_sender->nickname, mode, argument);
+		else
+			channel->deactivate_mode(_sender->nickname, mode, argument);
+		if (argument.size())
+			argument = " " + argument;
+		msg = _sender->get_prefix() + " MODE " + channel->get_name() + " " + prefix + mode + argument + MSG_ENDLINE;
+		_message_channel(msg, channel->get_name(), true);
+	}
+	catch(int code_error)
+	{
+		_message_user(_generate_reply(code_error), _sender);
+	}
+}
 
 void	Commands::_cmd_mode_channel(void)
 {
-    Channel     *chan =  _get_channel_by_name(_message.arguments(0));
-    std::string mode_channel = MODE_CHANNEL;
-    char        prefix = '+';
-    bool        is_arg;
-    std::map<std::string, std::string> m;
+	Channel     *chan;
+	char        prefix = '+';
+	std::string mode_channel = MODE_CHANNEL;
+	std::map<std::string, std::string> m;
 	
-	if (_message.arguments().size() > 2)
-	    is_arg = true;
-	else
-        is_arg = false;
-    if (_message.arguments().size() == 0)
-    {
-        _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
-        return ;
-    }
-    if (chan == NULL)
-    {
-        _message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
-        return ;
-    }  
-    if (chan->is_user(_sender->nickname) == false)
-    {
-        _message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
-        return ;
-    }
+	if (_message.arguments().size() == 0)
+	{
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		return ;
+	}
+	chan =  _get_channel_by_name(_message.arguments(0));
+	if (chan == NULL)
+	{
+		_message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
+		return ;
+	}  
+	if (chan->is_user(_sender->nickname) == false)
+	{
+		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
+		return ;
+	}
 	if (_message.arguments().size() == 1)
 	{
 		m["channel"] = chan->get_name();
@@ -131,62 +147,15 @@ void	Commands::_cmd_mode_channel(void)
 		_message_user(_generate_reply(RPL_CHANNELMODEIS, m), _sender);
 		return ;
 	}
-    for (size_t i = 0; i < _message.arguments(1).size(); i++)
-    {
-        if (mode_channel.find(_message.arguments(1).at(i)) == std::string::npos)
-        {
-            _message_user(_generate_reply(ERR_UNKNOWNMODE), _sender);
-            continue;
-        }
-            
-        if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
-        {
-            prefix = _message.arguments(1).at(i);
-            continue;
-        }
-        if (prefix == '+')
-        {
-            try
-            {
-                std::string msg;
-                if (is_arg == true)
-                {
-                    chan->activate_mode(_sender->nickname, _message.arguments(1).at(i), _message.arguments(2));
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " +" + _message.arguments(1).at(i) + " " + _message.arguments(2) + MSG_ENDLINE;
-                }
-                else
-                {
-                    chan->activate_mode(_sender->nickname, _message.arguments(1).at(i));
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " +" + _message.arguments(1).at(i) + MSG_ENDLINE;
-                }
-	            _message_channel(msg, _message.arguments(0), true);
-            }
-            catch(int code_error)
-            {
-                _message_user(_generate_reply(code_error), _sender);
-            }
-        }
-        else
-        {
-            try
-            {
-                std::string msg;
-                if (is_arg == true)
-                {
-                    chan->deactivate_mode(_sender->nickname, _message.arguments(1).at(i), _message.arguments(2));
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " -" + _message.arguments(1).at(i) + " " + _message.arguments(2) + MSG_ENDLINE;
-                }
-                else
-                {
-                    chan->deactivate_mode(_sender->nickname, _message.arguments(1).at(i));
-                    msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " -" + _message.arguments(1).at(i) + MSG_ENDLINE;
-                }
-	            _message_channel(msg, _message.arguments(0), true);
-            }
-            catch(int code_error)
-            {
-                _message_user(_generate_reply(code_error), _sender);
-            }
-        }
-    }
+	for (std::string::iterator it = _message.arguments(1).begin(); it != _message.arguments(1).end(); it ++)
+	{
+		if (mode_channel.find(*it) == std::string::npos)
+			_message_user(_generate_reply(ERR_UNKNOWNMODE), _sender);
+		else if (*it == '+' || *it == '-')
+			prefix = *it;
+		else if (_message.arguments().size() > 2)
+			__perform_mode_channel(chan, *it, prefix, _message.arguments(2));
+		else
+			__perform_mode_channel(chan, *it, prefix);
+	}
 }
