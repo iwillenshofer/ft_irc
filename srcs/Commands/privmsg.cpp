@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/02 21:47:43 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/03 21:30:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,10 @@ std::map<std::string, std::string> __split_nick(std::string const &key)
 	return (m);
 }
 
-void	Commands::__priv_msg_reply(int msg, std::map<std::string, std::string> *m)
+void	Commands::__priv_msg_reply(int msg, std::map<std::string, std::string> &m)
 {
 	if (_message.command() != "NOTICE")
-		_message_user(_generate_reply(msg), _sender);
-	(void)m;
+		_message_user(_generate_reply(msg, m), _sender);
 }
 
 void	Commands::__priv_msg_send(std::string target)
@@ -130,7 +129,7 @@ void	Commands::__priv_msg_send(std::string target)
 	if (Message::is_bnf_channel(target))
 	{
 		std::string msg = _sender->get_prefix() + " " + _message.command() + " " + target + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
-		_message_channel(msg, _message.arguments(0), false);
+		_message_channel(msg, target, false);
 	}
 	else if (Message::is_bnf_nickname(target))
 		__priv_msg_send((_get_client_by_nickname(target)));
@@ -139,17 +138,16 @@ void	Commands::__priv_msg_send(std::string target)
 void	Commands::__priv_msg_send(Client *client)
 {
 	std::map<std::string, std::string> m;
-	std::string msg;
-	
-	if (!(client))
+	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client->nickname + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
+
+	if (!client)
 		return ;
-	msg = _sender->get_prefix() + " " + _message.command() + " " + client->nickname + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
 	_message_user(msg, client);
 	if (client->is_away())
 	{
 		m["nick"] = client->nickname;
 		m["away message"] = client->away_message;
-		__priv_msg_reply(RPL_AWAY, &m);
+		__priv_msg_reply(RPL_AWAY, m);
 	}
 }
 
@@ -161,14 +159,16 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 	int is_targetmask = Message::is_bnf_targetmask(target);
 
 	m["channel name"] = target;
+	m["targets"] = target;
+	m["nickname"] = target;
+	m["mask"] = target;
 	Debug("PRIVMSG Process Mask", DBG_DEV);
 	if (is_targetmask == BNF_TARGETMSK_NOTOPLEVEL)
-		__priv_msg_reply(ERR_NOTOPLEVEL);
+		__priv_msg_reply(ERR_NOTOPLEVEL, m);
 	else if (is_targetmask && is_targetmask == BNF_TARGETMSK_WILDTOPLEVEL)
-		__priv_msg_reply(ERR_WILDTOPLEVEL);
+		__priv_msg_reply(ERR_WILDTOPLEVEL, m);
 	else
 	{
-		Debug("AREWEHERE:");
 		masktype = target[0];
 		target.erase(0, 1);
 		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
@@ -176,13 +176,20 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 			if ((masktype == '#' && Mask::match_raw(it->second.hostname, target))
 			|| (masktype == '$' && Mask::match_raw(_server->servername(), target)))
 				targets.push_back(it->second.nickname);
+			Debug("we are here 1", DBG_FATAL);
 		}
 		if (targets.size() > SRV_MAXTARGETS && !(_sender->is_operator()))
-			__priv_msg_reply(ERR_TOOMANYTARGETS);
-		else if (!(targets.size()))
-			__priv_msg_reply(ERR_NOSUCHCHANNEL);
+			__priv_msg_reply(ERR_TOOMANYTARGETS, m);
+		else if (!(targets.size()) && masktype == '#')
+			__priv_msg_reply(ERR_NOSUCHCHANNEL, m);
+		else if (!(targets.size()) && masktype == '$')
+		{
+			Debug("we are here", DBG_FATAL);
+			__priv_msg_reply(ERR_NOSUCHNICK, m);
+		}
 		else
 		{
+			Debug("we are here2", DBG_FATAL);
 			for (std::vector<std::string>::iterator it = targets.begin(); it != targets.end(); it++)
 				__priv_msg_send(*it);
 		}
@@ -198,9 +205,9 @@ void	Commands::__priv_msg_process_channel(std::string &target)
 	m["channel name"] = target;
 	channel = _get_channel_by_name(target);
 	if (!(channel))
-		__priv_msg_reply(ERR_NOSUCHCHANNEL, &m);
+		__priv_msg_reply(ERR_NOSUCHCHANNEL, m);
 	else if (channel->is_banned(*_sender) || (!(channel->is_user(_sender->nickname)) && (channel->is_moderated() || channel->is_no_outside())))
-		__priv_msg_reply(ERR_CANNOTSENDTOCHAN, &m);
+		__priv_msg_reply(ERR_CANNOTSENDTOCHAN, m);
 	else
 		__priv_msg_send(target);
 }
@@ -215,7 +222,7 @@ void	Commands::__priv_msg_process_nick(std::string &target)
 	m["nick"] = target;
 	Debug("PRIVMSG Process Nick", DBG_DEV);
 	if (!(Message::is_bnf_nickname(targetmap["nick"])) || (targetmap["server"] != "" && targetmap["server"] != _server->servername()))
-		__priv_msg_reply(ERR_NOSUCHNICK, &m);
+		__priv_msg_reply(ERR_NOSUCHNICK, m);
 	else
 	{
 		client = NULL;
@@ -228,7 +235,7 @@ void	Commands::__priv_msg_process_nick(std::string &target)
 			}
 		}
 		if (!client)
-			__priv_msg_reply(ERR_NOSUCHNICK, &m);
+			__priv_msg_reply(ERR_NOSUCHNICK, m);
 		else
 			__priv_msg_send(client);
 	}
@@ -243,21 +250,20 @@ void	Commands::_cmd_privmsg(void)
 	Debug("PRIVMSG", DBG_DEV);
 	m["command"] = _message.command();
 	if (!(_message.arguments().size()))
-		__priv_msg_reply(ERR_NORECIPIENT, &m);
+		__priv_msg_reply(ERR_NORECIPIENT, m);
 	else if (_message.arguments().size() == 1)
-		__priv_msg_reply(ERR_NOTEXTTOSEND);
+		__priv_msg_reply(ERR_NOTEXTTOSEND, m);
 	else
 	{
 		target = _message.arguments(0);
 		m["nickname"] = target;
 		is_targetmask = Message::is_bnf_targetmask(target);
-		Debug("TARGETMASK:" + ft::to_string(is_targetmask));
 		if (is_targetmask)
 			__priv_msg_process_mask(target);
 		else if (Message::is_bnf_channel(target))
 			__priv_msg_process_channel(target);
 		else if (!(Message::is_bnf_msgto(target)))
-			__priv_msg_reply(ERR_NOSUCHNICK, &m);
+			__priv_msg_reply(ERR_NOSUCHNICK, m);
 		else
 			__priv_msg_process_nick(target);
 	}

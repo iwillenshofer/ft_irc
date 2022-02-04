@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/02 21:22:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/03 21:07:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ class Commands
 		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
 		void __perform_list(Channel &channel);
 		void __perform_trace(Client &client, std::map<std::string, std::string> &m);
-		void __priv_msg_reply(int msg, std::map<std::string, std::string> *m = NULL);
+		void __priv_msg_reply(int msg, std::map<std::string, std::string> &m);
 		void __priv_msg_send(std::string target);
 		void __priv_msg_send(Client *client);
 		void __priv_msg_process_mask(std::string &target);

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 21:44:39 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/03 21:02:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_CANNOTSENDTOCHAN] = "<channel name> :Cannot send to channel";
 	replies[ERR_TOOMANYCHANNELS] = "<channel name> :You have joined too many channels";
 	replies[ERR_WASNOSUCHNICK] = "<nick> :There was no such nickname";
-	replies[ERR_TOOMANYTARGETS] = "<target> :<error code> recipients. <abort message>";
+	replies[ERR_TOOMANYTARGETS] = "<target> :too many recipients.";
 	replies[ERR_NOSUCHSERVICE] = "<service name> :No such service";
 	replies[ERR_NOORIGIN] = ":No origin specified";
 	replies[ERR_NORECIPIENT] = ":No recipient given (<command>)";
