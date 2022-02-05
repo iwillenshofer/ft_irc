@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   motd.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:14 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/21 15:30:41 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:26:09 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ void	Commands::_cmd_motd(void)
 	std::string s;
 	std::map<std::string, std::string> v;
 	std::vector<std::string> lst;
+
+	_message_user(_generate_reply(ERR_NOMOTD), _sender);
+	return ;
 
 	try
 	{

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:57 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/17 23:38:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 17:38:22 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 
 void	Commands::_cmd_pong(void)
 {
+	_message.print();
 	_sender->is_ping = false;
 	_sender->last_ping = time(NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/02 22:09:46 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 17:49:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ Client &Client::operator=(Client const &cp)
 	password = cp.password;
 	registered = cp.registered;
 	mode = cp.mode;
-	last_ping = cp.last_ping;
+	std::memcpy(&(last_ping), &(cp.last_ping), sizeof(time_t));
 	is_ping = cp.is_ping;
-	joined_time = cp.joined_time;
+	std::memcpy(&(joined_time), &(cp.joined_time), sizeof(time_t));
 	return (*this);
 }
 Client::~Client() { }
@@ -151,7 +151,7 @@ void Client::write(void)
 	Debug("Write", DBG_ERROR);
 	if (!(_send_queue.size()))
 		return;
-	rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), 0);
+	rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), MSG_NOSIGNAL);
 	if (rc > 0)
 		_send_queue.at(0).erase(0, rc);
 	if (_send_queue.size() && !(_send_queue.at(0).size()))

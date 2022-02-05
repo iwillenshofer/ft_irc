@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/03 21:30:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 19:20:39 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	Commands::__priv_msg_send(std::string target)
 {
 	if (Message::is_bnf_channel(target))
 	{
-		std::string msg = _sender->get_prefix() + " " + _message.command() + " " + target + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
+		std::string msg = _sender->get_prefix() + " " + _message.command() + " " + target + " :" + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
 		_message_channel(msg, target, false);
 	}
 	else if (Message::is_bnf_nickname(target))
