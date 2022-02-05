@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 20:01:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 20:25:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ void	Commands::_cmd_nick(void)
 			_server->add_whowas(*_sender);
 		_sender->nickname = _message.arguments(0);
 		_truncate_nick(_sender->nickname);
-		if (_sender->registered)
-			_message_all_channels(":" + old_nick + " NICK " + _sender->nickname + "\r\n", true); // send message that user changed nickname.
-		else if (!(_sender->username.empty()))
-			_register_user();
 		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
 			it->second.change_nick(old_nick, _sender->nickname);
+		if (_sender->registered)
+			_message_all_channels(":" + old_nick + " NICK " + _sender->nickname + MSG_ENDLINE, true);
+		else if (!(_sender->username.empty()))
+			_register_user();
+
 	}
 }
