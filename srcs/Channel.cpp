@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/05 11:12:38 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 20:08:54 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,8 +419,10 @@ void	Channel::add_ban(std::string chanop, std::string nick)
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);	
 	for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
+	{
 		if (*it == nick)
         	return ;
+	}
     _bans.push_back(mask);
 }
 
