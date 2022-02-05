@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/01/30 20:50:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 22:44:21 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,9 +383,14 @@ void	Channel::remove_voice(std::string chanop, std::string nick)
     throw (ERR_NOSUCHNICK);
 }
 
+std::vector<std::string>	&Channel::get_ban_list(void)
+{
+	return (_bans);
+}
+
+
 bool	Channel::is_banned(Client &client)
 {
-    // TO do : Add mask : *
     for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
     {
         if (Mask::match(client, *it))
@@ -394,12 +399,11 @@ bool	Channel::is_banned(Client &client)
     return false;
 }
 
-bool	Channel::is_banned(std::string nick)
+bool	Channel::is_banned(std::string mask)
 {
-    // TO do : Add mask : *
     for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
     {
-        if (*it == nick)
+        if (Mask::match(mask, *it))
             return true;
     }
     return false;
@@ -407,11 +411,14 @@ bool	Channel::is_banned(std::string nick)
 
 void	Channel::add_ban(std::string chanop, std::string nick)
 {
+	std::string mask = Mask::create(nick);
+
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);	
-    if (is_banned(nick)) // If user is already ban, we can return
-        return ;
-    _bans.push_back(nick);
+	for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
+		if (*it == nick)
+        	return ;
+    _bans.push_back(mask);
 }
 
 void	Channel::remove_ban(std::string chanop, std::string nick)
@@ -422,7 +429,7 @@ void	Channel::remove_ban(std::string chanop, std::string nick)
     {
         if (*it == nick)
         {
-            it->erase();
+			_bans.erase(it);
             return;
         }
     }

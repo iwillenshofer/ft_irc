@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 19:36:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 21:39:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ class Channel
 		void		add_voice(std::string chanop, std::string nick);
 		void		remove_voice(std::string chanop, std::string nick);
 
+		std::vector<std::string>	&get_ban_list(void);
 		bool		is_banned(Client &client);
 		bool		is_banned(std::string nick);
 		void		add_ban(std::string chanop, std::string nick);

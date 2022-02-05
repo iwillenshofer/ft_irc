@@ -6,99 +6,117 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 20:36:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 22:58:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Commands.hpp"
 
 /*
-**	RFC 2812: https://datatracker.ietf.org/doc/html/rfc2812
-**	3.2.3 Channel mode message
-**	Command: MODE
-**	Parameters: <channel> *( ( "-" / "+" ) *<modes> *<modeparams> )
-**	
-**	The MODE command is provided so that users may query and change the
-**	characteristics of a channel.  For more details on available modes
-**	and their uses, see "Internet Relay Chat: Channel Management" [IRC-
-**	CHAN].  Note that there is a maximum limit of three (3) changes per
-**	command for modes that take a parameter.
-**	
-**	Numeric Replies:
-**			ERR_NEEDMOREPARAMS              ERR_KEYSET
-**			ERR_NOCHANMODES                 ERR_CHANOPRIVSNEEDED
-**			ERR_USERNOTINCHANNEL            ERR_UNKNOWNMODE
-**			RPL_CHANNELMODEIS
-**			RPL_BANLIST                     RPL_ENDOFBANLIST
-**			RPL_EXCEPTLIST                  RPL_ENDOFEXCEPTLIST
-**			RPL_INVITELIST                  RPL_ENDOFINVITELIST
-**			RPL_UNIQOPIS
-**	
-**	The following examples are given to help understanding the syntax of
-**	the MODE command, but refer to modes defined in "Internet Relay Chat:
-**	Channel Management" [IRC-CHAN].
-**	
-**	Examples:
-**	MODE #Finnish +imI *!*@*.fi     ; Command to make #Finnish channel
-**									moderated and 'invite-only' with user
-**									with a hostname matching *.fi
-**									automatically invited.
-**	
-**	MODE #Finnish +o Kilroy         ; Command to give 'chanop' privileges
-**									to Kilroy on channel #Finnish.
-**	
-**	MODE #Finnish +v Wiz            ; Command to allow WiZ to speak on
-**									#Finnish.
-**	
-**	MODE #Fins -s                   ; Command to remove 'secret' flag
-**									from channel #Fins.
-**	
-**	MODE #42 +k oulu                ; Command to set the channel key to
-**									"oulu".
-**	
-**	MODE #42 -k oulu                ; Command to remove the "oulu"
-**									channel key on channel "#42".
-**	
-**	MODE #eu-opers +l 10            ; Command to set the limit for the
-**									number of users on channel
-**									"#eu-opers" to 10.
-**	
-**	:WiZ!jto@tolsun.oulu.fi MODE #eu-opers -l
-**									; User "WiZ" removing the limit for
-**									the number of users on channel "#eu-
-**									opers".
-**	
-**	MODE &oulu +b                   ; Command to list ban masks set for
-**									the channel "&oulu".
-**	
-**	MODE &oulu +b *!*@*             ; Command to prevent all users from
-**									joining.
-**	
-**	MODE &oulu +b *!*@*.edu +e *!*@*.bu.edu
-**									; Command to prevent any user from a
-**									hostname matching *.edu from joining,
-**									except if matching *.bu.edu
-**	
-**	MODE #bu +be *!*@*.edu *!*@*.bu.edu
-**									; Comment to prevent any user from a
-**									hostname matching *.edu from joining,
-**									except if matching *.bu.edu
-**	
-**	MODE #meditation e              ; Command to list exception masks set
-**									for the channel "#meditation".
-**	
-**	MODE #meditation I              ; Command to list invitations masks
-**									set for the channel "#meditation".
-**	
-**	MODE !12345ircd O               ; Command to ask who the channel
-**									creator for "!12345ircd" is
+**   Parameters: <channel> {[+|-]|o|p|s|i|t|n|b|v} [<limit>] [<user>]
+**               [<ban mask>]
 **
+**   The MODE command is provided so that channel operators may change the
+**   characteristics of `their' channel.  It is also required that servers
+**   be able to change channel modes so that channel operators may be
+**   created.
+**
+**   The various modes available for channels are as follows:
+**
+**           b - set a ban mask to keep users out;
+**           i - invite-only channel flag;
+**           l - set the user limit to channel;
+**           m - moderated channel;
+**           n - no messages to channel from clients on the outside;
+**           o - give/take channel operator privileges;
+**           p - private channel flag;
+**           s - secret channel flag;
+**           t - topic settable by channel operator only flag;
+**           v - give/take the ability to speak on a moderated channel;
+**           k - set a channel key (password).
+**
+**   When using the 'o' and 'b' options, a restriction on a total of three
+**   per mode command has been imposed.  That is, any combination of 'o'
+**   and
 */
+
+void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string argument)
+{
+	std::string msg;
+	std::string bans;
+	std::vector<std::string> ban_list = channel->get_ban_list();
+	std::map<std::string, std::string> m;
+
+	m["channel"] = channel->get_name();
+	if (!(argument.size()))
+	{
+		if (channel->is_user(_sender->nickname) || (!(channel->is_secret()) && !(channel->is_private())))
+		{
+			for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)
+			{
+				m["banmask"] = *it;
+				_message_user(_generate_reply(RPL_BANLIST, m), _sender);
+			}
+		}
+		_message_user(_generate_reply(RPL_ENDOFBANLIST, m), _sender);
+		return ;
+	}
+	argument = Mask::create(argument);
+	if (!(channel->is_operator(_sender->nickname)))
+	{
+		_message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, m), _sender);
+		return;
+	}
+	try
+	{
+		if (prefix == '+')
+		{
+			if (channel->is_banned(argument))
+				return ;
+			for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)	
+			{
+				if (Mask::match(*it, argument))
+				{
+					std::string val = *it;
+					channel->remove_ban(_sender->nickname, *it);
+					msg = _sender->get_prefix() + " MODE " + channel->get_name() + " -b " + *it + MSG_ENDLINE;
+					_message_channel(msg, channel->get_name(), true);
+				}
+			}
+			Debug("Adding Ban: '" + argument + "'");
+			channel->add_ban(_sender->nickname, argument);
+			msg = _sender->get_prefix() + " MODE " + channel->get_name() + " +b " + argument + MSG_ENDLINE;
+			_message_channel(msg, channel->get_name(), true);
+		}	
+		else
+		{
+			for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)	
+			{
+				Debug("Removing: '" + *it + "' | '" + argument + "'");
+				if (Mask::match(*it, argument))
+				{
+					channel->remove_ban(_sender->nickname, *it);
+					msg = _sender->get_prefix() + " MODE " + channel->get_name() + " -b " + *it + MSG_ENDLINE;
+					_message_channel(msg, channel->get_name(), true);
+				}
+			}
+		}
+	}
+	catch(int code_error)
+	{
+		_message_user(_generate_reply(code_error), _sender);
+	}
+}
 
 void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument)
 {
 	std::string msg;
 
+	if (mode == 'b')
+	{
+		__perform_mode_ban(channel, prefix, argument);
+		return ;
+	}
 	try
 	{
 		if (prefix == '+')
