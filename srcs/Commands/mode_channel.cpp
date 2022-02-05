@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 23:32:46 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 10:51:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,20 @@ void	Commands::__perform_mode_ban_removematch(Channel *channel, std::string argu
 		if (Mask::match(*it, argument))
 		{
 			channel->remove_ban(_sender->nickname, *it);
-			msg = _sender->get_prefix() + " MODE " + channel->get_name() + " -b " + *it + MSG_ENDLINE;
-			_message_channel(msg, channel->get_name(), true);
+			__perform_mode_channel_sendmsg(channel, 'b', '-', argument);
 		}
 	}
+}
+
+
+void	Commands::__perform_mode_channel_sendmsg(Channel *channel, char mode, char prefix, std::string argument)
+{
+	std::string msg;
+
+	if (argument.size())
+		argument = " " + argument;
+	msg = _sender->get_prefix() + " MODE " + channel->get_name() + " " + prefix + mode + argument + MSG_ENDLINE;
+	_message_channel(msg, channel->get_name(), true);
 }
 
 void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string argument)
@@ -98,8 +108,7 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 				return ;
 			__perform_mode_ban_removematch(channel, argument);
 			channel->add_ban(_sender->nickname, argument);
-			msg = _sender->get_prefix() + " MODE " + channel->get_name() + " +b " + argument + MSG_ENDLINE;
-			_message_channel(msg, channel->get_name(), true);
+			__perform_mode_channel_sendmsg(channel, 'b', prefix, argument);
 		}	
 		else
 			__perform_mode_ban_removematch(channel, argument);
@@ -113,8 +122,6 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 
 void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument)
 {
-	std::string msg;
-
 	if (mode == 'b')
 	{
 		__perform_mode_ban(channel, prefix, argument);
@@ -126,10 +133,7 @@ void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, 
 			channel->activate_mode(_sender->nickname, mode, argument);
 		else
 			channel->deactivate_mode(_sender->nickname, mode, argument);
-		if (argument.size())
-			argument = " " + argument;
-		msg = _sender->get_prefix() + " MODE " + channel->get_name() + " " + prefix + mode + argument + MSG_ENDLINE;
-		_message_channel(msg, channel->get_name(), true);
+		__perform_mode_channel_sendmsg(channel, mode, prefix, argument);
 	}
 	catch(int code_error)
 	{
@@ -147,18 +151,18 @@ void	Commands::_cmd_mode_channel(void)
 	
 	if (_message.arguments().size() == 0)
 	{
-		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
 		return ;
 	}
 	chan =  _get_channel_by_name(_message.arguments(0));
 	if (chan == NULL)
 	{
-		_message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
+		_message_user(_generate_reply(ERR_NOSUCHCHANNEL, "channel name", _message.arguments(0)), _sender);
 		return ;
 	}  
 	if (chan->is_user(_sender->nickname) == false)
 	{
-		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
+		_message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", _message.arguments(0)), _sender);
 		return ;
 	}
 	if (_message.arguments().size() == 1)
@@ -172,7 +176,7 @@ void	Commands::_cmd_mode_channel(void)
 	for (std::string::iterator it = _message.arguments(1).begin(); it != _message.arguments(1).end(); it ++)
 	{
 		if (mode_channel.find(*it) == std::string::npos)
-			_message_user(_generate_reply(ERR_UNKNOWNMODE), _sender);
+			_message_user(_generate_reply(ERR_UNKNOWNMODE, "char", std::string() + *it), _sender);
 		else if (*it == '+' || *it == '-')
 			prefix = *it;
 		else if (_message.arguments().size() > 2)

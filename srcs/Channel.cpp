@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/04 23:31:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 11:12:38 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ bool	Channel::get_mode(char mode) const
     }
 }
 
-
 std::string	Channel::get_modes(void) const
 {
 	std::string m = "+";
@@ -177,12 +176,15 @@ std::string	Channel::get_modes(void) const
 
 	return (m);
 }
+
 std::string	Channel::get_mode_params(void) const
 {
 	std::string m;
 
-	if (_mode.k) m += " " + ft::to_string(_password);
-	if (_mode.l) m += " " + ft::to_string(_user_limit);
+	if (_mode.k) m += ft::to_string(_password) + " ";
+	if (_mode.l) m += ft::to_string(_user_limit);
+	if (m.size() && m[m.size() - 1] == ' ')
+		m.erase(m.size() - 1, 1);
 	return (m);
 }
 
@@ -270,7 +272,6 @@ bool Channel::is_user(std::string nick)
     }
     return false;
 }
-
 
 void Channel::add_user(std::string nick, std::string password)
 {

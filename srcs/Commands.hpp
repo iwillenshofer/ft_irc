@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 23:17:03 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 10:50:49 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ class Commands
 		** reply generation
 		*/
 		std::string _numeric_reply(int reply);
+		std::string _generate_reply(int reply, std::string mapped, std::string value);
 		std::string _generate_reply(int reply, std::map<std::string, std::string> v = std::map<std::string, std::string>());
 		static std::string _replace_tags(std::string msg, std::map<std::string, std::string> v);
 
@@ -185,6 +186,7 @@ class Commands
 		void __perform_mode_ban(Channel *channel, char prefix, std::string argument);
 		void __perform_mode_ban_removematch(Channel *channel, std::string argument);
 		void __perform_mode_ban_printlist(Channel *channel);
+		void __perform_mode_channel_sendmsg(Channel *channel, char mode, char prefix, std::string argument = "");
 		void __perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument = "");
 		void __perform_whois(std::vector<std::string> &v);
 		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);

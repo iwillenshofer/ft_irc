@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 23:25:32 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/05 10:57:42 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,6 +336,28 @@ std::string Commands::generate_errormsg(int error, std::map<std::string, std::st
 	return (message);
 }
 
+/*
+** generates a reply message replacing a string "mapped" from the numeric reply
+** for a string "value". Used when a single value needs to be replaced
+*/
+std::string Commands::_generate_reply(int reply, std::string mapped, std::string value)
+{
+	std::string message = ":" + _server->servername() + " " + _numeric_reply(reply) + " " + _sender->nickname + " ";
+	std::string reply_msg = _replies[reply];
+	std::string str_tofind("<" + mapped + ">");
+	size_t find_pos = reply_msg.find(str_tofind);
+	if (find_pos != std::string::npos)
+		reply_msg.replace(find_pos, str_tofind.size(), value);
+	message += reply_msg;
+	message += MSG_ENDLINE;
+	return (message);
+}
+
+/*
+** generates a reply message replacing a string "mapped" from the numeric reply
+** for a string "value". Used when a multiple values need to be replaced. a Map of
+** [mapped] = string must be passed.
+*/
 std::string Commands::_generate_reply(int reply, std::map<std::string, std::string> v)
 {
 	std::string message = ":" + _server->servername() + " " + _numeric_reply(reply) + " " + _sender->nickname + " ";
