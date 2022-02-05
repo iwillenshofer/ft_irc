@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/04 22:44:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:31:30 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,8 @@ void	Channel::set_user_limit(std::string chanop, std::string limit)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
+	else if (!(Message::is_bnf_numeric(limit)))
+		throw (ERR_SILENT);
     _user_limit = atoi(limit.c_str());
     if (_user_limit < 1)
     {

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 20:28:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:26:32 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,10 +225,11 @@
 # define	ERR_REGISTERTIMEOUT		703
 # define	ERR_EOFFROMCLIENT		704
 # define	ERR_KILLED				705
+# define	ERR_SILENT				706
 # define	RPL_WHOWASSERVER		755
+# define    RPL_PONG                756
 # define	ERR_INPUTTOOLONG		417
 # define    ERR_WHOISTOOMANY		416
 # define    PRIVMSG					999
-# define    RPL_PONG                706
 
 #endif

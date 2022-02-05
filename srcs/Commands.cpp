@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/03 21:02:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:25:32 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_WHOWASSERVER] = "<nick> <server> :<last_activity>";
 	replies[329] = "<channel> <creation>"; // creation time
 	replies[RPL_PONG] = "PONG";
+	replies[ERR_SILENT] = "*** silent error ***";
 	return (replies);
 }
 

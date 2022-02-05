@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:35:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:29:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ class Message
 		static bool is_bnf_user(std::string const &key);
 		static bool is_bnf_key(std::string const &key);
 		static bool is_bnf_letter(const char c);
+		static bool is_bnf_numeric(std::string const &key);
 		static bool is_bnf_digit(const char c);
 		static bool is_bnf_hexdigit(const char c);
 		static bool is_bnf_special(const char c);

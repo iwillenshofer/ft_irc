@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 22:58:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:32:46 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,48 @@
 **   and
 */
 
+void	Commands::__perform_mode_ban_printlist(Channel *channel)
+{
+	std::map<std::string, std::string> m;
+	std::vector<std::string> ban_list = channel->get_ban_list();
+
+	m["channel"] = channel->get_name();
+	if (channel->is_user(_sender->nickname) || (!(channel->is_secret()) && !(channel->is_private())))
+	{
+		for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)
+		{
+			m["banmask"] = *it;
+			_message_user(_generate_reply(RPL_BANLIST, m), _sender);
+		}
+	}
+	_message_user(_generate_reply(RPL_ENDOFBANLIST, m), _sender);
+}
+
+void	Commands::__perform_mode_ban_removematch(Channel *channel, std::string argument)
+{
+	std::vector<std::string> ban_list = channel->get_ban_list();
+	std::string msg;
+
+	for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)	
+	{
+		if (Mask::match(*it, argument))
+		{
+			channel->remove_ban(_sender->nickname, *it);
+			msg = _sender->get_prefix() + " MODE " + channel->get_name() + " -b " + *it + MSG_ENDLINE;
+			_message_channel(msg, channel->get_name(), true);
+		}
+	}
+}
+
 void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string argument)
 {
 	std::string msg;
-	std::string bans;
-	std::vector<std::string> ban_list = channel->get_ban_list();
 	std::map<std::string, std::string> m;
 
 	m["channel"] = channel->get_name();
 	if (!(argument.size()))
 	{
-		if (channel->is_user(_sender->nickname) || (!(channel->is_secret()) && !(channel->is_private())))
-		{
-			for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)
-			{
-				m["banmask"] = *it;
-				_message_user(_generate_reply(RPL_BANLIST, m), _sender);
-			}
-		}
-		_message_user(_generate_reply(RPL_ENDOFBANLIST, m), _sender);
+		__perform_mode_ban_printlist(channel);
 		return ;
 	}
 	argument = Mask::create(argument);
@@ -73,38 +96,18 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 		{
 			if (channel->is_banned(argument))
 				return ;
-			for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)	
-			{
-				if (Mask::match(*it, argument))
-				{
-					std::string val = *it;
-					channel->remove_ban(_sender->nickname, *it);
-					msg = _sender->get_prefix() + " MODE " + channel->get_name() + " -b " + *it + MSG_ENDLINE;
-					_message_channel(msg, channel->get_name(), true);
-				}
-			}
-			Debug("Adding Ban: '" + argument + "'");
+			__perform_mode_ban_removematch(channel, argument);
 			channel->add_ban(_sender->nickname, argument);
 			msg = _sender->get_prefix() + " MODE " + channel->get_name() + " +b " + argument + MSG_ENDLINE;
 			_message_channel(msg, channel->get_name(), true);
 		}	
 		else
-		{
-			for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)	
-			{
-				Debug("Removing: '" + *it + "' | '" + argument + "'");
-				if (Mask::match(*it, argument))
-				{
-					channel->remove_ban(_sender->nickname, *it);
-					msg = _sender->get_prefix() + " MODE " + channel->get_name() + " -b " + *it + MSG_ENDLINE;
-					_message_channel(msg, channel->get_name(), true);
-				}
-			}
-		}
+			__perform_mode_ban_removematch(channel, argument);
 	}
 	catch(int code_error)
 	{
-		_message_user(_generate_reply(code_error), _sender);
+		if (code_error != ERR_SILENT)
+			_message_user(_generate_reply(code_error), _sender);
 	}
 }
 
@@ -130,7 +133,8 @@ void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, 
 	}
 	catch(int code_error)
 	{
-		_message_user(_generate_reply(code_error), _sender);
+		if (code_error != ERR_SILENT)
+			_message_user(_generate_reply(code_error), _sender);
 	}
 }
 

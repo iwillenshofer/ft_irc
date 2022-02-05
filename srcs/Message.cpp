@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/02 22:06:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/04 23:33:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -461,6 +461,13 @@ bool Message::is_bnf_letter(const char c)
 	return (false);
 }
 
+bool Message::is_bnf_numeric(std::string const &key)
+{
+	for (std::string::const_iterator it = key.begin(); it != key.end(); it++)
+		if (!(is_bnf_digit(*it)))
+			return (false);
+	return (true);
+}
 
 bool Message::is_bnf_digit(const char c)
 {
