@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 15:40:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:15:35 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ std::vector<Client *> Commands::__perform_names(Channel &channel, bool add_invis
 			prefix = "+";
 		m["names_list"] += prefix + (*it)->nickname + ' ';	
 	}
-	if (m["names_list"].back() == ' ')
+	if (m["names_list"].size() && m["names_list"][m["names_list"].size() - 1] == ' ')
 		m["names_list"].erase(m["names_list"].size() - 1);
 	m["channel"] = channel.get_name();
 	_message_user(_generate_reply(RPL_NAMREPLY, m), _sender);
@@ -121,7 +121,7 @@ void	Commands::_cmd_names(void)
 	std::sort(visible_users.begin(), visible_users.end());
 	for (std::vector<Client *>::iterator it = visible_users.begin(); it != visible_users.end(); it++)
 		m["names_list"] += (*it)->nickname + ' ';	
-	if (m["names_list"].back() == ' ')
+	if (m["names_list"].size() && m["names_list"][m["names_list"].size() - 1] == ' ')
 		m["names_list"].erase(m["names_list"].size() - 1);
 	m["channel"] = '*';
 	_message_user(_generate_reply(RPL_NAMREPLY, m), _sender);
