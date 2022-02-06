@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 15:13:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:13:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -506,10 +506,10 @@ bool Message::is_bnf_special(const char c)
 void Message::clear_commas(std::string &s)
 {
 	remove_double_commas(s);
-	if (s.size() && s.front() == ',')
+	if (s.size() && s[0] == ',')
 		s.erase(s.begin());
-	if (s.size() && s.back() == ',')
-		s.pop_back();
+	if (s.size() && s[s.size() - 1] == ',')
+		s.erase(s.size() - 1);
 }
 
 void Message::remove_double_commas(std::string &s)
