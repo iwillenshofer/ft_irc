@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 16:10:05 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:11:36 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ pollfd	*Connections::list(void)
 
 void	Connections::disconnect_client(Client *client)
 {
-	tmp std::map<std::string, Channel>::iterator;
+	std::map<std::string, Channel>::iterator tmp;
 	Commands("QUIT :" + client->get_hangup_message(), client, &clients, &channels, server);
 	for (std::map<std::string, Channel>::iterator chanit = channels.begin(); chanit != channels.end(); )
 	{
