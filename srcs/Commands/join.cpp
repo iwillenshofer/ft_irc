@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 12:25:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ void	Commands::_cmd_join(void)
 		Debug("ARGUMENT: " + _message.arguments(0), DBG_ERROR);
 		for (Commands::channel_iterator it = _channels->begin(); it != _channels->end(); it++)
 		{
-			if (it->second.is_user(_sender->nickname))
+			if (it->second.is_user(*_sender))
 			{
 				_message_channel(_sender->get_prefix() + " PART " + it->second.get_name() + " :Leaving" + MSG_ENDLINE, it->second.get_name(), true);
-				it->second.remove_user(_sender->nickname);
+				it->second.remove_user(*_sender);
 			}
 		}
 		return;
@@ -116,18 +116,18 @@ void	Commands::_cmd_join(void)
 			_message_user(_generate_reply(ERR_NOSUCHCHANNEL, m), _sender);
 		else if (!(channel = _get_channel_by_name(*it)))
 		{
-			Channel ch(*it, _sender->nickname);
+			Channel ch(*it, *_sender);
 			channel = &((_channels->insert(std::make_pair(*it, ch)).first)->second);
 			_message_channel(_sender->get_prefix() + " JOIN " + *it + MSG_ENDLINE, *it, true);
 			__perform_names(*channel);
 		}
 		else
 		{
-			if (channel->is_user(_sender->nickname))
+			if (channel->is_user(*_sender))
 				continue ;
 			try
 			{
-				channel->add_user(_sender->nickname, p[it - u.begin()]);
+				channel->add_user(*_sender, p[it - u.begin()]);
 				_message_channel(_sender->get_prefix() + " JOIN " + *it + MSG_ENDLINE, *it, true);
 				__perform_names(*channel);
 			}

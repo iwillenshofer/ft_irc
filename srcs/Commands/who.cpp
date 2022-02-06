@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   who.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 15:17:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void Commands::__perform_who(Client &client, std::map<std::string, std::string> 
 	Debug("Operator: " + ft::to_string(_sender->is_operator()), DBG_ERROR);
 	arguments["servop"] = (client.is_operator() ? "*" : "");
 	arguments["chanop"] = "";
-	if (channel && channel->is_operator(client.nickname))
+	if (channel && channel->is_operator(client))
 		arguments["chanop"] = "@";
-	else if (channel && channel->is_voice(client.nickname))
+	else if (channel && channel->is_voice(client))
 		arguments["chanop"] = "+";
 	arguments["hops"] = "0";
 	_message_user(_generate_reply(RPL_WHOREPLY, arguments), _sender);
@@ -74,8 +74,7 @@ void Commands::__perform_who(Client &client, std::map<std::string, std::string> 
 void	Commands::_cmd_who(void)
 {
 	std::map<std::string, std::string> arguments;
-	std::vector<std::string> shared_channel;
-	Client *client;
+	std::vector<Client *> shared_channel;
 	Channel *channel;
 	int include_invisible = false;
 
@@ -90,24 +89,23 @@ void	Commands::_cmd_who(void)
 		channel = _get_channel_by_name(_message.arguments(0));
 		if ((channel) && !(channel->is_secret()))
 		{
-			if (channel->is_user(_sender->nickname))
+			if (channel->is_user(*_sender))
 				include_invisible = true;
-			for (std::vector<std::string>::iterator it = channel->users.begin(); it != channel->users.end(); it++)
+			for (std::vector<Client *>::iterator it = channel->users.begin(); it != channel->users.end(); it++)
 			{
-				client = _get_client_by_nickname(*it);
-				if (client && (include_invisible || (!(client->is_invisible()))))
-					__perform_who(*client, arguments, channel);
+				if ((include_invisible || (!((*it)->is_invisible()))))
+					__perform_who(**it, arguments, channel);
 			}
 		}
 	}
 	else
 	{
 		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
-			if (it->second.is_user(_sender->nickname))
+			if (it->second.is_user(*_sender))
 				shared_channel.insert(shared_channel.end(), it->second.users.begin(), it->second.users.end());
 		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
 		{
-			if (!(it->second.is_invisible()) && std::find(shared_channel.begin(), shared_channel.end(), it->second.nickname) == shared_channel.end()
+			if (!(it->second.is_invisible()) && std::find(shared_channel.begin(), shared_channel.end(), &(it->second)) == shared_channel.end()
 			&& (Mask::match(it->second, _message.arguments(0)) || Mask::match_raw(it->second.nickname, _message.arguments(0)) || 
 			Mask::match_raw(it->second.hostname, _message.arguments(0)) || Mask::match_raw(it->second.realname, _message.arguments(0)) || 
 			Mask::match_raw(_server->servername(), _message.arguments(0))))

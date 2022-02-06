@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 10:51:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 14:14:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	Commands::__perform_mode_ban_printlist(Channel *channel)
 	std::vector<std::string> ban_list = channel->get_ban_list();
 
 	m["channel"] = channel->get_name();
-	if (channel->is_user(_sender->nickname) || (!(channel->is_secret()) && !(channel->is_private())))
+	if (channel->is_user(*_sender) || (!(channel->is_secret()) && !(channel->is_private())))
 	{
 		for (std::vector<std::string>::iterator it = ban_list.begin(); it != ban_list.end(); it++)
 		{
@@ -66,7 +66,7 @@ void	Commands::__perform_mode_ban_removematch(Channel *channel, std::string argu
 	{
 		if (Mask::match(*it, argument))
 		{
-			channel->remove_ban(_sender->nickname, *it);
+			channel->remove_ban(*_sender, *it);
 			__perform_mode_channel_sendmsg(channel, 'b', '-', argument);
 		}
 	}
@@ -95,7 +95,7 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 		return ;
 	}
 	argument = Mask::create(argument);
-	if (!(channel->is_operator(_sender->nickname)))
+	if (!(channel->is_operator(*_sender)))
 	{
 		_message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, m), _sender);
 		return;
@@ -107,7 +107,7 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 			if (channel->is_banned(argument))
 				return ;
 			__perform_mode_ban_removematch(channel, argument);
-			channel->add_ban(_sender->nickname, argument);
+			channel->add_ban(*_sender, argument);
 			__perform_mode_channel_sendmsg(channel, 'b', prefix, argument);
 		}	
 		else
@@ -122,6 +122,8 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 
 void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument)
 {
+	Client *client;
+
 	if (mode == 'b')
 	{
 		__perform_mode_ban(channel, prefix, argument);
@@ -129,10 +131,11 @@ void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, 
 	}
 	try
 	{
+		client = _get_client_by_nickname(argument);
 		if (prefix == '+')
-			channel->activate_mode(_sender->nickname, mode, argument);
+			channel->activate_mode(*_sender, mode, argument, client);
 		else
-			channel->deactivate_mode(_sender->nickname, mode, argument);
+			channel->deactivate_mode(*_sender, mode, argument, client);
 		__perform_mode_channel_sendmsg(channel, mode, prefix, argument);
 	}
 	catch(int code_error)
@@ -160,7 +163,7 @@ void	Commands::_cmd_mode_channel(void)
 		_message_user(_generate_reply(ERR_NOSUCHCHANNEL, "channel name", _message.arguments(0)), _sender);
 		return ;
 	}  
-	if (chan->is_user(_sender->nickname) == false)
+	if (chan->is_user(*_sender) == false)
 	{
 		_message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", _message.arguments(0)), _sender);
 		return ;

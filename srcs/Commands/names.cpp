@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   names.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 15:40:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,27 @@
 **									channels and users
 */
 
-std::vector<std::string> Commands::__perform_names(Channel &channel, bool add_invisible, bool end_names)
+std::vector<Client *> Commands::__perform_names(Channel &channel, bool add_invisible, bool end_names)
 {
 	std::map<std::string, std::string> m;
-	std::vector<std::string> users = channel.users;
-	Client *client;
-	std::vector<std::string> shown_users;
-
-	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+	std::vector<Client *> users = channel.users;
+	std::vector<Client *> shown_users;
+	std::string prefix; 
+	for (std::vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
 	{
-		client = _get_client_by_nickname(*it);
-		if (!(add_invisible) && client && client->is_invisible())
+		if (!(add_invisible) && (*it)->is_invisible())
 			continue ;
 		shown_users.push_back(*it);
-		if (channel.is_operator(*it))
-			*it = '@' + *it;
-		else if (channel.is_voice(*it))
-			*it = '+' + *it;
-		*it += ' ';
 	}
-	std::sort(users.begin(), users.end());
-	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
-		m["names_list"] += *it;	
+	for (std::vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
+	{
+		prefix = "";
+		if (channel.is_operator(**it))
+			prefix = "@";
+		else if (channel.is_voice(**it))
+			prefix = "+";
+		m["names_list"] += prefix + (*it)->nickname + ' ';	
+	}
 	if (m["names_list"].back() == ' ')
 		m["names_list"].erase(m["names_list"].size() - 1);
 	m["channel"] = channel.get_name();
@@ -81,9 +80,9 @@ std::vector<std::string> Commands::__perform_names(Channel &channel, bool add_in
 void	Commands::_cmd_names(void)
 {
 	std::vector<std::string> v;
-	std::vector<std::string> tmp;
-	std::vector<std::string> listed_users;
-	std::vector<std::string> visible_users;
+	std::vector<Client *> tmp;
+	std::vector<Client *> listed_users;
+	std::vector<Client *> visible_users;
 	std::map<std::string, std::string> m;
 	Channel *channel;
 
@@ -97,22 +96,20 @@ void	Commands::_cmd_names(void)
 		v = Message::split_commas(_message.arguments(0));
 	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 	{
-		Debug("Channels:" + *it, DBG_ERROR);
 		channel = _get_channel_by_name(*it);
-		if (!channel || (!(channel->is_user(_sender->nickname)) && ((channel->is_secret()) || (channel->is_private()))))
+		if (!channel || (!(channel->is_user(*_sender)) && ((channel->is_secret()) || (channel->is_private()))))
 			continue ;
-		if (channel->is_user(_sender->nickname))
+		if (channel->is_user(*_sender))
 			tmp = __perform_names(*channel, true, (_message.arguments().size() ? true : false));
 		else
 			tmp = __perform_names(*channel, false, (_message.arguments().size() ? true : false));
 		listed_users.insert(listed_users.end(), tmp.begin(), tmp.end());
-		Debug("HERE");
 	}
 	if (_message.arguments().size())
 		return ;
 	for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
-		if (!(it->second.is_invisible()) && std::find(listed_users.begin(), listed_users.end(), it->second.nickname) == listed_users.end())
-			visible_users.push_back(it->second.nickname + ' ');
+		if (!(it->second.is_invisible()) && std::find(listed_users.begin(), listed_users.end(), &(it->second)) == listed_users.end())
+			visible_users.push_back(&(it->second));
 	if (!(visible_users.size()))
 	{
 		if (!(_message.arguments().size()))
@@ -122,8 +119,8 @@ void	Commands::_cmd_names(void)
 	}
 	Debug("Visible Users:" + ft::to_string(visible_users.size()));
 	std::sort(visible_users.begin(), visible_users.end());
-	for (std::vector<std::string>::iterator it = visible_users.begin(); it != visible_users.end(); it++)
-		m["names_list"] += *it;	
+	for (std::vector<Client *>::iterator it = visible_users.begin(); it != visible_users.end(); it++)
+		m["names_list"] += (*it)->nickname + ' ';	
 	if (m["names_list"].back() == ' ')
 		m["names_list"].erase(m["names_list"].size() - 1);
 	m["channel"] = '*';

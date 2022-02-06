@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/05 20:09:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 15:05:06 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ Channel::Channel(void)
     //here
 }
 
-Channel::Channel(std::string name, std::string creator): _user_limit(0)
+Channel::Channel(std::string name, Client &creator): _user_limit(0)
 {
+	_creator = &creator;
 	set_name(name);
-	users.push_back(creator);
-	_operators.push_back(creator);
+	users.push_back(_creator);
+	_operators.push_back(_creator);
 	bzero(&_mode, sizeof(t_channelmode));
 }
 
@@ -64,12 +65,12 @@ std::string	Channel::get_name(void) const
     return _name;
 }
 
-std::string	Channel::get_creator(void) const
+Client *Channel::get_creator(void) const
 {
 	return _creator;
 }
 
-void	Channel::set_topic(std::string nick, std::string topic)
+void	Channel::set_topic(Client &nick, std::string topic)
 {
 	if (_mode.t == true)
 	{
@@ -91,7 +92,7 @@ bool		Channel::match_password(std::string password) const
 	return (true);
 }
 
-void	Channel::set_password(std::string chanop, std::string key)
+void	Channel::set_password(Client &chanop, std::string key)
 {
     if (key.empty() == true)
         throw (ERR_NEEDMOREPARAMS);
@@ -103,7 +104,7 @@ void	Channel::set_password(std::string chanop, std::string key)
     _mode.k = true;
 }
 
-void	Channel::unset_password(std::string chanop, std::string key)
+void	Channel::unset_password(Client &chanop, std::string key)
 {
     if (key.empty() == true)
         throw (ERR_NEEDMOREPARAMS);
@@ -188,7 +189,7 @@ std::string	Channel::get_mode_params(void) const
 	return (m);
 }
 
-void	Channel::activate_mode(std::string nick, char flag, std::string arg)
+void	Channel::activate_mode(Client &nick, char flag, std::string arg, Client *target)
 {
     if (flag == 'b')
         add_ban(nick, arg);
@@ -201,7 +202,7 @@ void	Channel::activate_mode(std::string nick, char flag, std::string arg)
     else if (flag == 'n')
         set_no_outside(nick);
     else if (flag == 'o')
-        add_operator(nick, arg);
+        add_operator(nick, target);
     else if (flag == 'p')
         set_private(nick);
     else if (flag == 's')
@@ -211,10 +212,10 @@ void	Channel::activate_mode(std::string nick, char flag, std::string arg)
     else if (flag == 'k')
         set_password(nick, arg);
     else if (flag == 'v')
-        add_voice(nick, arg);
+        add_voice(nick, target);
 }
 
-void	Channel::deactivate_mode(std::string nick, char flag, std::string arg)
+void	Channel::deactivate_mode(Client &nick, char flag, std::string arg, Client *target)
 {
     if (flag == 'b')
         remove_ban(nick, arg);
@@ -227,7 +228,7 @@ void	Channel::deactivate_mode(std::string nick, char flag, std::string arg)
     else if (flag == 'n')
         unset_no_outside(nick);
     else if (flag == 'o')
-        remove_operator(nick, arg);
+        remove_operator(nick, target);
     else if (flag == 'p')
         unset_private(nick);
     else if (flag == 's')
@@ -237,10 +238,10 @@ void	Channel::deactivate_mode(std::string nick, char flag, std::string arg)
     else if (flag == 'k')
         unset_password(nick, arg);
     else if (flag == 'v')
-        remove_voice(nick, arg);
+        remove_voice(nick, target);
 }
 
-void	Channel::set_user_limit(std::string chanop, std::string limit)
+void	Channel::set_user_limit(Client &chanop, std::string limit)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -255,7 +256,7 @@ void	Channel::set_user_limit(std::string chanop, std::string limit)
     _mode.l = true;
 }
 
-void	Channel::unset_user_limit(std::string chanop)
+void	Channel::unset_user_limit(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -263,20 +264,20 @@ void	Channel::unset_user_limit(std::string chanop)
     _mode.l = false;
 }
 
-bool Channel::is_user(std::string nick)
+bool Channel::is_user(Client &nick)
 {
-    for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+    for (std::vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
             return true;
     }
     return false;
 }
 
-void Channel::add_user(std::string nick, std::string password)
+void Channel::add_user(Client &nick, std::string password)
 {
     if (is_invitation(nick) == true)
-        users.push_back(nick);
+        users.push_back(&nick);
     else if(_mode.i == true)
         throw (ERR_INVITEONLYCHAN);
     else if (_mode.l == true && users.size() >= _user_limit)
@@ -286,31 +287,31 @@ void Channel::add_user(std::string nick, std::string password)
     else if (!(match_password(password)))
 	    throw (ERR_BADCHANNELKEY);
     else
-        users.push_back(nick);	
+        users.push_back(&nick);	
     remove_invitation(nick);
 }
 
-void Channel::remove_user(std::string nick)
+void Channel::remove_user(Client &nick)
 {
-    for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
+    for (std::vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
         {
             users.erase(it);
             break ;
         }
     }
-    for (std::vector<std::string>::iterator it = _operators.begin(); it != _operators.end(); it++)
+    for (std::vector<Client *>::iterator it = _operators.begin(); it != _operators.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
         {
             _operators.erase(it);
             return;
         }
     }
-    for (std::vector<std::string>::iterator it = _voices.begin(); it != _voices.end(); it++)
+    for (std::vector<Client *>::iterator it = _voices.begin(); it != _voices.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
         {
             _voices.erase(it);
             return;
@@ -318,68 +319,72 @@ void Channel::remove_user(std::string nick)
     }
 }
 
-bool	Channel::is_operator(std::string nick)
+bool	Channel::is_operator(Client &nick)
 {
-    for (std::vector<std::string>::iterator it = _operators.begin(); it != _operators.end(); it++)
+    for (std::vector<Client *>::iterator it = _operators.begin(); it != _operators.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
             return true;
     }
     return false;
 }
 
-void	Channel::add_operator(std::string chanop, std::string nick)
+void	Channel::add_operator(Client &chanop, Client *nick)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);	
-    if (is_user(nick) == false)
+    if (!(nick) ||is_user(*nick) == false)
         throw (ERR_NOSUCHNICK);
     _operators.push_back(nick);
 }
 
-void	Channel::remove_operator(std::string chanop, std::string nick)
+void	Channel::remove_operator(Client &chanop, Client *nick)
 {
     if (is_operator(chanop) == false)
-        throw (ERR_CHANOPRIVSNEEDED);	
-    for (std::vector<std::string>::iterator it = _operators.begin(); it != _operators.end(); it++)
+        throw (ERR_CHANOPRIVSNEEDED);
+    if (!(nick))
+        throw (ERR_NOSUCHNICK);
+    for (std::vector<Client *>::iterator it = _operators.begin(); it != _operators.end(); it++)
     {
         if (*it == nick)
         {
-            it->erase();
+            _operators.erase(it);
             return;
         }
     }
     throw (ERR_NOSUCHNICK);
 }
 
-bool	Channel::is_voice(std::string nick)
+bool	Channel::is_voice(Client &nick)
 {
-    for (std::vector<std::string>::iterator it = _voices.begin(); it != _voices.end(); it++)
+    for (std::vector<Client *>::iterator it = _voices.begin(); it != _voices.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
             return true;
     }
     return false;
 }
 
-void	Channel::add_voice(std::string chanop, std::string nick)
+void	Channel::add_voice(Client &chanop, Client *nick)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);	
-    if (is_user(nick) == false)
+    if (!(nick) || is_user(*nick) == false)
         throw (ERR_NOSUCHNICK);
     _voices.push_back(nick);
 }
 
-void	Channel::remove_voice(std::string chanop, std::string nick)
+void	Channel::remove_voice(Client &chanop, Client *nick)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);	
-    for (std::vector<std::string>::iterator it = _voices.begin(); it != _voices.end(); it++)
+    if (!(nick))
+        throw (ERR_NOSUCHNICK);
+    for (std::vector<Client *>::iterator it = _voices.begin(); it != _voices.end(); it++)
     {
         if (*it == nick)
         {
-            it->erase();
+            _voices.erase(it);
             return;
         }
     }
@@ -412,26 +417,26 @@ bool	Channel::is_banned(std::string mask)
     return false;
 }
 
-void	Channel::add_ban(std::string chanop, std::string nick)
+void	Channel::add_ban(Client &chanop,  std::string mask)
 {
-	std::string mask = Mask::create(nick);
+	std::string _mask = Mask::create(mask);
 
     if (is_operator(chanop) == false) throw (ERR_CHANOPRIVSNEEDED);	
 	for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
 	{
-		if (*it == nick)
+		if (*it == _mask)
         	return ;
 	}
-    _bans.push_back(mask);
+    _bans.push_back(_mask);
 }
 
-void	Channel::remove_ban(std::string chanop, std::string nick)
+void	Channel::remove_ban(Client &chanop, std::string mask)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);	
     for (std::vector<std::string>::iterator it = _bans.begin(); it != _bans.end(); it++)
     {
-        if (*it == nick)
+        if (*it == mask)
         {
 			_bans.erase(it);
             return;
@@ -444,14 +449,14 @@ bool    Channel::is_invitation_only(void) const
     return (_mode.i);
 }
 
-void	Channel::set_invitation(std::string chanop)
+void	Channel::set_invitation(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.i = true;
 }
 
-void	Channel::unset_invitation(std::string chanop)
+void	Channel::unset_invitation(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -459,37 +464,37 @@ void	Channel::unset_invitation(std::string chanop)
     _mode.i = false;
 }
 
-bool	Channel::is_invitation(std::string nick)
+bool	Channel::is_invitation(Client &nick)
 {
-    for (std::vector<std::string>::iterator it = _invitations.begin(); it != _invitations.end(); it++)
+    for (std::vector<Client *>::iterator it = _invitations.begin(); it != _invitations.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
             return true;
     }
     return false;
 }
 
-void	Channel::add_invitation(std::string chanop, std::string nick)
+void	Channel::add_invitation(Client &chanop, Client &nick)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     if (is_user(nick) == true)
         throw (ERR_USERONCHANNEL);
-    _invitations.push_back(nick);
+    _invitations.push_back(&nick);
 }
 
-void	Channel::add_invitation(std::string nick)
+void	Channel::add_invitation(Client &nick)
 {
-    _invitations.push_back(nick);
+    _invitations.push_back(&nick);
 }
 
-void	Channel::remove_invitation(std::string nick)
+void	Channel::remove_invitation(Client &nick)
 {
-    for (std::vector<std::string>::iterator it = _invitations.begin(); it != _invitations.end(); it++)
+    for (std::vector<Client *>::iterator it = _invitations.begin(); it != _invitations.end(); it++)
     {
-        if (*it == nick)
+        if (*it == &nick)
         {
-            it->erase();
+            _invitations.erase(it);
             return;
         }
     }
@@ -497,14 +502,14 @@ void	Channel::remove_invitation(std::string nick)
 
 bool	Channel::is_moderated(void) { return (_mode.m); }
 
-void	Channel::set_moderated(std::string chanop)
+void	Channel::set_moderated(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.m = true;
 }
 
-void	Channel::unset_moderated(std::string chanop)
+void	Channel::unset_moderated(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -513,14 +518,14 @@ void	Channel::unset_moderated(std::string chanop)
 
 bool	Channel::is_no_outside(void) { return (_mode.n); }
 
-void	Channel::set_no_outside(std::string chanop)
+void	Channel::set_no_outside(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.n = true;
 }
 
-void	Channel::unset_no_outside(std::string chanop)
+void	Channel::unset_no_outside(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -529,14 +534,14 @@ void	Channel::unset_no_outside(std::string chanop)
 
 bool	Channel::is_private(void) { return (_mode.p); }
 
-void	Channel::set_private(std::string chanop)
+void	Channel::set_private(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.p = true;
 }
 
-void	Channel::unset_private(std::string chanop)
+void	Channel::unset_private(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -545,35 +550,35 @@ void	Channel::unset_private(std::string chanop)
 
 bool	Channel::is_secret(void) { return (_mode.s); }
 
-void	Channel::set_secret(std::string chanop)
+void	Channel::set_secret(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.s = true;
 }
 
-void	Channel::unset_secret(std::string chanop)
+void	Channel::unset_secret(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.s = false;
 }
 
-void	Channel::set_change_topic(std::string chanop)
+void	Channel::set_change_topic(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.t = true;
 }
 
-void	Channel::unset_change_topic(std::string chanop)
+void	Channel::unset_change_topic(Client &chanop)
 {
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     _mode.t = false;
 }
 
-bool	Channel::can_speak(std::string nick)
+bool	Channel::can_speak(Client &nick)
 {
     if (is_user(nick) == true)
     {
@@ -586,7 +591,7 @@ bool	Channel::can_speak(std::string nick)
     }
     return true;
 }
-
+/*
 void		Channel::change_nick(std::string oldnick, std::string newnick)
 {
 	for (std::vector<std::string>::iterator it = users.begin(); it != users.end(); it++)
@@ -602,5 +607,5 @@ void		Channel::change_nick(std::string oldnick, std::string newnick)
 		if (*it == oldnick)
 			*it = newnick;
 }
-
+*/
 bool		Channel::is_empty(void) { return (users.size() == 0); }

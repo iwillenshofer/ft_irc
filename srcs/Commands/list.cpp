@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:07 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 13:22:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	Commands::__perform_list(Channel &channel)
 	size_t visible = 0;
 	std::map<std::string, std::string> m;
 
-	if (channel.is_user(_sender->nickname))
+	if (channel.is_user(*_sender))
 		visible = channel.users.size();
 	else if (channel.is_private())
 		return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:13 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 12:42:49 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	Commands::_cmd_topic(void)
 		return ;
 	}
 	channel = _get_channel_by_name(_message.arguments(0));
-	if (!(channel) || !(channel->is_user(_sender->nickname)))
+	if (!(channel) || !(channel->is_user(*_sender)))
 		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
 	else if (_message.arguments().size() == 1)
 		__perform_topic(channel, m, false);
@@ -90,7 +90,7 @@ void	Commands::_cmd_topic(void)
 		}
 		try
 		{
-			channel->set_topic(_sender->nickname, topic);
+			channel->set_topic(*_sender, topic);
 			__perform_topic(channel, m, true);
 		}
 		catch(int error_code)

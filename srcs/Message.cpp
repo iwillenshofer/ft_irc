@@ -6,13 +6,13 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 23:33:29 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 15:13:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Message.hpp"
 
-Message::Message(void) { };
+Message::Message(void) { }
 Message::Message(std::string message): _message(message)
 {
 	_disassemble();
@@ -27,7 +27,7 @@ Message &Message::operator=(Message const &cp)
 	_arguments = cp._arguments;
 	return (*this);
 }
-Message::~Message() { };
+Message::~Message() { }
 
 /*
 ** getters
@@ -36,7 +36,7 @@ std::string					&Message::message(void) { return (_message); }
 std::string					&Message::prefix(void) { return (_prefix); }
 std::string					&Message::command(void) { return (_command); }
 std::vector<std::string>	&Message::arguments(void) { return (_arguments); }
-std::string					&Message::arguments(size_t idx) { return (_arguments[idx]); };
+std::string					&Message::arguments(size_t idx) { return (_arguments[idx]); }
 
 /*
 ** disassembles _message into _prefix, _command and [_arguments]

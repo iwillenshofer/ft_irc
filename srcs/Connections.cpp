@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Connections.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 14:34:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 15:12:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ Connections & Connections::operator=(Connections const &cp)
 	return (*this);
 }
 
-Connections::~Connections() { _fds.clear(); };
+Connections::~Connections() { _fds.clear(); }
 
 /*
 ** getters & setters
@@ -100,7 +100,7 @@ void	Connections::disconnect_client(Client *client)
 	Commands("QUIT :" + client->get_hangup_message(), client, &clients, &channels, server);
 	for (std::map<std::string, Channel>::iterator chanit = channels.begin(); chanit != channels.end(); )
 	{
-		chanit->second.remove_user(client->nickname);
+		chanit->second.remove_user(*client);
 		if (chanit->second.is_empty())
 			chanit = channels.erase(chanit);
 		else

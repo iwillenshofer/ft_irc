@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:29:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 13:28:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	Commands::_cmd_kick(void)
 	std::vector<std::string> channels;
 	std::vector<std::string> users;
 	Channel *channel;
+	Client *client;
 	std::string reason;
 
 	m["command"] = _message.command();
@@ -75,21 +76,22 @@ void	Commands::_cmd_kick(void)
 				_message_user(_generate_reply(ERR_BADCHANMASK, m), _sender);
 			else if (!(channel))
 				_message_user(_generate_reply(ERR_NOSUCHCHANNEL, m), _sender);
-			else if (!(channel->is_user(_sender->nickname)))
+			else if (!(channel->is_user(*_sender)))
 				_message_user(_generate_reply(ERR_NOTONCHANNEL, m), _sender);
-			else if (!(channel->is_operator(_sender->nickname)))
+			else if (!(channel->is_operator(*_sender)))
 				_message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, m), _sender);
 			else
 			{
 				for (std::vector<std::string>::iterator uit = users.begin(); uit != users.end(); uit++)
 				{
 					m["nick"] = *uit;
-					if (!(channel->is_user(*uit)))
+					client = _get_client_by_nickname(*uit);
+					if (!(client) || !(channel->is_user(*client)))
 						_message_user(_generate_reply(ERR_USERNOTINCHANNEL, m), _sender);
 					else
 					{
 						_message_channel(_sender->get_prefix() + " KICK " + channel->get_name() + " " + *uit + " :" + reason + MSG_ENDLINE, channel->get_name(), true);
-						channel->remove_user(*uit);
+						channel->remove_user(*client);
 						if (channel->is_empty())
 							_channels->erase(channel->get_name());
 					}

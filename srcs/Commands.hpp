@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 10:50:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 12:54:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ class Commands
 		void __perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument = "");
 		void __perform_whois(std::vector<std::string> &v);
 		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);
-		std::vector<std::string> __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
+		std::vector<Client *>  __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
 		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
 		void __perform_list(Channel &channel);
 		void __perform_trace(Client &client, std::map<std::string, std::string> &m);

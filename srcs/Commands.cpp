@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 20:26:23 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 13:02:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,15 +390,15 @@ std::string Commands::_replace_tags(std::string msg, std::map<std::string, std::
 
 void Commands::_message_all_channels(std::string const &msg, bool sender_too)
 {
-	std::set<std::string> users;
+	std::set<Client *> users;
 	for (std::map<std::string, Channel>::iterator it = _channels->begin(); it != _channels->end(); it++)
 	{
-		if (std::find(it->second.users.begin(), it->second.users.end(), _sender->nickname) != it->second.users.end())
+		if (std::find(it->second.users.begin(), it->second.users.end(), _sender) != it->second.users.end())
 			users.insert(it->second.users.begin(), it->second.users.end());
 	}
 	if (!sender_too)
-		users.erase(_sender->nickname);
-	for (std::set<std::string>::iterator it = users.begin(); it!= users.end(); it++)
+		users.erase(_sender);
+	for (std::set<Client *>::iterator it = users.begin(); it!= users.end(); it++)
 		_message_user(msg, *it);
 }
 
@@ -407,8 +407,8 @@ void Commands::_message_all_channels(std::string const &msg, bool sender_too)
 */
 void Commands::_message_channel(std::string const &msg, std::string const &channel, bool sender_too)
 {
-	for (std::vector<std::string>::iterator it = (*_channels)[channel].users.begin(); it != (*_channels)[channel].users.end(); it++)
-		if (*it != _sender->nickname || sender_too)
+	for (std::vector<Client *>::iterator it = (*_channels)[channel].users.begin(); it != (*_channels)[channel].users.end(); it++)
+		if (*it != _sender || sender_too)
 			_message_user(msg, *it);
 }
 
