@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 16:11:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/06 16:12:21 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ void	Connections::disconnect_client(Client *client)
 		chanit->second.remove_user(*client);
 		if (chanit->second.is_empty())
 		{
-			tmp = chanit + 1;
+			tmp = chanit;
+			tmp++;
 			channels.erase(chanit);
 			chanit = tmp;
 		}
