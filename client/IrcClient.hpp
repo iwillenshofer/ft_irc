@@ -17,13 +17,14 @@
 # include <vector>
 # include <poll.h>
 # include <fcntl.h>
+# include <signal.h>
 # include "Debug.hpp"
 # include "Mask.hpp"
 # include "utilities.hpp"
 # include "server_defaults.hpp"
 # include "Message.hpp"
 #include <ctime>
-
+# include <climits>
 # define BUFFERSIZE 1024
 
 class IrcClient
