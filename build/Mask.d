@@ -1,3 +1,0 @@
-build/Mask.o: srcs/Mask.cpp srcs/Mask.hpp srcs/Debug.hpp \
-  srcs/utilities.hpp srcs/server_defaults.hpp srcs/Client.hpp \
-  srcs/Server.hpp srcs/Commands.hpp srcs/Channel.hpp srcs/Message.hpp
