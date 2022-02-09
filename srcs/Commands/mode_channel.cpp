@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 14:14:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 19:27:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	Commands::__perform_mode_ban_removematch(Channel *channel, std::string argu
 		if (Mask::match(*it, argument))
 		{
 			channel->remove_ban(*_sender, *it);
-			__perform_mode_channel_sendmsg(channel, 'b', '-', argument);
+			__perform_mode_channel_sendmsg(channel, 'b', '-', *it);
 		}
 	}
 }

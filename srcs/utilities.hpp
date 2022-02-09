@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/31 14:21:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 18:50:59 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ namespace ft
 	std::string	get_current_date( void );
 	std::string	format_date( time_t rawtime );
 	std::string load_file(std::string filename);
+	void replace_string(std::string &s, std::string find, std::string replace);
 }
 
 #endif

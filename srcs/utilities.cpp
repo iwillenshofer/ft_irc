@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/21 15:02:42 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 19:18:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,4 +143,10 @@ std::string ft::load_file(std::string filename)
 	file = std::string(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
 	ifs.close();
 	return (file);
+}
+
+void ft::replace_string(std::string &s, std::string find, std::string replace)
+{
+	while (s.find(find) != std::string::npos)
+		s.replace(s.find(find), find.size(), replace);
 }

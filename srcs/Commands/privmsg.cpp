@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 13:28:54 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 19:40:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void	Commands::__priv_msg_process_channel(std::string &target)
 	channel = _get_channel_by_name(target);
 	if (!(channel))
 		__priv_msg_reply(ERR_NOSUCHCHANNEL, m);
-	else if (channel->is_banned(*_sender) || (!(channel->is_user(*_sender)) && (channel->is_moderated() || channel->is_no_outside())))
+	else if (!(channel->can_speak(*_sender)))
 		__priv_msg_reply(ERR_CANNOTSENDTOCHAN, m);
 	else
 		__priv_msg_send(target);
