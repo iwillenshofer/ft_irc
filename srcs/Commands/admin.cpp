@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 20:42:53 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/08 21:03:19 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	Commands::_cmd_admin(void)
         m["email"] = MSG_ADMIN2;
         _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
     }
-    else if (_sender->is_operator() == false)
-		_message_user(_generate_reply(ERR_NOPRIVILEGES), _sender);
     else
     {
         m["server name"] = _message.arguments(0);
