@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 11:37:22 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 22:03:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 18:48:09 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <iostream>
 #include <csignal>
+#include <signal.h>
 
 #define THREAD_SIZE 500
 

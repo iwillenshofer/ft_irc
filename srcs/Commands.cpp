@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 13:02:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 20:00:52 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_CHANNELMODEIS] = "<channel> <mode> <mode_params>";
 	replies[RPL_NOTOPIC] = "<channel> :No topic is set";
 	replies[RPL_TOPIC] = "<channel> :<topic>";
-	replies[RPL_INVITING] = "<invited> <channel>";
+	replies[RPL_INVITING] = "<nick> <channel>";
 	replies[RPL_SUMMONING] = "<user> :Summoning user to IRC";
 	replies[RPL_INVITELIST] = "<channel> <invitemask>";
 	replies[RPL_ENDOFINVITELIST] = "<channel> :End of channel invite list";
@@ -168,7 +168,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_UNAVAILRESOURCE] = "<nick/channel> :Nick/channel is temporarily unavailable";
 	replies[ERR_USERNOTINCHANNEL] = "<nick> <channel> :They aren't on that channel";
 	replies[ERR_NOTONCHANNEL] = "<channel> :You're not on that channel";
-	replies[ERR_USERONCHANNEL] = "<user> <channel> :is already on channel";
+	replies[ERR_USERONCHANNEL] = "<nick> <channel> :is already on channel";
 	replies[ERR_NOLOGIN] = "<user> :User not logged in";
 	replies[ERR_SUMMONDISABLED] = ":SUMMON has been disabled";
 	replies[ERR_USERSDISABLED] = ":USERS has been disabled";

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 13:24:42 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 20:03:12 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,39 +58,42 @@ void	Commands::_cmd_invite(void)
 
     if (_message.arguments().size() != 2)
     {
-        _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+        m["command"] = "invite";
+        _message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
         return ;
     }
 	client =  _get_client_by_nickname(_message.arguments(0));
     channel =  _get_channel_by_name(_message.arguments(1));
     if (client == NULL)
     {
-        _message_user(_generate_reply(ERR_NOSUCHNICK), _sender);
+        m["nickname"] = _message.arguments(0);
+        _message_user(_generate_reply(ERR_NOSUCHNICK, m), _sender);
         return ;
     }
     if (channel == NULL)
     {
-        _message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
+        m["channel name"] = _message.arguments(1);
+        _message_user(_generate_reply(ERR_NOSUCHCHANNEL, m), _sender);
         return ;
     }
+    m["nick"] = client->nickname;
+    m["channel"] = channel->get_name();
     if (channel->is_user(*_sender) == false)
     {
-        _message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
+        _message_user(_generate_reply(ERR_NOTONCHANNEL, m), _sender);
         return ;
     }
     if (channel->is_invitation_only() == true && channel->is_operator(*_sender) == false)
     {
-        _message_user(_generate_reply(ERR_CHANOPRIVSNEEDED), _sender);
+        _message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, m), _sender);
         return ;
     }
     if (channel->is_user(*client) == true)
     {
-        _message_user(_generate_reply(ERR_USERONCHANNEL), _sender);
+        _message_user(_generate_reply(ERR_USERONCHANNEL, m), _sender);
         return ;
     }
     channel->add_invitation(*client);
-    m["invited"] = client->nickname;
-    m["channel"] = channel->get_name();
     _message_user(_generate_reply(RPL_INVITING, m), _sender);
     std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
     _message_user(msg, client);

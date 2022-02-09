@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
+#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/05 21:24:03 by iwillens         ###   ########.fr        #
+#    Updated: 2022/02/08 18:50:06 by roman            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = irclient
 
 CC = clang++
-CCFLAGS = -Wall -Werror -Wextra -g -std=c++11 -pedantic -fsanitize=address
+CCFLAGS = -g -std=c++11 -pedantic -fsanitize=address
 
 SRC_DIR = ../srcs
 OBJ_DIR = ./build
