@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/31 14:21:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:42:18 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <unistd.h>
 # include <fstream>
+# include <server_defaults.hpp>
 
 namespace ft
 {
@@ -55,6 +56,7 @@ namespace ft
 	std::string	get_current_date( void );
 	std::string	format_date( time_t rawtime );
 	std::string load_file(std::string filename);
+	unsigned long hash(const char *str);
 }
 
 #endif

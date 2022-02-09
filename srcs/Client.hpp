@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/29 10:06:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:58:53 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ class Client
 		std::string 				username;
 		std::string 				hostname;
 		std::string 				realname;
-		std::string					password;
+		unsigned long				password;
 		std::string					away_message;
 		bool						registered;
 		ClientMode					mode;

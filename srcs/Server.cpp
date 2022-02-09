@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:51 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 08:55:31 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:53:44 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-Server::Server(std::string host, std::string password)
+Server::Server(std::string host, unsigned long password)
 :_version(SRV_VERSION), _servername(host), _password(password), _motdfilename(SRV_MOTD_FILE), _highest_connections(0)
 {
 	_init();
@@ -35,19 +35,19 @@ Server::~Server(void) { }
 
 void Server::_init(void)
 {
-	_operators.insert(std::make_pair("iwillens", "senha1"));
-	_operators.insert(std::make_pair("robitett", "senha1"));
+	_operators.insert(std::make_pair("iwillens", 229428285555564)); // Igor123
+	_operators.insert(std::make_pair("robitett", 7571527224823800)); // Roman123
 	std::time(&_creation_date);
 }
 
 /*
 ** getters
 */
-std::string							&Server::password(void) { return (_password); }
-std::string							&Server::version(void) { return (_version); }
-std::string							&Server::servername(void) { return (_servername); }
-std::map<std::string, std::string>	&Server::operators(void) { return (_operators); }
-std::string							&Server::motdfilename(void) { return (_motdfilename); }
+unsigned long							&Server::password(void) { return (_password); }
+std::string								&Server::version(void) { return (_version); }
+std::string								&Server::servername(void) { return (_servername); }
+std::map<std::string, unsigned long>	&Server::operators(void) { return (_operators); }
+std::string								&Server::motdfilename(void) { return (_motdfilename); }
 
 void								Server::add_whowas(Client &client)
 { 

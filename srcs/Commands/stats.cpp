@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stats.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:45:21 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	Commands::_cmd_stats(void)
 	}
 	else if (cmd == 'o')
 	{
-		for (std::map<std::string, std::string>::iterator it = _server->operators().begin(); it != _server->operators().end(); it++)
+		for (std::map<std::string, unsigned long>::iterator it = _server->operators().begin(); it != _server->operators().end(); it++)
 		{
 			m["hostmask"] = Mask::create("*");
 			m["name"] = it->first;

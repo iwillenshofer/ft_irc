@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 23:26:32 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:42:52 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define	SRV_MAXWHOIS			5
 # define	SRV_MAXTARGETS			5
 # define	SRV_MAXNICKLEN			9
+# define    START_HASH              5381
 # define	SRV_VERSION				"-42.full.of.bugs.0.0.3"
 # define	SRV_COMMENTS			"Not great, not terrible!"
 # define	SRV_SERVERNAME			"irc.42network.com"
@@ -68,11 +69,6 @@
 # define	MODE_CHANNEL			"-+opsitnmlbvk"
 # define	MODE_USER   			"-+iswo"
 # define	MODE_USER_DFL			"+iw"
-/*
-** IRC OP Defaults
-*/
-
-# define    IRC_OPS			"iwillens:iwillens123;robitett:robitett123"
 
 /*
 ** Reply message

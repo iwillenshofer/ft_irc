@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 14:47:41 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:14:52 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "Debug.hpp"
 # include "Client.hpp"
 # include "Message.hpp"
+# include "utilities.hpp"
 /*
 ** channel modes. currently a struct, but will be converted into a class so it can initialize itself.
 */
@@ -69,9 +70,9 @@ class Channel
 		void		set_topic(Client &nick, std::string topic);
 		std::string	get_topic(void) const;
 
-		bool		match_password(std::string password) const;
-		void		set_password(Client &chanop, std::string key);
-		void		unset_password(Client &chanop, std::string key);
+		bool		match_password(unsigned long password) const;
+		void		set_password(Client &chanop, unsigned long key);
+		void		unset_password(Client &chanop, unsigned long key);
 
 		std::string	get_modes(void) const;
 		std::string	get_mode_params(void) const;
@@ -83,7 +84,7 @@ class Channel
 		void		unset_user_limit(Client &chanop);
 
 		bool 		is_user(Client &nick);
-		void 		add_user(Client &nick, std::string password = "");
+		void 		add_user(Client &nick, unsigned long password = HASH_EMPTY);
 		void 		remove_user(Client &nick);
 
 		bool		is_operator(Client &nick);
@@ -142,7 +143,7 @@ class Channel
 		std::string					_name;
 		Client 						*_creator;
 		std::string					_topic;
-		std::string					_password;
+		unsigned long				_password;
 		t_channelmode 				_mode;
 		size_t						_user_limit;
 		std::vector<Client *>	 	_operators;

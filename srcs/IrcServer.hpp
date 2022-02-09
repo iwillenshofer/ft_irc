@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 14:20:41 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:52:39 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class IrcServer
 			/*
 			** Coplien Form
 			*/
-			IrcServer(std::string host, int port, std::string password);
+			IrcServer(std::string host, int port, unsigned long password);
 			IrcServer(IrcServer const &cp);
 			IrcServer &operator=(IrcServer const &cp);
 			virtual ~IrcServer();

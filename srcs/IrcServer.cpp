@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   WebServer.cpp                                      :+:      :+:    :+:   */
+/*   IrcServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 14:07:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:53:35 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 std::vector<IrcServer *> IrcServer::_instances; //static members must be defined
 bool IrcServer::_stop_server = false;
 
-IrcServer::IrcServer(std::string host, int port, std::string password)
+IrcServer::IrcServer(std::string host, int port, unsigned long password)
 {
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 

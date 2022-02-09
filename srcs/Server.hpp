@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 10:49:18 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:55:33 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Client;
 class Server
 {
 	public:
-		Server(std::string host = SRV_SERVERNAME, std::string password = "");
+		Server(std::string host = SRV_SERVERNAME, unsigned long password = 0);
 		
 		Server(Server const &cp);
 		Server &operator=(Server const &cp);
@@ -37,8 +37,8 @@ class Server
 	private:
 		std::string										_version;
 		std::string										_servername;
-		std::string										_password;
-		std::map<std::string, std::string>				_operators;
+		unsigned long									_password;
+		std::map<std::string, unsigned long>			_operators;
 		std::string										_motdfilename;
 		std::map<std::string, std::vector<Client> >		_whowaslist;
 		size_t											_highest_connections;
@@ -51,20 +51,20 @@ class Server
 		/*
 		** getters
 		*/
-		std::string							&password(void);
-		std::string							&version(void);
-		std::string							&servername(void);
-		std::map<std::string, std::string>	&operators(void);
-		std::string							&motdfilename(void);
+		unsigned long							&password(void);
+		std::string								&version(void);
+		std::string								&servername(void);
+		std::map<std::string, unsigned long>	&operators(void);
+		std::string								&motdfilename(void);
 
-		void								add_whowas(Client &client);
+		void										add_whowas(Client &client);
 		std::map<std::string, std::vector<Client> >	&whowas(void);
 		std::map<std::string, size_t >				&commandstats(void);
-		size_t								highest_connections(void);
-		size_t								highest_connections(size_t current_connections);
+		size_t										highest_connections(void);
+		size_t										highest_connections(size_t current_connections);
 
-		time_t								&creation_date(void);
-		std::string							formatted_creation_date(void);
+		time_t										&creation_date(void);
+		std::string									formatted_creation_date(void);
 };
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/21 15:02:42 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:42:59 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,4 +143,14 @@ std::string ft::load_file(std::string filename)
 	file = std::string(std::istreambuf_iterator<char>(ifs), std::istreambuf_iterator<char>());
 	ifs.close();
 	return (file);
+}
+
+unsigned long ft::hash(const char *str)
+{
+    unsigned long	hash = START_HASH;
+    int 			c;
+
+    while ((c = *str++))
+        hash = ((hash << 5) + hash) + c;
+    return hash;
 }

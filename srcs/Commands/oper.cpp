@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   oper.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 21:46:10 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 
 void	Commands::_cmd_oper(void)
 {
-    std::map<std::string, std::string>::iterator it;
+    std::map<std::string, unsigned long>::iterator it;
     std::string flags = " :+";
 
     if (_message.arguments().size() != 2)
@@ -49,7 +49,7 @@ void	Commands::_cmd_oper(void)
         _message_user(_generate_reply(ERR_NOOPERHOST), _sender);
         return ;
     }
-    if (_message.arguments(1) != it->second)
+    if (ft::hash(_message.arguments(1).c_str()) != it->second)
     {
         _message_user(_generate_reply(ERR_PASSWDMISMATCH), _sender);
         return ;

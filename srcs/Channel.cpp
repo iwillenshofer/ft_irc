@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/06 15:05:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/08 22:14:59 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,34 +85,34 @@ std::string	Channel::get_topic(void) const
     return _topic;
 }
 
-bool		Channel::match_password(std::string password) const
+bool		Channel::match_password(unsigned long password) const
 {
 	if (_mode.k && password != _password)
 		return (false);
 	return (true);
 }
 
-void	Channel::set_password(Client &chanop, std::string key)
+void	Channel::set_password(Client &chanop, unsigned long key)
 {
-    if (key.empty() == true)
+    if (key == HASH_EMPTY)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
-    if (_password.empty() == false)
+    if (_password != HASH_EMPTY)
         throw (ERR_KEYSET);
     _password = key;
     _mode.k = true;
 }
 
-void	Channel::unset_password(Client &chanop, std::string key)
+void	Channel::unset_password(Client &chanop, unsigned long key)
 {
-    if (key.empty() == true)
+    if (key == HASH_EMPTY)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     if (key != _password)
         throw (ERR_KEYSET);
-    _password.erase();
+    _password = HASH_EMPTY;
     _mode.k = false;
 }
 
@@ -210,7 +210,7 @@ void	Channel::activate_mode(Client &nick, char flag, std::string arg, Client *ta
     else if (flag == 't')
         set_change_topic(nick);
     else if (flag == 'k')
-        set_password(nick, arg);
+        set_password(nick, ft::hash(arg.c_str()));
     else if (flag == 'v')
         add_voice(nick, target);
 }
@@ -236,7 +236,7 @@ void	Channel::deactivate_mode(Client &nick, char flag, std::string arg, Client *
     else if (flag == 't')
         unset_change_topic(nick);
     else if (flag == 'k')
-        unset_password(nick, arg);
+        unset_password(nick, ft::hash(arg.c_str()));
     else if (flag == 'v')
         remove_voice(nick, target);
 }
@@ -274,7 +274,7 @@ bool Channel::is_user(Client &nick)
     return false;
 }
 
-void Channel::add_user(Client &nick, std::string password)
+void Channel::add_user(Client &nick, unsigned long password)
 {
     if (is_invitation(nick) == true)
         users.push_back(&nick);
