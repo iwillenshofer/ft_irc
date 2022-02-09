@@ -6,14 +6,14 @@
 #    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/08 18:50:06 by roman            ###   ########.fr        #
+#    Updated: 2022/02/08 20:05:47 by roman            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = irclient
 
 CC = clang++
-CCFLAGS = -g -std=c++11 -pedantic -fsanitize=address
+CCFLAGS = -Wall -Werror -Wextra -g -std=c++11 -pedantic -fsanitize=address
 
 SRC_DIR = ../srcs
 OBJ_DIR = ./build
