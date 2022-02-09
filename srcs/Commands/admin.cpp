@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/27 20:36:48 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/08 20:42:53 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,29 @@
 
 void	Commands::_cmd_admin(void)
 {
-    std::map<std::string, std::string> m;
+    std::map<std::string, std::string>  m;
+    bool                                match = true;
 
-    m["server"] = SRV_SERVERNAME;
-    m["info1"] = MSG_NAME_SERVER;
-    m["info2"] = "";
-    m["email"] = MSG_ADMIN1;
-    _message_user(_generate_reply(RPL_ADMINME, m), _sender);
-    _message_user(_generate_reply(RPL_ADMINLOC1, m), _sender);
-    _message_user(_generate_reply(RPL_ADMINLOC2, m), _sender);
-    _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
-    m["email"] = MSG_ADMIN2;
-    _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
+    if (_message.arguments().empty() == false)
+        match = Mask::match_raw(std::string(SRV_SERVERNAME), _message.arguments(0));
+    if (match == true)
+    {
+        m["server"] = SRV_SERVERNAME;
+        m["info1"] = MSG_NAME_SERVER;
+        m["info2"] = "";
+        m["email"] = MSG_ADMIN1;
+        _message_user(_generate_reply(RPL_ADMINME, m), _sender);
+        _message_user(_generate_reply(RPL_ADMINLOC1, m), _sender);
+        _message_user(_generate_reply(RPL_ADMINLOC2, m), _sender);
+        _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
+        m["email"] = MSG_ADMIN2;
+        _message_user(_generate_reply(RPL_ADMINEMAIL, m), _sender);
+    }
+    else if (_sender->is_operator() == false)
+		_message_user(_generate_reply(ERR_NOPRIVILEGES), _sender);
+    else
+    {
+        m["server name"] = _message.arguments(0);
+        _message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
+    }
 }
