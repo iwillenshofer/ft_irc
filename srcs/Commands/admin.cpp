@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:03:19 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/09 17:54:30 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,30 @@
 **	ADMIN syrk                      ; ADMIN request for the server to
 **									which the user syrk is connected
 */
+
+// Comment From Roman To Igor
+
+// On Undernet, a user need to be IRC OP to add an argument to this command.
+// Not a IRC OP : /admin other_srv           Permission Denied: Insufficient privileges
+// Is a IRC OP  : /admin other_srv           other_srv :No such server
+
+// Do you think, we implement the same behavior or we let the "No such server" for every argument received
+// except for the name of our sever of course.
+
+
+// Test FT-IRC
+
+// /admin                           > OK
+// /admin other_srv                 > other_srv:No such server
+// /admin irc.42network.com         > OK 
+// /admin *.42network.com           > OK
+
+// Test Undernet
+// /admin                           > OK 
+// (no irc-op) /admin other_srv     > Permission Denied: Insufficient privileges
+// (irc op)    /admin other_srv     > other_srv:No such server
+// /admin irc.42network.com         > OK 
+// /admin *.42network.com           > OK
 
 void	Commands::_cmd_admin(void)
 {
