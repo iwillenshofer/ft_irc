@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/09 19:48:58 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:20:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 	std::string trim( const std::string& str );
 
 	void trimString(std::string& str);
-	bool isNumeric(std::string& s);
+	bool is_numeric(std::string& s);
 	std::string getHostByName(std::string s);
 	std::vector<std::string> split(const std::string &s, char separator);
 	std::vector<std::string> split(std::string &s, std::string separator);

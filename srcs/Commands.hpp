@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 12:54:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:34:37 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,88 +200,6 @@ class Commands
 		void __priv_msg_process_mask(std::string &target);
 		void __priv_msg_process_channel(std::string &target);
 		void __priv_msg_process_nick(std::string &target);
-
-		/*
-		** Commands not Implemented:
-		** 3.1.6 Service
-		** 3.1.8 Squit
-		** 3.4.7 Connect
-		** 3.5.1 Servlist
-		** 3.5.2 Squery
-		**
-		** Optional Commands
-		** 4.1 Away
-		** 4.2 Rehash
-		** 4.3 Die
-		** 4.4 Restart
-		** 4.5 Summon
-		** 4.6 Users
-		** 4.7 Operwall
-		** 4.8 Userhost
-		** 4.9 Ison
-		*/
-
-
-/*
-**
-	  4.1 Connection Registration .................................   [done]
-         4.1.1 Password message ...................................   OK
-         4.1.2 Nickname message ...................................   OK
-         4.1.3 User message .......................................   OK
-         4.1.4 Server message .....................................   OK
-         4.1.5 Operator message ...................................   OK
-         4.1.6 Quit message .......................................   OK
-         4.1.7 Server Quit message ................................   OK
-      4.2 Channel operations ......................................   [done]
-         4.2.1 Join message .......................................   OK
-         4.2.2 Part message .......................................   OK
-         4.2.3 Mode message .......................................   OK
-            4.2.3.1 Channel modes .................................   OK
-            4.2.3.2 User modes ....................................   OK
-         4.2.4 Topic message ......................................   OK
-         4.2.5 Names message ......................................   OK
-         4.2.6 List message .......................................   OK
-         4.2.7 Invite message .....................................   OK
-         4.2.8 Kick message .......................................   OK
-      4.3 Server queries and commands .............................   [done]
-         4.3.1 Version message ....................................   OK
-         4.3.2 Stats message ......................................   OK
-         4.3.3 Links message ......................................   OK
-         4.3.4 Time message .......................................   OK
-         4.3.5 Connect message ....................................   OK
-         4.3.6 Trace message ......................................   OK
-         4.3.7 Admin message ......................................   OK
-         4.3.8 Info message .......................................   OK
-      4.4 Sending messages ........................................   
-         4.4.1 Private messages ...................................   
-         4.4.2 Notice messages ....................................   
-      4.5 User-based queries ......................................   [done]
-         4.5.1 Who query ..........................................   OK
-         4.5.2 Whois query ........................................   OK
-         4.5.3 Whowas message .....................................   OK
-      4.6 Miscellaneous messages ..................................   [done]
-         4.6.1 Kill message .......................................   OK
-         4.6.2 Ping message .......................................   OK
-         4.6.3 Pong message .......................................   OK
-         4.6.4 Error message ......................................   OK
-
-
-
-
-**
-*/
-
-
-
-
-
-
-
-
-
-
-
-
 
 };
 

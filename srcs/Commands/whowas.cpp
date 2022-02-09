@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   whowas.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:47:38 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,31 @@
 ** [IMPLEMENTATION NOTES]
 ** As there is only one server, the last parameter <target> is ignored.
 ** Whowas user is added when the user disconnects or changes nickname.
+**
+** [TESTS DONE]
+** /whowas
+** /whowas inexistent_user
+** /whowas user_online
+** /whowas user_online, after they disconnected
+** /whowas user_online, after nickname change
+** /whowas user_online 3 
+** /whowas user1,user2,user3
 */
 
 void	Commands::_cmd_whowas(void)
 {
-	size_t i = 0;
+	size_t i;
 	size_t max = 0;
 	std::map<std::string, std::vector<Client> >::iterator it;
 	std::map<std::string, std::string> m;
 	std::vector<std::string> v;
-	Debug("HERE");
+
 	if (!(_message.arguments().size()))
 	{
 		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
 		return ;
 	}
-	if (_message.arguments().size() > 1 && ft::isNumeric(_message.arguments(1)))
+	if (_message.arguments().size() > 1 && ft::is_numeric(_message.arguments(1)))
 		max = std::atoi(_message.arguments(1).c_str());
 	Message::clear_commas(_message.arguments(0));
 	v = ft::split(_message.arguments(0), ',');
@@ -75,6 +84,7 @@ void	Commands::_cmd_whowas(void)
 	m["nickname"] = _message.arguments(0);
 	for (std::vector<std::string>::iterator vit = v.begin(); vit != v.end(); vit++)
 	{
+		i = 0;
 		m["nick"] = *vit;
 		it = _server->whowas().find(*vit);
 		if (it == _server->whowas().end())
@@ -92,13 +102,11 @@ void	Commands::_cmd_whowas(void)
 				m["last_activity"] = ft::format_date(cit->last_ping);
 				_message_user(_generate_reply(RPL_WHOWASUSER, m), _sender);
 				_message_user(_generate_reply(RPL_WHOWASSERVER, m), _sender);
-				if (max != 0 && i >= max)
-					break ;
 				i++;
+				if (max > 0 && i >= max)
+					break ;
 			}
 		}
-		if (max != 0 && i >= max)
-			break ;
 	}
 	_message_user(_generate_reply(RPL_ENDOFWHOWAS, m), _sender);
 }

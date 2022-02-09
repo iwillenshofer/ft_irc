@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/09 19:49:20 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:20:16 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void ft::trimString(std::string& str)
     str.erase(0, str.find_first_not_of(' '));
 }
 
-bool ft::isNumeric(std::string& s)
+bool ft::is_numeric(std::string& s)
 {
 	for (std::string::iterator it = s.begin(); it != s.end(); it++)
 		if (!(std::isdigit(*it)))

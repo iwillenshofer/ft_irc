@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 12:15:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:52:34 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@
 **	:WiZ!jto@tolsun.oulu.fi NICK Kilroy
 **							; Server telling that WiZ changed his
 **							nickname to Kilroy.
+**
 */
 
 void	Commands::_cmd_nick(void)
 {
+	std::string msg;
 	std::string old_nick = _sender->nickname;
 	if (_message.arguments().size() == 0 || _message.arguments(0).empty())
 	{
@@ -56,10 +58,12 @@ void	Commands::_cmd_nick(void)
 			_server->add_whowas(*_sender);
 		_sender->nickname = _message.arguments(0);
 		_truncate_nick(_sender->nickname);
-//		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
-//			it->second.change_nick(old_nick, _sender->nickname);
 		if (_sender->registered)
-			_message_all_channels(":" + old_nick + " NICK " + _sender->nickname + MSG_ENDLINE, true);
+		{
+			msg = ":" + old_nick + " NICK " + _sender->nickname + MSG_ENDLINE;
+			_message_all_channels(msg, false);
+			_message_user(msg, _sender);
+		}
 		else if (!(_sender->username.empty()))
 			_register_user();
 
