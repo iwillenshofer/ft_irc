@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 22:14:52 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/09 17:14:38 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ class Channel
 		void		unset_user_limit(Client &chanop);
 
 		bool 		is_user(Client &nick);
-		void 		add_user(Client &nick, unsigned long password = HASH_EMPTY);
+		void 		add_user(Client &nick, unsigned long password = START_HASH);
 		void 		remove_user(Client &nick);
 
 		bool		is_operator(Client &nick);
