@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/08 22:42:59 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/09 19:49:20 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,4 +153,10 @@ unsigned long ft::hash(const char *str)
     while ((c = *str++))
         hash = ((hash << 5) + hash) + c;
     return hash;
+}
+
+void ft::replace_string(std::string &s, std::string find, std::string replace)
+{
+	while (s.find(find) != std::string::npos)
+		s.replace(s.find(find), find.size(), replace);
 }

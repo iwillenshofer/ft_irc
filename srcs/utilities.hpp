@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/08 22:42:18 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/09 19:48:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ namespace ft
 	std::string	format_date( time_t rawtime );
 	std::string load_file(std::string filename);
 	unsigned long hash(const char *str);
+	void replace_string(std::string &s, std::string find, std::string replace);
 }
 
 #endif

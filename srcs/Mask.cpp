@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mask.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 12:05:41 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/23 21:39:05 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 19:29:33 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void Mask::Maskparts::_strip(std::string string)
 	hostname = _striphost(string);
 	username = _stripuser(string);
 	nickname = string;
+	ft::replace_string(hostname, "**", "*");
+	ft::replace_string(username, "**", "*");
+	ft::replace_string(nickname, "**", "*");
 	if (!(hostname.size()))
 		hostname = "*";
 	if (!(username.size()))
@@ -129,4 +132,8 @@ bool	Mask::match_raw(std::string target, std::string mask)
 	return (_match(target.begin(), mask.begin(), target.end(), mask.end()));
 }
 
-std::string Mask::create(std::string target) { return (Maskparts(target).fullmask()); }
+std::string Mask::create(std::string target)
+{
+	ft::replace_string(target, "**", "*");
+	return (Maskparts(target).fullmask());
+}

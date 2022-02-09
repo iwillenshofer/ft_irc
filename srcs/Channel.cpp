@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/09 17:16:24 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/09 19:49:37 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -580,7 +580,7 @@ void	Channel::unset_change_topic(Client &chanop)
 
 bool	Channel::can_speak(Client &nick)
 {
-    if (is_user(nick) == true)
+    if (is_user(nick) == true || !(is_no_outside()))
     {
         if (is_banned(nick) == true || _mode.m == true)
         {
@@ -589,7 +589,7 @@ bool	Channel::can_speak(Client &nick)
             return false;
         }
     }
-    return true;
+    return false;
 }
 /*
 void		Channel::change_nick(std::string oldnick, std::string newnick)
