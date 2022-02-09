@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/08 22:14:59 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/09 17:16:24 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ bool		Channel::match_password(unsigned long password) const
 
 void	Channel::set_password(Client &chanop, unsigned long key)
 {
-    if (key == HASH_EMPTY)
+    if (key == START_HASH)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
-    if (_password != HASH_EMPTY)
+    if (_password != START_HASH)
         throw (ERR_KEYSET);
     _password = key;
     _mode.k = true;
@@ -106,13 +106,13 @@ void	Channel::set_password(Client &chanop, unsigned long key)
 
 void	Channel::unset_password(Client &chanop, unsigned long key)
 {
-    if (key == HASH_EMPTY)
+    if (key == START_HASH)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     if (key != _password)
         throw (ERR_KEYSET);
-    _password = HASH_EMPTY;
+    _password = START_HASH;
     _mode.k = false;
 }
 
