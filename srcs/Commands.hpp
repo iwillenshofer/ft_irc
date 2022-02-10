@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 20:34:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 18:49:13 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ class Commands
 		void _truncate_nick(std::string &nickname);
 		bool _validate_nick(std::string const &nickname) const;
 		void _cmd_unknown(void);
+		bool _shared_channel(Client *client1, Client *client2);
 
 		/*
 		** Single command helpers
@@ -188,7 +189,7 @@ class Commands
 		void __perform_mode_ban_printlist(Channel *channel);
 		void __perform_mode_channel_sendmsg(Channel *channel, char mode, char prefix, std::string argument = "");
 		void __perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument = "");
-		void __perform_whois(std::vector<std::string> &v);
+		void __perform_whois(std::vector<std::string> &v, std::string &arguments);
 		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);
 		std::vector<Client *>  __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
 		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
