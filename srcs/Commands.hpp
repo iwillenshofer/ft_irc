@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 21:41:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 18:49:13 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ class Commands
 		void _truncate_nick(std::string &nickname);
 		bool _validate_nick(std::string const &nickname) const;
 		void _cmd_unknown(void);
+		bool _shared_channel(Client *client1, Client *client2);
 
 		/*
 		** Single command helpers

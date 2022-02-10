@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   whois.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:25 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 21:49:15 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 18:56:51 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,18 @@ void	Commands::_cmd_whois(void)
         return ;
     }
     else if (_message.arguments().size() >= 2)
+	{
         first_arg = 1;
+	}
 	masks = ft::split(_message.arguments(first_arg), ',');
 	for (std::vector<std::string>::iterator it = masks.begin(); it != masks.end(); it++)
 	{
 		if (!(Message::is_bnf_mask(*it)))
 			userlist.push_back(*it);
 		matched_mask.clear();
-		for (std::map<int, Client>::iterator mit = _clients->begin(); mit != _clients->end(); mit++)
+		for (std::map<int, Client>::iterator mit = ++(_clients->begin()); mit != _clients->end(); mit++)
 		{
-			if (mit != _clients->begin() && Mask::match_raw(mit->second.nickname, *it))
+			if (Mask::match_raw(mit->second.nickname, *it) && (!(mit->second.is_invisible()) || _shared_channel(&(mit->second), _sender)))
 				matched_mask.push_back(mit->second.nickname);
 		}
 		if (!(matched_mask.size()))

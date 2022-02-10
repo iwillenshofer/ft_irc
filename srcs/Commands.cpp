@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 20:00:52 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/10 18:49:01 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,26 +481,23 @@ void Commands::_truncate_nick(std::string &nickname)
 		nickname.erase(SRV_MAXNICKLEN);
 }
 
-/*
-bool Commands::_validate_nick(std::string const &nickname) const
-{
-	std::string special("[]\\`_^{|}");
-
-	if (!nickname.size())
-		return (false);
-	if (special.find(nickname[0]) == std::string::npos && !(std::isalpha(nickname[0])))
-		return (false);
-	for (std::string::const_iterator it = nickname.begin(); it != nickname.end(); it++)
-	{
-		if (!(std::isalnum(*it)) && special.find(*it) == std::string::npos && *it != '-')
-			return (false);
-	}
-	return (true);
-}
-*/
-
 void Commands::_cmd_unknown(void)
 {
 	Debug("User " + _sender->nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);
 	_message_user(":server 421  " + _message.command() + " :Unknown command\r\n", _sender);
+}
+
+/*
+** returns wether client1 and client2 share a common channel.
+*/
+bool Commands::_shared_channel(Client *client1, Client *client2)
+{
+	if (!client1 || !client2)
+		return (false);
+	for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
+	{
+		if (it->second.is_user(*client1) && it->second.is_user(*client2))
+			return (true);
+	}
+	return (false);
 }

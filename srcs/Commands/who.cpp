@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   who.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:21 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 15:17:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 19:09:15 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,25 +100,20 @@ void	Commands::_cmd_who(void)
 	}
 	else
 	{
-		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
-			if (it->second.is_user(*_sender))
-				shared_channel.insert(shared_channel.end(), it->second.users.begin(), it->second.users.end());
 		for (client_iterator it = ++(_clients->begin()); it != _clients->end(); it++)
 		{
-			if (!(it->second.is_invisible()) && std::find(shared_channel.begin(), shared_channel.end(), &(it->second)) == shared_channel.end()
-			&& (Mask::match(it->second, _message.arguments(0)) || Mask::match_raw(it->second.nickname, _message.arguments(0)) || 
-			Mask::match_raw(it->second.hostname, _message.arguments(0)) || Mask::match_raw(it->second.realname, _message.arguments(0)) || 
-			Mask::match_raw(_server->servername(), _message.arguments(0))))
+			if ((!(it->second.is_invisible()) || _shared_channel(&(it->second), _sender))
+			&& (Mask::match(it->second, _message.arguments(0)) || Mask::match_raw(it->second.nickname, _message.arguments(0))
+			|| Mask::match_raw(it->second.hostname, _message.arguments(0)) || Mask::match_raw(it->second.realname, _message.arguments(0))
+			|| Mask::match_raw(_server->servername(), _message.arguments(0))))
 			{
 				if (_message.arguments().size() <= 1 || _message.arguments(1) != "o" || it->second.is_operator())
-				__perform_who(it->second, arguments);
+					__perform_who(it->second, arguments);
 			}
 		}
 	}
 	_message_user(_generate_reply(RPL_ENDOFWHO, arguments), _sender);
 }
-
-
 
 
 /*
