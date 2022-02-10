@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/09 19:49:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 21:27:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -580,17 +580,16 @@ void	Channel::unset_change_topic(Client &chanop)
 
 bool	Channel::can_speak(Client &nick)
 {
-    if (is_user(nick) == true || !(is_no_outside()))
-    {
-        if (is_banned(nick) == true || _mode.m == true)
-        {
-            if (is_operator(nick) == true || is_voice(nick) == true)
-                return true;
-            return false;
-        }
-    }
-    return false;
+    if (is_banned(nick) || _mode.m == true)
+	{
+		if (!is_operator(nick) && !is_voice(nick))
+			return false;
+	}
+	else if (is_no_outside() && !(is_user(nick)))
+		return false;
+    return true;
 }
+
 /*
 void		Channel::change_nick(std::string oldnick, std::string newnick)
 {
