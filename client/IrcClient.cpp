@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcClient.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 19:16:16 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/10 21:05:33 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void IrcClient::read(void)
 void IrcClient::write(void)
 {
 	int rc;
-//	Debug("Write", DBG_ERROR);
+
 	if (!(_send_queue.size()))
 		return;
 	Debug(_nickname + " -> " + _send_queue.at(0));

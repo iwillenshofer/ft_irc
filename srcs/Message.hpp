@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:47:11 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/04 23:29:40 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 22:36:41 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ class Message
 		static bool is_bnf_digit(const char c);
 		static bool is_bnf_hexdigit(const char c);
 		static bool is_bnf_special(const char c);
-
+		static bool has_bnf_wildcard(std::string s);
 		/*
 		** string functions
 		*/
