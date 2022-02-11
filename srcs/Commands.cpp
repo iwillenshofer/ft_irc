@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 18:49:01 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/10 22:53:17 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -500,4 +500,30 @@ bool Commands::_shared_channel(Client *client1, Client *client2)
 			return (true);
 	}
 	return (false);
+}
+
+/*
+** returns wether client1 and client2 share a common channel.
+*/
+std::string Commands::_channel_list(Client *client)
+{
+	std::string channel_list;
+
+	if (client)
+	{
+		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
+		{
+			if (it->second.is_user(*client) && (!(it->second.is_secret()) || it->second.is_user(*_sender)))
+			{
+				if (it->second.is_operator(*client))
+					channel_list += "@";
+				else if (it->second.is_voice(*client))
+					channel_list += "+";
+				channel_list += it->second.get_name() + " ";
+			}
+		}
+	}
+	if (channel_list.size() && channel_list[channel_list.size() - 1] == ' ')
+		channel_list.erase(channel_list.size() - 1);
+	return (channel_list);
 }

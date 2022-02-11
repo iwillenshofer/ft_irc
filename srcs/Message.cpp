@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 18:48:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 22:39:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,6 +497,15 @@ bool Message::is_bnf_special(const char c)
 	for (std::string::iterator it = s.begin(); it != s.end(); it++)
 		if (*it == c)
 			return (true);
+	return (false);
+}
+
+bool Message::has_bnf_wildcard(std::string s)
+{
+	ft::replace_string(s, "\\*", "x");
+	ft::replace_string(s, "\\?", "x");
+	if (s.find('?') != std::string::npos || s.find('*') != std::string::npos)
+		return (true);
 	return (false);
 }
 
