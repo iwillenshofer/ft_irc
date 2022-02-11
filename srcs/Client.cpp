@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 17:49:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 21:15:19 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,24 +118,20 @@ void Client::read(void)
 			Commands commands(ERR_INPUTTOOLONG, this);
 			_receive_buffer.erase(_receive_buffer.begin(), _receive_buffer.begin() + MSG_MAXMSGSIZE);
 		}
+		for (std::vector<std::string>::iterator it = tmp.begin(); it != tmp.end(); it++)
+			Debug("Received FULL message: '" + *it + "'" , DBG_DEV);
+		if (_receive_buffer.size())
+			Debug("Received PARTIAL message: '" + _receive_buffer + "'", DBG_DEV);
 		_receive_queue.insert(_receive_queue.end(), tmp.begin(), tmp.end());
 	}
 	else if (rc <= 0)
 	{
-		Debug("Read Error", (rc == 0 ? DBG_WARNING: DBG_ERROR));
+		Debug("Read Error", (rc == 0 ? DBG_WARNING : DBG_ERROR));
 		if (rc == 0)
 		{
 			Debug("HANGUP", DBG_WARNING);
 			set_hangup(true, Commands::generate_errormsg(ERR_EOFFROMCLIENT));
 		}
-		// rc == 0 other side closed socket 
-		// rc == -1 error;
-		/*
-		** kept for comments only, we will remove this.
-		** We don't care for sending errors or client hangup:
-		** if there's an error, the message is still there to be sent.
-		** if the client hungup, it will be catched by the ping pong loop.
-		*/
 	}
 }
 
@@ -148,7 +144,7 @@ void Client::read(void)
 void Client::write(void)
 {
 	int rc;
-	Debug("Write", DBG_ERROR);
+
 	if (!(_send_queue.size()))
 		return;
 	rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), MSG_NOSIGNAL);

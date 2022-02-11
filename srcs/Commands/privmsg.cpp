@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 19:40:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/10 21:04:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	Commands::__priv_msg_send(std::string target)
 void	Commands::__priv_msg_send(Client *client)
 {
 	std::map<std::string, std::string> m;
-	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client->nickname + " " + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
+	std::string msg = _sender->get_prefix() + " " + _message.command() + " " + client->nickname + " :" + _message.arguments(_message.arguments().size() - 1) + MSG_ENDLINE;
 
 	if (!client)
 		return ;

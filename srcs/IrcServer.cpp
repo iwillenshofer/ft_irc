@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:53:35 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/10 21:18:14 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,6 @@ void IrcServer::RunServer(void)
 				if (_connections.get_revents(idx) & (POLLIN | POLLOUT))
 					break; /* so we dont read/write multiple times on the same poll loop */
 			}
-		}
-		else
-		{
-			Debug("Poll timed out", DBG_DEV);
 		}
 		_connections.remove_queued();
 		_connections.process_commands();
