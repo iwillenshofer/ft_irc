@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   connect.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:21:33 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/09 20:04:35 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,52 @@
 ** only verifies the required parameters.
 */
 
+// Test FT-IRC
+
+// (irc op)
+// /connect                         > Connect :Not enough parameters
+// /connect test1                   > Connect: Host test1 is not listed.
+// /connect test1 test2             > Connect: Host test1 is not listed.
+// /connect test1 test2 test3       > test3 :No such server
+// /connect test1 test2 irc.42network.com       > Connect: Host test1 is not listed.
+
+// (Not irc op)
+// /connect                         > Permission Denied- You're not an IRC operator
+// /connect test1                   > Permission Denied- You're not an IRC operator
+// /connect test1 test2             > Permission Denied- You're not an IRC operator
+// /connect test1 test2 test3       > Permission Denied- You're not an IRC operator
+// /connect test1 test2 irc.42network.com       > Permission Denied- You're not an IRC operator
+
+// Test Undernet
+
+// (irc op)
+// /connect                         > Connect :Not enough parameters
+// /connect test1                   > Connect: Host test1 is not listed.
+// /connect test1 test2             > Connect: Host test1 is not listed.
+// /connect test1 test2 test3       > test3 :No such server
+// /connect test1 test2 irc.42.ft   > Connect: Host test1 is not listed.
+
+// (Not irc op)
+
+// /connect                         > Permission Denied: Insufficient privileges
+// /connect test1                   > Permission Denied: Insufficient privileges
+// /connect test1 test2             > Permission Denied: Insufficient privileges
+// /connect test1 test2 test3       > Permission Denied: Insufficient privileges
+// /connect test1 test2 irc.42.ft   > Permission Denied: Insufficient privileges
+
+
 void Commands::_cmd_connect(void)
 {
-	std::map<std::string, std::string> m;
-
-	m["command"] = _message.command();
-	if (!(_message.arguments().size()))
-		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
-	else if (!(_sender->is_operator()))
-		_message_user(_generate_reply(ERR_NOPRIVILEGES, m), _sender);
-	else if (_message.arguments(0) != _server->servername())
+	if (!(_sender->is_operator()))
+		_message_user(_generate_reply(ERR_NOPRIVILEGES, "", ""), _sender);
+	else if (!(_message.arguments().size()))
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
+	else if (_message.arguments().size() >= 3 && _message.arguments(2) != _server->servername())
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(2)), _sender);
+	else
 	{
-		m["server name"] = _message.arguments(0);
-		_message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
+		std::string msg = ":" + _server->servername() + " NOTICE " + _sender->nickname + " :";
+		msg += "Connect: Host " + _message.arguments(0) + " is not listed." + MSG_ENDLINE;  
+		_message_user(msg, _sender);
 	}
 }

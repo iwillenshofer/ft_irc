@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 20:15:37 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/10 23:02:44 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,55 +50,72 @@
 **									#Twilight_zone
 */
 
+// Test FT-IRC
+
+// /invite                            > Usage: INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)
+//                                        (Message automatic of client, normally server send a ERR_NEEDMOREPARAMS)
+// /invite don't_exist                > don't_exist :No such nick
+// /invite exist                      > ServerName :No such channel
+//                                        (Servername added by client, normally server send a ERR_NEEDMOREPARAMS)
+// /invite don't_exist don't_exist    > don't_exist :No such nick
+// /invite exist don't_exist          > don't_exist :No such channel
+// /invite don't_exist exist          > don't_exist :No such nick
+// /invite exist #exist               > #exist :You're not on that channel (Case sender is not on channel)
+// /invite exist #exist               > You have been invited to #lop by jean (irc.42network.com) (Case send is chanop)
+// /invite exist #exist               > #exist :You're not on that channel (Case send is not chanop)
+
+// Test Undernet
+
+// /invite                            > Usage: INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)
+//                                        (Message automatic of client, normally server send a ERR_NEEDMOREPARAMS)
+// /invite don't_exist                > don't_exist :No such nick
+// /invite exist                      > ServerName :No such channel
+//                                        (Servername added by client, normally server send a ERR_NEEDMOREPARAMS)
+// /invite don't_exist don't_exist    > don't_exist :No such nick
+// /invite exist don't_exist          > don't_exist :No such channel
+// /invite don't_exist exist          > don't_exist :No such nick
+// /invite exist #exist               > #exist :You're not on that channel (Case sender is not on channel) You've invited roman to #lop (irc.42.ft)
+// /invite exist #exist               > You've invited roman to #exist (irc.42.ft) (Case send is chanop)
+// /invite exist #exist               > #exist :You're not on that channel (Case send is not chanop)
+
 void	Commands::_cmd_invite(void)
 {
     Client     *client;
     Channel    *channel;
     std::map<std::string, std::string> m;
 
-    if (_message.arguments().size() != 2)
+    if (_message.arguments().size() >= 1)
+        client =  _get_client_by_nickname(_message.arguments(0));
+    if (_message.arguments().size() >= 2)
+        channel =  _get_channel_by_name(_message.arguments(1));
+    else if (_message.arguments().size() <= 0)
     {
-        m["command"] = _message.command();
-        _message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
+        _message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
         return ;
     }
-	client =  _get_client_by_nickname(_message.arguments(0));
-    channel =  _get_channel_by_name(_message.arguments(1));
     if (client == NULL)
     {
-        m["nickname"] = _message.arguments(0);
-        _message_user(_generate_reply(ERR_NOSUCHNICK, m), _sender);
+        _message_user(_generate_reply(ERR_NOSUCHNICK, "nickname", _message.arguments(0)), _sender);
         return ;
     }
     if (channel == NULL)
     {
-        m["channel name"] = _message.arguments(1);
-        _message_user(_generate_reply(ERR_NOSUCHCHANNEL, m), _sender);
+        _message_user(_generate_reply(ERR_NOSUCHCHANNEL, "channel name", _message.arguments(1)), _sender);
         return ;
     }
     m["nick"] = client->nickname;
     m["channel"] = channel->get_name();
     if (channel->is_user(*_sender) == false)
-    {
-        _message_user(_generate_reply(ERR_NOTONCHANNEL, m), _sender);
-        return ;
-    }
-    if (channel->is_invitation_only() == true && channel->is_operator(*_sender) == false)
-    {
-        _message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, m), _sender);
-        return ;
-    }
-    if (channel->is_user(*client) == true)
-    {
+        _message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", channel->get_name()), _sender);
+    else if (channel->is_operator(*_sender) == false)
+        _message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, "channel", channel->get_name()), _sender);
+    else if (channel->is_user(*client) == true)
         _message_user(_generate_reply(ERR_USERONCHANNEL, m), _sender);
-        return ;
+    else
+    {
+        channel->add_invitation(*client);
+        _message_user(_generate_reply(RPL_INVITING, m), _sender);
+        std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
+        _message_user(msg, client);
     }
-    channel->add_invitation(*client);
-    _message_user(_generate_reply(RPL_INVITING, m), _sender);
-    std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
-    _message_user(msg, client);
-    //if (client->is_away() == true)
-    //{
-    //    _message_user(_generate_reply(RPL_AWAY), _sender);
-    //}
 }
