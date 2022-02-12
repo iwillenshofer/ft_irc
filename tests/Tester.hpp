@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 18:26:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 20:32:25 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,167 @@ class Tester
 		void description(std::string s);
 		void perform_tests(void);
 
+
+		/*
+		** tests admin
+		*/
+		void test_admin(void);
+
+		/*
+		** tests connect
+		*/
+		void test_connect(void);
+
+		/*
+		** tests error
+		*/
+		void test_error(void);
+
+		/*
+		** tests info
+		*/
+		void test_info(void);
+
+		/*
+		** tests invite
+		*/
+		void test_invite(void);
+
+		/*
+		** tests join
+		*/
+		void test_join(void);
+
+		/*
+		** tests kick
+		*/
+		void test_kick(void);
+
+		/*
+		** tests kill
+		*/
+		void test_kill(void);
+
+		/*
+		** tests links
+		*/
+		void test_links(void);
+
+		/*
+		** tests list
+		*/
+		void test_list(void);
+
+		/*
+		** tests lusers
+		*/
+		void test_lusers(void);
+
+		/*
+		** tests mode_channel
+		*/
+		void test_mode_channel(void);
+
+		/*
+		** tests mode_user
+		*/
+		void test_mode_user(void);
+
+		/*
+		** tests motd
+		*/
+		void test_motd(void);
+
+		/*
+		** tests names
+		*/
+		void test_names(void);
+
+		/*
+		** tests nick
+		*/
+		void test_nick(void);
+
+		/*
+		** tests notice
+		*/
+		void test_notice(void);
+
+		/*
+		** tests oper
+		*/
+		void test_oper(void);
+
+		/*
+		** tests part
+		*/
+		void test_part(void);
+
+		/*
+		** tests pass
+		*/
+		void test_pass(void);
+
+		/*
+		** tests ping
+		*/
+		void test_ping(void);
+
+		/*
+		** tests pong
+		*/
+		void test_pong(void);
+
+		/*
+		** tests privmsg
+		*/
+		void test_privmsg(void);
+
+		/*
+		** tests quit
+		*/
+		void test_quit(void);
+
+		/*
+		** tests server
+		*/
+		void test_server(void);
+
+		/*
+		** tests squit
+		*/
+		void test_squit(void);
+
+		/*
+		** tests stats
+		*/
+		void test_stats(void);
+
+		/*
+		** tests time
+		*/
+		void test_time(void);
+
+		/*
+		** tests topic
+		*/
+		void test_topic(void);
+
+		/*
+		** tests trace
+		*/
+		void test_trace(void);
+
+		/*
+		** tests user
+		*/
+		void test_user(void);
+
+		/*
+		** tests version
+		*/
+		void test_version(void);
+
 		/*
 		** tests registration
 		*/
@@ -64,12 +225,18 @@ class Tester
 		void test_whois_masks(void);
 		void test_whois_misc(void);
 		void test_whois_samechannel(void);
-
+		
+		/*
+		** tests whowas
+		*/
 		void test_whowas(void);
 		void test_whowas_no_parameters(void);
 		void test_whowas_invalidusername(void);
 		void test_whowas_clients(void);
 
+		/*
+		** tests who
+		*/
 		void test_who(void);
 		void test_who_masks(void);
 		void test_who_channel(void);
@@ -77,3 +244,4 @@ class Tester
 };
 
 #endif
+

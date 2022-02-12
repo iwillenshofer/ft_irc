@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 18:29:40 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 20:32:53 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,38 @@ void Tester::description(std::string s)
 
 void Tester::perform_tests(void)
 {
+	test_admin();
+	test_connect();
+	test_error();
+	test_info();
+	test_invite();
+	test_join();
+	test_kick();
+	test_kill();
+	test_links();
+	test_list();
+	test_lusers();
+	test_mode_channel();
+	test_mode_user();
+	test_motd();
+	test_names();
+	test_nick();
+	test_notice();
+	test_oper();
+	test_part();
+	test_pass();
+	test_ping();
+	test_pong();
+	test_privmsg();
+	test_quit();
+	test_server();
+	test_squit();
+	test_stats();
+	test_time();
+	test_topic();
+	test_trace();
+	test_user();
+	test_version();
 	test_registration();
 	test_who();
 	test_whois();

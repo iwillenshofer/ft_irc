@@ -6,7 +6,7 @@
 #    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/12 18:17:45 by iwillens         ###   ########.fr        #
+#    Updated: 2022/02/12 20:32:22 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,38 @@ CLIENT_SRCS =			${CLIENT_DIR}/IrcClient.cpp \
 						${CLIENT_DIR}/Tester.cpp \
 						${CLIENT_DIR}/main.cpp \
 						${CLIENT_DIR}/srcs/test_registration.cpp \
+						$(CLIENT_DIR)/srcs/test_admin.cpp \
+						$(CLIENT_DIR)/srcs/test_connect.cpp \
+						$(CLIENT_DIR)/srcs/test_error.cpp \
+						$(CLIENT_DIR)/srcs/test_info.cpp \
+						$(CLIENT_DIR)/srcs/test_invite.cpp \
+						$(CLIENT_DIR)/srcs/test_join.cpp \
+						$(CLIENT_DIR)/srcs/test_kick.cpp \
+						$(CLIENT_DIR)/srcs/test_kill.cpp \
+						$(CLIENT_DIR)/srcs/test_links.cpp \
+						$(CLIENT_DIR)/srcs/test_list.cpp \
+						$(CLIENT_DIR)/srcs/test_lusers.cpp \
+						$(CLIENT_DIR)/srcs/test_mode_channel.cpp \
+						$(CLIENT_DIR)/srcs/test_mode_user.cpp \
+						$(CLIENT_DIR)/srcs/test_motd.cpp \
+						$(CLIENT_DIR)/srcs/test_names.cpp \
+						$(CLIENT_DIR)/srcs/test_nick.cpp \
+						$(CLIENT_DIR)/srcs/test_notice.cpp \
+						$(CLIENT_DIR)/srcs/test_oper.cpp \
+						$(CLIENT_DIR)/srcs/test_part.cpp \
+						$(CLIENT_DIR)/srcs/test_pass.cpp \
+						$(CLIENT_DIR)/srcs/test_ping.cpp \
+						$(CLIENT_DIR)/srcs/test_pong.cpp \
+						$(CLIENT_DIR)/srcs/test_privmsg.cpp \
+						$(CLIENT_DIR)/srcs/test_quit.cpp \
+						$(CLIENT_DIR)/srcs/test_server.cpp \
+						$(CLIENT_DIR)/srcs/test_squit.cpp \
+						$(CLIENT_DIR)/srcs/test_stats.cpp \
+						$(CLIENT_DIR)/srcs/test_time.cpp \
+						$(CLIENT_DIR)/srcs/test_topic.cpp \
+						$(CLIENT_DIR)/srcs/test_trace.cpp \
+						$(CLIENT_DIR)/srcs/test_user.cpp \
+						$(CLIENT_DIR)/srcs/test_version.cpp \
 						${CLIENT_DIR}/srcs/test_whois.cpp \
 						${CLIENT_DIR}/srcs/test_whowas.cpp \
 						${CLIENT_DIR}/srcs/test_who.cpp
