@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 00:58:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 18:29:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,7 @@ void Tester::description(std::string s)
 void Tester::perform_tests(void)
 {
 	test_registration();
+	test_who();
 	test_whois();
+	test_whowas();
 }

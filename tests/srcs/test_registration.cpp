@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:46:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 00:50:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 10:20:32 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void Tester::test_registration_nicknameinuse_retry(void)
 	c0.command("PASS " + _password + "\r\n");
 	c0.command("NICK client\r\n");
 	c0.command("USER client 0 * :Client Name\r\n");
-	c0.listen();
+	c0.listen(false);
 	c1.command("PASS " + _password + "\r\n");
 	c1.command("NICK client\r\n");
 	c1.command("USER client 0 * :Client Name\r\n");

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 00:57:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 18:26:48 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,20 @@ class Tester
 		void test_whois(void);
 		void test_whois_invalidusername(void);
 		void test_whois_visibility(void);
+		void test_whois_no_parameters(void);
+		void test_whois_masks(void);
+		void test_whois_misc(void);
+		void test_whois_samechannel(void);
+
+		void test_whowas(void);
+		void test_whowas_no_parameters(void);
+		void test_whowas_invalidusername(void);
+		void test_whowas_clients(void);
+
+		void test_who(void);
+		void test_who_masks(void);
+		void test_who_channel(void);
+
 };
 
 #endif

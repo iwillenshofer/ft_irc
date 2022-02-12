@@ -6,7 +6,7 @@
 #    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/12 00:23:53 by iwillens         ###   ########.fr        #
+#    Updated: 2022/02/12 18:17:45 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,9 @@ CLIENT_SRCS =			${CLIENT_DIR}/IrcClient.cpp \
 						${CLIENT_DIR}/Tester.cpp \
 						${CLIENT_DIR}/main.cpp \
 						${CLIENT_DIR}/srcs/test_registration.cpp \
-						${CLIENT_DIR}/srcs/test_whois.cpp
+						${CLIENT_DIR}/srcs/test_whois.cpp \
+						${CLIENT_DIR}/srcs/test_whowas.cpp \
+						${CLIENT_DIR}/srcs/test_who.cpp
 
 OBJECTS = $(patsubst ${SRC_DIR}/%.cpp, ${OBJ_DIR}/%.o, ${SRCS})
 CLIENT_OBJECTS = $(patsubst ${CLIENT_DIR}/%.cpp, ${CLIENT_OBJ_DIR}/%.o, ${CLIENT_SRCS})

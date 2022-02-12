@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 22:53:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 12:32:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ Commands::~Commands() { }
 */
 Client *Commands::_get_client_by_nickname(std::string nick)
 {
-	for (std::map<int, Client>::iterator it = _clients->begin(); it != _clients->end(); it++ )
+	for (std::map<int, Client>::iterator it = ++(_clients->begin()); it != _clients->end(); it++ )
 		if (it->second.nickname == nick)
 			return (&(it->second));
 	return (NULL);
