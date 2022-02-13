@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 21:20:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 21:28:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,23 +191,23 @@ class Tester
 		void test_topic(void);
 
 		/*
-		** tests trace
+		** tests trace [done]
 		*/
 		void test_trace(void);
 		void test_trace_server(void);
 		/*
-		** tests user
+		** tests user [done]
 		*/
 		void test_user(void);
 		void test_user_parameters(void);
 
 		/*
-		** tests version
+		** tests version [done]
 		*/
 		void test_version(void);
 
 		/*
-		** tests registration
+		** tests registration [done]
 		*/
 		void test_registration(void);
 		void test_registration_full(void);
@@ -218,7 +218,7 @@ class Tester
 		void test_registration_timeout(void);
 
 		/*
-		** tests whois
+		** tests whois [done]
 		*/
 		void test_whois(void);
 		void test_whois_invalidusername(void);
@@ -229,7 +229,7 @@ class Tester
 		void test_whois_samechannel(void);
 		
 		/*
-		** tests whowas
+		** tests whowas [done]
 		*/
 		void test_whowas(void);
 		void test_whowas_no_parameters(void);
@@ -237,7 +237,7 @@ class Tester
 		void test_whowas_clients(void);
 
 		/*
-		** tests who
+		** tests who [done]
 		*/
 		void test_who(void);
 		void test_who_masks(void);
