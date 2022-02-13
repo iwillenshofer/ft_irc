@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 12:32:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 21:07:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -465,10 +465,8 @@ void Commands::_register_user(void)
 	_message_user(_generate_reply(RPL_LUSERCLIENT, v), _sender);
 	_message_user(_generate_reply(RPL_LUSERME, v), _sender);
 	_cmd_motd();
-	//CALL USER MODE COMMAND, INSTEAD OF SENDING THE FOLLOWING MESSAGE:
 	msg = _sender->get_prefix() + " MODE " + _sender->nickname + " " + MODE_USER_DFL;
 	Commands(msg, _sender, _clients, _channels, _server);
-	//_message_user(msg, _sender);
 }
 
 /*

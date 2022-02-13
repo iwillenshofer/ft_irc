@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 20:32:25 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 21:20:30 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Tester
 		*/
 
 	private:
+		Tester(void);
 		std::vector<std::string> _break_line(std::string s);
 			
 	public:
@@ -193,11 +194,12 @@ class Tester
 		** tests trace
 		*/
 		void test_trace(void);
-
+		void test_trace_server(void);
 		/*
 		** tests user
 		*/
 		void test_user(void);
+		void test_user_parameters(void);
 
 		/*
 		** tests version
@@ -244,4 +246,3 @@ class Tester
 };
 
 #endif
-

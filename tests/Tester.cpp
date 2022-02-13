@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 20:32:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/12 20:51:04 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ Tester::Tester(std::string host, int port, std::string password): _host(host), _
 Tester::Tester(Tester const &cp) { *this = cp; };
 Tester &Tester::operator=(Tester const &cp)
 {
-
 	_host = cp._host;
 	_port = cp._port;
 	_password = cp._password;
@@ -84,6 +83,7 @@ void Tester::description(std::string s)
 
 void Tester::perform_tests(void)
 {
+//	test_registration();
 	test_admin();
 	test_connect();
 	test_error();
@@ -115,9 +115,8 @@ void Tester::perform_tests(void)
 	test_topic();
 	test_trace();
 	test_user();
-	test_version();
-	test_registration();
-	test_who();
-	test_whois();
-	test_whowas();
+//	test_version();
+//	test_who();
+//	test_whois();
+//	test_whowas();
 }
