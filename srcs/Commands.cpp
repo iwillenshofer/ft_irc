@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:55:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 22:48:39 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,6 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[ERR_KILLED] = "Killed (<server> (<message>))";
 	replies[ERR_WHOISTOOMANY] = "Too many results, restrict your query";
 	replies[RPL_WHOWASSERVER] = "<nick> <server> :<last_activity>";
-	replies[329] = "<channel> <creation>"; // creation time
 	replies[RPL_PONG] = "PONG";
 	replies[ERR_SILENT] = "*** silent error ***";
 	return (replies);
