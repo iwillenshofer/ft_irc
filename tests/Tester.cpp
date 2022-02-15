@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 20:57:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 19:02:29 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ void Tester::perform_tests(void)
 //	test_pass();
 //	test_ping();
 //	test_pong();
-//	test_privmsg();
-	test_quit();
-	test_server();
+	test_privmsg();
+//	test_quit();
+//	test_server();
 //	test_squit();
 //	test_stats();
 //	test_time();

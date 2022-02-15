@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:19:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 19:43:23 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,12 @@ class Tester
 		** tests quit [done]
 		*/
 		void test_quit(void);
-
+		void test_privmsg_exceptions(void);
+		void test_privmsg_channel(void);
+		void test_privmsg_nickname(void);
+		void test_privmsg_mask(void);
+		void test_privmsg_away(void);
+		
 		/*
 		** tests server [done]
 		*/

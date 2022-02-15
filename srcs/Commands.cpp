@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 22:48:39 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 18:59:31 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -449,6 +449,8 @@ void Commands::_register_user(void)
 	v["user"] = _sender->username;
 	v["host"] = _sender->hostname;
 	v["servername"] = _server->servername();
+	v["available_user_modes"] = MODE_USER;
+	v["available_channel_modes"] = MODE_CHANNEL;
 	v["ver"] = _server->version();
 	v["version"] = _server->version();
 	v["date"] = _server->formatted_creation_date();
