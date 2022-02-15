@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:21:43 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 20:30:54 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/15 21:00:27 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,22 @@
 void Tester::test_privmsg_away(void)
 {
 	IrcClient c(_host, _port);
+	IrcClient c1(_host, _port);
 
 	description("Test sending message to an away user");
-	c.command("PASS " + _password + "\r\n");
-	c.command("NICK client\r\n");
+	c.command("PASS " + _password + "\r\n", false);
+	c.command("NICK client\r\n", false);
 	c.command("USER username hostname servername realname\r\n", false);
-	c.command("JOIN #channel\r\n", false);
 	c.listen(false);
-	c.command("QUIT :bye bye\r\n");
+	c1.command("PASS " + _password + "\r\n", false);
+	c1.command("NICK client1\r\n", false);
+	c1.command("USER username hostname servername realname\r\n", false);
+	c1.listen(false);
+	c1.command("AWAY :Be right back\r\n");
+	c1.listen();
+	c.command("PRIVMSG client1 :hello there\r\n");
 	c.listen();
+	c1.listen();
 }
 
 void Tester::test_privmsg_mask(void)
@@ -44,15 +51,20 @@ void Tester::test_privmsg_mask(void)
 void Tester::test_privmsg_nickname(void)
 {
 	IrcClient c(_host, _port);
+	IrcClient c1(_host, _port);
 
 	description("Sending message to nickname");
-	c.command("PASS " + _password + "\r\n");
-	c.command("NICK client\r\n");
+	c.command("PASS " + _password + "\r\n", false);
+	c.command("NICK client\r\n", false);
 	c.command("USER username hostname servername realname\r\n", false);
-	c.command("JOIN #channel\r\n", false);
 	c.listen(false);
-	c.command("QUIT :bye bye\r\n");
+	c1.command("PASS " + _password + "\r\n", false);
+	c1.command("NICK client1\r\n", false);
+	c1.command("USER username hostname servername realname\r\n", false);
+	c1.listen(false);
+	c.command("PRIVMSG client1 :hello there\r\n");
 	c.listen();
+	c1.listen();
 }
 
 
@@ -112,9 +124,9 @@ void Tester::test_privmsg_exceptions(void)
 void Tester::test_privmsg(void)
 {
 	title("privmsg");
-//	test_privmsg_exceptions();
-//	test_privmsg_mask();
+	test_privmsg_exceptions();
+	test_privmsg_mask();
 	test_privmsg_channel();
-//	test_privmsg_nickname();
-//	test_privmsg_away();
+	test_privmsg_nickname();
+	test_privmsg_away();
 }
