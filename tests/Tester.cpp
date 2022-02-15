@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 19:02:29 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/15 21:53:22 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ void Tester::perform_tests(void)
 //	test_nick();
 //	test_notice();
 //	test_oper();
-//	test_part();
+	test_part();
 //	test_pass();
 //	test_ping();
 //	test_pong();
-	test_privmsg();
+//	test_privmsg();
 //	test_quit();
 //	test_server();
 //	test_squit();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pong.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:57 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 17:38:22 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 21:10:25 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@
 
 void	Commands::_cmd_pong(void)
 {
-	_message.print();
 	_sender->is_ping = false;
 	_sender->last_ping = time(NULL);
+	if (!(_message.arguments().size()))
+		_message_user(_generate_reply(ERR_NOORIGIN), _sender);
+	else if (_message.arguments().size() >= 2 && _message.arguments(1) != _server->servername())
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(1)), _sender);
 }

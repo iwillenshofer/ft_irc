@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 19:43:23 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/15 21:50:36 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,11 +139,16 @@ class Tester
 		** tests part
 		*/
 		void test_part(void);
+		void test_part_success(void);
+		void test_part_exceptions(void);
 
 		/*
 		** tests pass
 		*/
 		void test_pass(void);
+		void test_pass_exceptions(void);
+		void test_pass_registered(void);
+
 
 		/*
 		** tests ping

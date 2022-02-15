@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ping.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 21:33:14 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@
 **	
 **	PING :irc.funet.fi              ; Ping message sent by server
 **									"irc.funet.fi"
+**
+** [IMPLEMENTATION NOTES]
+** PING is implemented as in Undernet, to reply the received message.
+** As there is no server-server communication ERR_NOORIGIN and ERR_NOSUCHSERVER is not
+** implemented
 */
 
 void	Commands::_cmd_ping(void)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:50 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:59:26 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 21:47:40 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	Commands::_cmd_pass(void)
 	if (_sender->registered)
 		_message_user(_generate_reply(ERR_ALREADYREGISTRED), _sender);
 	else if (!(_message.arguments().size()))
-		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", "PASS"), _sender);
     else
     {
         _sender->password = ft::hash(_message.arguments(0).c_str());

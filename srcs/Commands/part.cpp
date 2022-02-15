@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 12:26:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 22:14:44 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,27 @@
 void	Commands::_cmd_part(void)
 {
 	Channel *channel;
+	std::vector<std::string> v;
 	if ((!_message.arguments().size()))
 	{
-		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", "PART"), _sender);
 		return;
 	}
-	channel = _get_channel_by_name(_message.arguments(0));
-	if ((!channel))
-		_message_user(_generate_reply(ERR_NOSUCHCHANNEL), _sender);
-	else if (!(channel->is_user(*_sender)))
-		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
-	else
+	v = ft::split(_message.arguments(0), ',');
+	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 	{
-		std::string msg = _sender->get_prefix() + " PART " + _message.arguments(0) + MSG_ENDLINE;
-		_message_channel(msg, _message.arguments(0), true);
-		channel->remove_user(*_sender);
-		if (channel->is_empty())
-			_channels->erase(channel->get_name());
+		channel = _get_channel_by_name(*it);
+		if ((!channel))
+			_message_user(_generate_reply(ERR_NOSUCHCHANNEL, "channel name", *it), _sender);
+		else if (!(channel->is_user(*_sender)))
+			_message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", *it), _sender);
+		else
+		{
+			std::string msg = _sender->get_prefix() + " PART " + *it + MSG_ENDLINE;
+			_message_channel(msg, *it, true);
+			channel->remove_user(*_sender);
+			if (channel->is_empty())
+				_channels->erase(channel->get_name());
+		}
 	}
 }
