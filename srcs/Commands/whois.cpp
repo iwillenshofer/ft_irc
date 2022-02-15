@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:25 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 23:11:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 21:59:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	Commands::__perform_whois(std::vector<std::string> &v, std::string &argumen
 			m["user"] = client->username;
 			m["host"] = client->hostname;
 			m["real_name"] = client->realname;
+			m["away message"] = client->away_message;
 			m["secidle"] = ft::to_string(client->get_idle());
 			m["channel_list"] = _channel_list(client);
 			_message_user(_generate_reply(RPL_WHOISUSER, m), _sender);
@@ -88,6 +89,8 @@ void	Commands::__perform_whois(std::vector<std::string> &v, std::string &argumen
 			if (client->is_operator())
 				_message_user(_generate_reply(RPL_WHOISOPERATOR, m), _sender);
 			_message_user(_generate_reply(RPL_WHOISIDLE, m), _sender);
+			if (client->is_away())
+				_message_user(_generate_reply(RPL_AWAY, m), _sender);
 		}
 		else
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stats.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:45:21 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/14 20:41:56 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ void	Commands::_cmd_stats(void)
 	|| valid.find(_message.arguments(0)[0]) == std::string::npos)
 	{
 		_message_user(_generate_reply(RPL_ENDOFSTATS, m), _sender);
+		return ;
+	}
+	if (_message.arguments().size() >= 2 && _message.arguments(1) != _server->servername())
+	{
+		m["server name"] = _message.arguments(1);
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, m), _sender);
 		return ;
 	}
 	cmd = _message.arguments(0)[0];

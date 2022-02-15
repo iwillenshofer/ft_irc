@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 21:07:43 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 21:55:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["PING"] = &Commands::_cmd_ping;
 	cmd["PONG"] = &Commands::_cmd_pong;
 	cmd["ERROR"] = &Commands::_cmd_error;
+	cmd["AWAY"] = &Commands::_cmd_away;
 	return (cmd);
 }
 
@@ -332,7 +333,6 @@ std::string Commands::generate_errormsg(int error, std::map<std::string, std::st
 		message += _replace_tags(_replies[error], v);
 	else
 		message += _replies[error];
-	message += MSG_ENDLINE;
 	return (message);
 }
 

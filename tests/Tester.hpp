@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 21:28:55 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 21:19:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,34 +161,37 @@ class Tester
 		void test_privmsg(void);
 
 		/*
-		** tests quit
+		** tests quit [done]
 		*/
 		void test_quit(void);
 
 		/*
-		** tests server
+		** tests server [done]
 		*/
 		void test_server(void);
 
 		/*
-		** tests squit
+		** tests squit [done]
 		*/
 		void test_squit(void);
 
 		/*
-		** tests stats
+		** tests stats [done]
 		*/
 		void test_stats(void);
 
 		/*
-		** tests time
+		** tests time [done]
 		*/
 		void test_time(void);
 
 		/*
-		** tests topic
+		** tests topic [done]
 		*/
 		void test_topic(void);
+		void test_exceptions(void);
+		void test_success(void);
+		void test_priviledged(void);
 
 		/*
 		** tests trace [done]

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 23:02:44 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/14 22:38:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,42 +80,47 @@
 
 void	Commands::_cmd_invite(void)
 {
-    Client     *client;
-    Channel    *channel;
-    std::map<std::string, std::string> m;
+	Client     *client = NULL;
+	Channel    *channel = NULL;
+	std::map<std::string, std::string> m;
 
-    if (_message.arguments().size() >= 1)
-        client =  _get_client_by_nickname(_message.arguments(0));
-    if (_message.arguments().size() >= 2)
-        channel =  _get_channel_by_name(_message.arguments(1));
-    else if (_message.arguments().size() <= 0)
-    {
-        _message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
-        return ;
-    }
-    if (client == NULL)
-    {
-        _message_user(_generate_reply(ERR_NOSUCHNICK, "nickname", _message.arguments(0)), _sender);
-        return ;
-    }
-    if (channel == NULL)
-    {
-        _message_user(_generate_reply(ERR_NOSUCHCHANNEL, "channel name", _message.arguments(1)), _sender);
-        return ;
-    }
-    m["nick"] = client->nickname;
-    m["channel"] = channel->get_name();
-    if (channel->is_user(*_sender) == false)
-        _message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", channel->get_name()), _sender);
-    else if (channel->is_operator(*_sender) == false)
-        _message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, "channel", channel->get_name()), _sender);
-    else if (channel->is_user(*client) == true)
-        _message_user(_generate_reply(ERR_USERONCHANNEL, m), _sender);
-    else
-    {
-        channel->add_invitation(*client);
-        _message_user(_generate_reply(RPL_INVITING, m), _sender);
-        std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
-        _message_user(msg, client);
-    }
+	if (_message.arguments().size() >= 1)
+		client =  _get_client_by_nickname(_message.arguments(0));
+	if (_message.arguments().size() >= 2)
+		channel =  _get_channel_by_name(_message.arguments(1));
+	else if (_message.arguments().size() <= 0)
+	{
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
+		return ;
+	}
+	if (client == NULL)
+	{
+		_message_user(_generate_reply(ERR_NOSUCHNICK, "nickname", _message.arguments(0)), _sender);
+		return ;
+	}
+	if (channel == NULL)
+	{
+		_message_user(_generate_reply(ERR_NOSUCHCHANNEL, "channel name", _message.arguments(1)), _sender);
+		return ;
+	}
+	m["nick"] = client->nickname;
+	m["channel"] = channel->get_name();
+	if (channel->is_user(*_sender) == false)
+		_message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", channel->get_name()), _sender);
+	else if (channel->is_operator(*_sender) == false)
+		_message_user(_generate_reply(ERR_CHANOPRIVSNEEDED, "channel", channel->get_name()), _sender);
+	else if (channel->is_user(*client) == true)
+		_message_user(_generate_reply(ERR_USERONCHANNEL, m), _sender);
+	else
+	{
+		channel->add_invitation(*client);
+		_message_user(_generate_reply(RPL_INVITING, m), _sender);
+		std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
+		_message_user(msg, client);
+		if (client->is_away())
+		{
+			m["away message"] = client->away_message;
+			_message_user(_generate_reply(RPL_AWAY, m), _sender);
+		}
+	}
 }

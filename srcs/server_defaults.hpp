@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 22:42:52 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/14 22:06:39 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@
 */
 
 # define	MODE_CHANNEL			"-+opsitnmlbvk"
-# define	MODE_USER   			"-+iswo"
+# define	MODE_USER   			"-+aiswo"
 # define	MODE_USER_DFL			"+iw"
 
 /*

@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:13 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 12:42:49 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 20:03:44 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,23 @@
 **									#test.
 */
 
-void	Commands::__perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast)
+void	Commands::__perform_topic(Channel *channel, bool broadcast)
 {
-		args["channel"] = channel->get_name();
-		args["topic"] = channel->get_topic();
-		if (!broadcast)
-		{
-			if (channel->get_topic() == "")
-				_message_user(_generate_reply(RPL_NOTOPIC, args), _sender);
-			else
-				_message_user(_generate_reply(RPL_TOPIC, args), _sender);
-		}
+	std::map<std::string, std::string> m;
+
+	m["channel"] = channel->get_name();
+	m["topic"] = channel->get_topic();
+	if (!broadcast)
+	{
+		if (channel->get_topic() == "")
+			_message_user(_generate_reply(RPL_NOTOPIC, m), _sender);
 		else
-		{
-			_message_channel(_sender->get_prefix() + " TOPIC " + channel->get_name() + " :" + channel->get_topic() + MSG_ENDLINE, channel->get_name(), true);
-		}
+			_message_user(_generate_reply(RPL_TOPIC, m), _sender);
+	}
+	else
+	{
+		_message_channel(_sender->get_prefix() + " TOPIC " + channel->get_name() + " :" + channel->get_topic() + MSG_ENDLINE, channel->get_name(), true);
+	}
 }
 
 
@@ -68,18 +70,17 @@ void	Commands::_cmd_topic(void)
 {
 	Channel *channel;
 	std::string topic;
-	std::map<std::string, std::string> m;
 
 	if (!_message.arguments().size())
 	{
-		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
 		return ;
 	}
 	channel = _get_channel_by_name(_message.arguments(0));
 	if (!(channel) || !(channel->is_user(*_sender)))
-		_message_user(_generate_reply(ERR_NOTONCHANNEL), _sender);
+		_message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", _message.arguments(0)), _sender);
 	else if (_message.arguments().size() == 1)
-		__perform_topic(channel, m, false);
+		__perform_topic(channel, false);
 	else
 	{
 		topic = _message.arguments(1);
@@ -91,12 +92,11 @@ void	Commands::_cmd_topic(void)
 		try
 		{
 			channel->set_topic(*_sender, topic);
-			__perform_topic(channel, m, true);
+			__perform_topic(channel, true);
 		}
 		catch(int error_code)
 		{
-			m["channel"] = channel->get_name();
-			_message_user(_generate_reply(error_code, m), _sender);
+			_message_user(_generate_reply(error_code, "channel",  channel->get_name()), _sender);
 		}
 	}
 }

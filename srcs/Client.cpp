@@ -6,32 +6,11 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 21:15:19 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 21:36:36 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
-
-/*
-** ClientMode
-*/
-
-ClientMode::ClientMode(void): i(false), s(false), w(false), o(false), a(false), r(false), O(false) { }
-ClientMode::ClientMode(ClientMode const &cp) { *this = cp; }
-ClientMode &ClientMode::operator=(ClientMode const &cp)
-{
-	i = cp.i;
-	s = cp.s;
-	w = cp.w;
-	o = cp.o;
-	a = cp.a;
-	r = cp.r; //  not used
-	O = cp.O; //  not used
-	return (*this);
-}
-ClientMode::~ClientMode() { }
-
-
 
 /*
 ** Client
@@ -39,7 +18,6 @@ ClientMode::~ClientMode() { }
 
 Client::Client(int fd): _fd(fd), _hangup(false), registered(false), is_ping(false)
 {
-//	bzero(&mode, sizeof(mode));
 	last_ping = time(NULL);
 	joined_time = time(NULL);
 }
@@ -85,7 +63,7 @@ void Client::set_hangup(bool v, std::string msg)
 	if (v)
 	{
 		_send_queue.clear();
-		_send_queue.push_back("ERROR :" + msg);
+		_send_queue.push_back("ERROR :" + msg + MSG_ENDLINE);
 	}
 }
 

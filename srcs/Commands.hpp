@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 22:47:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 21:46:11 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,11 @@ class Commands
 		void _cmd_ping(void);
 		void _cmd_pong(void);
 		void _cmd_error(void);
-		
+		/*
+		** Optional
+		*/
+		void _cmd_away(void);
+
 		/*
 		** command helpers
 		*/
@@ -193,7 +197,7 @@ class Commands
 		void __perform_whois(std::vector<std::string> &v, std::string &arguments);
 		void __perform_who(Client &client, std::map<std::string, std::string> &arguments, Channel *channel = NULL);
 		std::vector<Client *>  __perform_names(Channel &channel, bool add_invisible = true, bool end_names = true);
-		void __perform_topic(Channel *channel, std::map<std::string, std::string> &args, bool broadcast);
+		void __perform_topic(Channel *channel, bool broadcast);
 		void __perform_list(Channel &channel);
 		void __perform_trace(Client &client, std::map<std::string, std::string> &m);
 		void __priv_msg_reply(int msg, std::map<std::string, std::string> &m);

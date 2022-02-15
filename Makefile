@@ -6,7 +6,7 @@
 #    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/06 15:11:25 by iwillens         ###   ########.fr        #
+#    Updated: 2022/02/14 21:52:11 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/utilities.cpp \
 			${SRC_DIR}/IrcServer.cpp \
 			${SRC_DIR}/Client.cpp \
+			${SRC_DIR}/ClientMode.cpp \
 			${SRC_DIR}/Commands.cpp \
 			${SRC_DIR}/Commands/pass.cpp \
 			${SRC_DIR}/Commands/nick.cpp \
@@ -65,7 +66,9 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Commands/ping.cpp \
 			${SRC_DIR}/Commands/pong.cpp \
 			${SRC_DIR}/Commands/error.cpp \
+			${SRC_DIR}/Commands/away.cpp \
 			${SRC_DIR}/Channel.cpp \
+			${SRC_DIR}/ChannelMode.cpp \
 			${SRC_DIR}/Mask.cpp \
 			${SRC_DIR}/Server.cpp
 

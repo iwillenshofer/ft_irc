@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 22:50:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 17:14:38 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/14 21:32:38 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,7 @@
 # include "Client.hpp"
 # include "Message.hpp"
 # include "utilities.hpp"
-/*
-** channel modes. currently a struct, but will be converted into a class so it can initialize itself.
-*/
-
-typedef struct s_channelmode
-{
-	bool O; // give "channel creator" status; *
-
-	bool o; // give/take channel operator privilege;
-	bool v; // give/take the voice privilege;
-
-	bool a; // toggle the anonymous channel flag; *
-	
-	bool i; // toggle the invite-only channel flag;
-	bool m; // toggle the moderated channel;
-	bool n; // toggle the no messages to channel from clients on the outside;
-	bool q; // toggle the quiet channel flag;
-	bool p; // toggle the private channel flag;
-	bool s; // toggle the secret channel flag;
-	bool r; // toggle the server reop channel flag;
-	bool t; // toggle the topic settable by channel operator only flag;
-	bool k; // set/remove the channel key (password);
-	bool l; // set/remove the user limit to channel;
-	
-	bool b; // set/remove ban mask to keep users out;
-	bool e; // set/remove an exception mask to override a ban mask;
-	bool I; // set/remove an invitation mask to automatically overridethe invite-only flag;
-} t_channelmode;
+# include "ChannelMode.hpp"
 
 class Channel
 {
@@ -144,7 +117,7 @@ class Channel
 		Client 						*_creator;
 		std::string					_topic;
 		unsigned long				_password;
-		t_channelmode 				_mode;
+		ChannelMode 				_mode;
 		size_t						_user_limit;
 		std::vector<Client *>	 	_operators;
 		std::vector<Client *>	 	_voices;

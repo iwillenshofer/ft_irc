@@ -6,16 +6,13 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/09 21:27:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/14 22:35:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(void)
-{
-    //here
-}
+Channel::Channel(void) { }
 
 Channel::Channel(std::string name, Client &creator): _user_limit(0)
 {
@@ -23,7 +20,6 @@ Channel::Channel(std::string name, Client &creator): _user_limit(0)
 	set_name(name);
 	users.push_back(_creator);
 	_operators.push_back(_creator);
-	bzero(&_mode, sizeof(t_channelmode));
 }
 
 Channel::Channel(Channel const &cp)
@@ -174,7 +170,6 @@ std::string	Channel::get_modes(void) const
 	if (_mode.t) m += 't';
 	if (_mode.k) m += 'k';
 	if (_mode.l) m += 'l';
-
 	return (m);
 }
 
@@ -485,7 +480,8 @@ void	Channel::add_invitation(Client &chanop, Client &nick)
 
 void	Channel::add_invitation(Client &nick)
 {
-    _invitations.push_back(&nick);
+	if (!(is_invitation(nick)))
+    	_invitations.push_back(&nick);
 }
 
 void	Channel::remove_invitation(Client &nick)
@@ -494,6 +490,7 @@ void	Channel::remove_invitation(Client &nick)
     {
         if (*it == &nick)
         {
+			std::cout << "addr1: "  << *it << " addr2:" << &nick << std::endl;
             _invitations.erase(it);
             return;
         }

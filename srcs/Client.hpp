@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:58:53 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/14 21:23:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,9 @@
 # include "Server.hpp"
 # include "server_defaults.hpp"
 # include "Commands.hpp"
+# include "ClientMode.hpp"
 
 class Commands;
-
-/*
-** user modes. currently a struct, but will be converted into a class so it can initialize itself.
-*/
-class ClientMode
-{
-	public: 
-		ClientMode();
-		ClientMode(ClientMode const &cp);
-		ClientMode &operator=(ClientMode const &cp);
-		virtual ~ClientMode();
-
-		bool i;
-		bool s;
-		bool w;
-		bool o;
-		bool a;
-
-		bool r; //  not used
-		bool O; //  not used
-};
 
 class Client
 {
