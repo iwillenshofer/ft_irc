@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:15:33 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 22:20:32 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,10 @@ class Tester
 		** tests names
 		*/
 		void test_names(void);
+		void test_names_secret(void);
+		void test_names_visible(void);
+		void test_names_invisible(void);
+		void test_names_general(void);
 
 		/*
 		** tests nick
@@ -140,12 +144,18 @@ class Tester
 		** tests notice
 		*/
 		void test_notice(void);
-
+		void test_notice_exceptions(void);
+		void test_notice_mask(void);
+		void test_notice_channel(void);
+		void test_notice_nickname(void);
+		void test_notice_away(void);
 		/*
 		** tests oper
 		*/
 		void test_oper(void);
-
+		void test_oper_exceptions(void);
+		void test_oper_success(void);
+		
 		/*
 		** tests part
 		*/
@@ -159,7 +169,6 @@ class Tester
 		void test_pass(void);
 		void test_pass_exceptions(void);
 		void test_pass_registered(void);
-
 
 		/*
 		** tests ping

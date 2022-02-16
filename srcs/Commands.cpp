@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 18:59:31 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/15 23:22:08 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,9 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_SERVLIST] = "<name> <server> <mask> <type> <hopcount> <info>";
 	replies[RPL_SERVLISTEND] = "<mask> <type> :End of service listing";
 	replies[RPL_LUSERCLIENT] = ":There are <intusers> users and <intinvisible> invisible on <intservers> servers";
-	replies[RPL_LUSEROP] = "<integer> :operator(s) online";
+	replies[RPL_LUSEROP] = "<intoper> :operator(s) online";
 	replies[RPL_LUSERUNKNOWN] = "<integer> :unknown connection(s)";
-	replies[RPL_LUSERCHANNELS] = "<integer> :channels formed";
+	replies[RPL_LUSERCHANNELS] = "<intchannels> :channels formed";
 	replies[RPL_LUSERME] = ":I have <intclients> clients and <intservers> servers";
 	replies[RPL_ADMINME] = ":Administrative info about <server>";
 	replies[RPL_ADMINLOC1] = ":<info1>";
@@ -455,17 +455,12 @@ void Commands::_register_user(void)
 	v["version"] = _server->version();
 	v["date"] = _server->formatted_creation_date();
 	v["server"] = _server->servername();
-	v["intusers"] = ft::to_string(0); //TODO
-	v["intinvisible"] = ft::to_string(0); //TODO
-	v["intservers"] = ft::to_string(1);
-	v["intclients"] = ft::to_string(_clients->size() - 1);
 	_message_user(_generate_reply(RPL_WELCOME, v), _sender);
 	_message_user(_generate_reply(RPL_YOURHOST, v), _sender);
 	_message_user(_generate_reply(RPL_CREATED, v), _sender);
 	_message_user(_generate_reply(RPL_MYINFO, v), _sender);
-	_message_user(_generate_reply(RPL_LUSERCLIENT, v), _sender);
-	_message_user(_generate_reply(RPL_LUSERME, v), _sender);
-	_cmd_motd();
+	Commands("MOTD", _sender, _clients, _channels, _server);
+	Commands("LUSERS", _sender, _clients, _channels, _server);
 	msg = _sender->get_prefix() + " MODE " + _sender->nickname + " " + MODE_USER_DFL;
 	Commands(msg, _sender, _clients, _channels, _server);
 }

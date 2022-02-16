@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 20:52:25 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 22:19:37 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void Tester::perform_tests(void)
 //	test_nick();
 //	test_notice();
 //	test_oper();
-	test_part();
+//	test_part();
 //	test_pass();
 //	test_ping();
 //	test_pong();

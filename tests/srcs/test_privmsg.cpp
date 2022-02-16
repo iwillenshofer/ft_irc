@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_privmsg.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:21:43 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 21:00:27 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/15 21:19:40 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void Tester::test_privmsg_channel(void)
 	cl.listen();
 	for (int i = 0; i < 3; i++)
 		c[i].listen(false);
-	cl.command("PRIVMSG #channel :hello there!\r\n", false);
+	cl.command("PRIVMSG #channel :hello there!\r\n");
 	cl.listen();
 	for (int i = 0; i < 3; i++)
 		c[i].listen();

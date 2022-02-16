@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   oper.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:46:10 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 21:01:05 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,13 @@ void	Commands::_cmd_oper(void)
 {
     std::map<std::string, unsigned long>::iterator it;
     std::string flags = " :+";
+	std::string msg;
+	std::map<std::string, std::string> m;
 
+	m["command"] = "OPER";
     if (_message.arguments().size() != 2)
     {
-        _message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+        _message_user(_generate_reply(ERR_NEEDMOREPARAMS, m), _sender);
         return ;
     }
     it = _server->operators().find(_message.arguments(0));
@@ -67,9 +70,14 @@ void	Commands::_cmd_oper(void)
     }
     if (flags != " :+")
     {
-        std::string msg = _sender->get_prefix() + " MODE " + _sender->nickname + flags + MSG_ENDLINE;
+        msg = _sender->get_prefix() + " MODE " + _sender->nickname + flags + MSG_ENDLINE;
 	    _message_user(msg, _sender);
     }
     _message_user(_generate_reply(RPL_YOUREOPER), _sender);
-    // TODO :NOTICE ALL USER THAT I AM THE BOSS
+	msg = _server->servername() + " NOTICE * :*** Notice -- " + _sender->nickname + " (" + _sender->username + "@" + _sender->hostname + ") is now operator (O)" + MSG_ENDLINE;
+	for (std::map<int, Client>::iterator it = ++(_clients->begin()); it != _clients->end(); it++ )
+	{
+		if (it->second.is_operator())
+			_message_user(msg, &(it->second));
+	}
 }
