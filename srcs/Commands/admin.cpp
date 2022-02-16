@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 18:58:51 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 20:48:15 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,16 @@
 void	Commands::_cmd_admin(void)
 {
     bool    match = true;
-
+    
     if (_message.arguments().empty() == false)
-        match = Mask::match_raw(std::string(SRV_SERVERNAME), _message.arguments(0));
+    {
+        match = Mask::match_raw(_server->servername(), _message.arguments(0));
+        if (match == false && _sender->is_operator() == false)
+        {
+            _message_user(_generate_reply(ERR_NOPRIVILEGES, "", ""), _sender);
+            return ;
+        }
+    }
     if (match == true)
     {
         _message_user(_generate_reply(RPL_ADMINME, "server", SRV_SERVERNAME), _sender);

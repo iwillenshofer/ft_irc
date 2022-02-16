@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 21:50:36 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/15 22:15:33 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,18 @@ class Tester
 
 
 		/*
-		** tests admin
+		** tests admin [done]
 		*/
 		void test_admin(void);
+		void test_admin_ircop(void);
+		void test_admin_no_ircop(void);
 
 		/*
-		** tests connect
+		** tests connect [done]
 		*/
 		void test_connect(void);
+		void test_connect_ircop(void);
+		void test_connect_no_ircop(void);
 
 		/*
 		** tests error
@@ -61,14 +65,21 @@ class Tester
 		void test_error(void);
 
 		/*
-		** tests info
+		** tests info [done]
 		*/
 		void test_info(void);
+		void test_info_ircop(void);
+		void test_info_no_ircop(void);
 
 		/*
 		** tests invite
 		*/
 		void test_invite(void);
+		void test_invite_no_user_no_channel(void);
+		void test_invite_user_no_channel(void);
+		void test_invite_channel_no_user();
+		void test_invite_no_chanop(void);
+		void test_invite_chanop(void);
 
 		/*
 		** tests join

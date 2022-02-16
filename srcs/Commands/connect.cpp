@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:21:33 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 20:04:35 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 20:25:36 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,40 +35,6 @@
 ** as there is no server-server communication, this command
 ** only verifies the required parameters.
 */
-
-// Test FT-IRC
-
-// (irc op)
-// /connect                         > Connect :Not enough parameters
-// /connect test1                   > Connect: Host test1 is not listed.
-// /connect test1 test2             > Connect: Host test1 is not listed.
-// /connect test1 test2 test3       > test3 :No such server
-// /connect test1 test2 irc.42network.com       > Connect: Host test1 is not listed.
-
-// (Not irc op)
-// /connect                         > Permission Denied- You're not an IRC operator
-// /connect test1                   > Permission Denied- You're not an IRC operator
-// /connect test1 test2             > Permission Denied- You're not an IRC operator
-// /connect test1 test2 test3       > Permission Denied- You're not an IRC operator
-// /connect test1 test2 irc.42network.com       > Permission Denied- You're not an IRC operator
-
-// Test Undernet
-
-// (irc op)
-// /connect                         > Connect :Not enough parameters
-// /connect test1                   > Connect: Host test1 is not listed.
-// /connect test1 test2             > Connect: Host test1 is not listed.
-// /connect test1 test2 test3       > test3 :No such server
-// /connect test1 test2 irc.42.ft   > Connect: Host test1 is not listed.
-
-// (Not irc op)
-
-// /connect                         > Permission Denied: Insufficient privileges
-// /connect test1                   > Permission Denied: Insufficient privileges
-// /connect test1 test2             > Permission Denied: Insufficient privileges
-// /connect test1 test2 test3       > Permission Denied: Insufficient privileges
-// /connect test1 test2 irc.42.ft   > Permission Denied: Insufficient privileges
-
 
 void Commands::_cmd_connect(void)
 {

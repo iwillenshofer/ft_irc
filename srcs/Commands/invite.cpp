@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 22:38:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 22:12:04 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,34 +50,6 @@
 **									#Twilight_zone
 */
 
-// Test FT-IRC
-
-// /invite                            > Usage: INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)
-//                                        (Message automatic of client, normally server send a ERR_NEEDMOREPARAMS)
-// /invite don't_exist                > don't_exist :No such nick
-// /invite exist                      > ServerName :No such channel
-//                                        (Servername added by client, normally server send a ERR_NEEDMOREPARAMS)
-// /invite don't_exist don't_exist    > don't_exist :No such nick
-// /invite exist don't_exist          > don't_exist :No such channel
-// /invite don't_exist exist          > don't_exist :No such nick
-// /invite exist #exist               > #exist :You're not on that channel (Case sender is not on channel)
-// /invite exist #exist               > You have been invited to #lop by jean (irc.42network.com) (Case send is chanop)
-// /invite exist #exist               > #exist :You're not on that channel (Case send is not chanop)
-
-// Test Undernet
-
-// /invite                            > Usage: INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)
-//                                        (Message automatic of client, normally server send a ERR_NEEDMOREPARAMS)
-// /invite don't_exist                > don't_exist :No such nick
-// /invite exist                      > ServerName :No such channel
-//                                        (Servername added by client, normally server send a ERR_NEEDMOREPARAMS)
-// /invite don't_exist don't_exist    > don't_exist :No such nick
-// /invite exist don't_exist          > don't_exist :No such channel
-// /invite don't_exist exist          > don't_exist :No such nick
-// /invite exist #exist               > #exist :You're not on that channel (Case sender is not on channel) You've invited roman to #lop (irc.42.ft)
-// /invite exist #exist               > You've invited roman to #exist (irc.42.ft) (Case send is chanop)
-// /invite exist #exist               > #exist :You're not on that channel (Case send is not chanop)
-
 void	Commands::_cmd_invite(void)
 {
 	Client     *client = NULL;
@@ -88,7 +60,7 @@ void	Commands::_cmd_invite(void)
 		client =  _get_client_by_nickname(_message.arguments(0));
 	if (_message.arguments().size() >= 2)
 		channel =  _get_channel_by_name(_message.arguments(1));
-	else if (_message.arguments().size() <= 0)
+	else if (_message.arguments().size() <= 2)
 	{
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", _message.command()), _sender);
 		return ;
