@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:56 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:12:04 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 22:47:35 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,6 @@ void	Commands::_cmd_invite(void)
 		std::string msg = _sender->get_prefix() + " INVITE " + client->nickname + " " + channel->get_name() + MSG_ENDLINE;
 		_message_user(msg, client);
 		if (client->is_away())
-		{
-			m["away message"] = client->away_message;
-			_message_user(_generate_reply(RPL_AWAY, m), _sender);
-		}
+			_message_user(_generate_reply(RPL_AWAY, "away message", client->away_message), _sender);
 	}
 }

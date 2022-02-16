@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:20:32 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/15 22:50:04 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ class Tester
 		void test_invite_channel_no_user();
 		void test_invite_no_chanop(void);
 		void test_invite_chanop(void);
+		void test_invite_away(void);
 
 		/*
 		** tests join
