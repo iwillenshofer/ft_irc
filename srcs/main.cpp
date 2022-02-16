@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 13:48:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 21:19:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 17:09:35 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,46 +37,15 @@ bool	check_password(std::string password)
 	return true;
 }
 
-bool	check_optional(char *optional, std::string &host)
-{
-	std::string str = optional;
-	std::stringstream ss(str);
-	std::string token;
-	std::vector<std::string> vector_args;
-
-	while (std::getline(ss, token, ':'))
-		vector_args.push_back(token);
-	if (std::count(str.begin(), str.end(), ':') != 2)
-		return false;
-	for (std::string::iterator it = vector_args.at(0).begin(); it != vector_args.at(0).end(); it++)
-	{
-		if (isprint(*it) == 0)
-			return false;
-	}
-	host = vector_args.at(0);
-	if (host.empty())
-		host = "*";
-	return true;
-}
-
 std::vector<std::string>	parse_args(int argc, char **argv)
 {
 	std::vector<std::string> args;
-	std::string host;
 
 	if (argc == 2)
 	{
 		args.push_back(SRV_SERVERNAME);
 		args.push_back(argv[0]);
 		args.push_back(argv[1]);
-	}
-	else if (argc == 3)
-	{
-		if (check_optional(argv[0], host) == false)
-			throw std::runtime_error("Invalid optional argument");
-		args.push_back(host);
-		args.push_back(argv[1]);
-		args.push_back(argv[2]);
 	}
 	else
 	{
