@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 21:40:27 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 23:08:15 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/16 17:02:18 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,7 @@ void	Commands::_cmd_away(void)
 	}
 	else
 	{
-		for (size_t i = 0; i < _message.arguments().size(); i++)
-		{
-			_sender->away_message += _message.arguments(i);
-			if (i + 1 != _message.arguments().size())
-				_sender->away_message += " ";
-		}
-			
+		_sender->away_message = _message.arguments(0);
 		_sender->set_away();
 		_message_user(_generate_reply(RPL_NOWAWAY), _sender);
 	}
