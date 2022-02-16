@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 16:15:35 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 22:23:04 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@
 **	
 **	NAMES                           ; Command to list all visible
 **									channels and users
+**
+** [IMPLEMENTATION NOTES]
+** Since ERR_TOOMANYMATCHES is not defined in RFC, it was not implemented.
 */
 
 std::vector<Client *> Commands::__perform_names(Channel &channel, bool add_invisible, bool end_names)
@@ -53,6 +56,7 @@ std::vector<Client *> Commands::__perform_names(Channel &channel, bool add_invis
 	std::vector<Client *> users = channel.users;
 	std::vector<Client *> shown_users;
 	std::string prefix; 
+
 	for (std::vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
 	{
 		if (!(add_invisible) && (*it)->is_invisible())
@@ -86,7 +90,11 @@ void	Commands::_cmd_names(void)
 	std::map<std::string, std::string> m;
 	Channel *channel;
 
-	Debug("Names", DBG_ERROR);
+	if (_message.arguments().size() >= 2 && _message.arguments(1) != _server->servername())
+	{
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(1)), _sender);
+		return ;
+	}
 	if (_message.arguments().size() == 1 && _message.arguments(0) == _server->servername())
 		_message.arguments().clear();
 	if (!(_message.arguments().size()))
@@ -117,7 +125,6 @@ void	Commands::_cmd_names(void)
 		_message_user(_generate_reply(RPL_ENDOFNAMES, m), _sender);
 		return ;
 	}
-	Debug("Visible Users:" + ft::to_string(visible_users.size()));
 	std::sort(visible_users.begin(), visible_users.end());
 	for (std::vector<Client *>::iterator it = visible_users.begin(); it != visible_users.end(); it++)
 		m["names_list"] += (*it)->nickname + ' ';	

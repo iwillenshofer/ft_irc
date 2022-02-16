@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 20:52:34 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 21:26:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	Commands::_cmd_nick(void)
 		return ;
 	}
 	if (_get_client_by_nickname(_message.arguments(0)) != NULL && _sender->nickname != _message.arguments(0))
-		_message_user(_generate_reply(ERR_NICKNAMEINUSE), _sender);
+		_message_user(_generate_reply(ERR_NICKNAMEINUSE, "nick", _message.arguments(0)), _sender);
 	else if (_sender->nickname == _message.arguments(0))
 		return;
 	else if (!(Message::is_bnf_nickname(_message.arguments(0))))
-		_message_user(_generate_reply(ERR_ERRONEUSNICKNAME), _sender);
+		_message_user(_generate_reply(ERR_ERRONEUSNICKNAME, "nick", _message.arguments(0)), _sender);
 	else
 	{
 		if (_sender->registered)

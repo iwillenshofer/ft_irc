@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 22:06:39 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/15 20:55:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,5 +227,4 @@
 # define	ERR_INPUTTOOLONG		417
 # define    ERR_WHOISTOOMANY		416
 # define    PRIVMSG					999
-
 #endif
