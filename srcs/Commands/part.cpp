@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:14:44 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/16 16:51:29 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,16 @@ void	Commands::_cmd_part(void)
 {
 	Channel *channel;
 	std::vector<std::string> v;
+
+	std::string message;
 	if ((!_message.arguments().size()))
 	{
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", "PART"), _sender);
 		return;
 	}
 	v = ft::split(_message.arguments(0), ',');
+	if (_message.arguments().size() > 1)
+		message = _message.arguments(1);
 	for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
 	{
 		channel = _get_channel_by_name(*it);
@@ -64,7 +68,7 @@ void	Commands::_cmd_part(void)
 			_message_user(_generate_reply(ERR_NOTONCHANNEL, "channel", *it), _sender);
 		else
 		{
-			std::string msg = _sender->get_prefix() + " PART " + *it + MSG_ENDLINE;
+			std::string msg = _sender->get_prefix() + " PART " + *it + " :" + message + MSG_ENDLINE;
 			_message_channel(msg, *it, true);
 			channel->remove_user(*_sender);
 			if (channel->is_empty())
