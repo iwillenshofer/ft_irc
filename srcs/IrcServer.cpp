@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:27:56 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 19:07:46 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 std::vector<IrcServer *> IrcServer::_instances;
 bool IrcServer::_stop_server = false;
 
-IrcServer::IrcServer(void) { };
+IrcServer::IrcServer(void) { }
 
 IrcServer::IrcServer(std::string host, int port, unsigned long password)
 {
