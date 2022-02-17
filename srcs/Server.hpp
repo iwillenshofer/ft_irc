@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:55:33 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/17 21:28:09 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ class Server
 {
 	public:
 		Server(std::string host = SRV_SERVERNAME, unsigned long password = 0);
-		
 		Server(Server const &cp);
 		Server &operator=(Server const &cp);
 		virtual ~Server();

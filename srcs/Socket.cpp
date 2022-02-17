@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Socket.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:36:18 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/22 22:36:12 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 21:30:10 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ Socket::Socket( int port )
 	_bind_socket();
 	_listen_socket();
 }
+
+Message::Socket(Socket const &cp) { *this = cp; }
 
 Socket::~Socket( void )
 {

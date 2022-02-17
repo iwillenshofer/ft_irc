@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Socket.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:35:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/01/22 22:57:50 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 21:29:57 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ class Socket
 	public:
 		Socket( void );
 		Socket( int port );
-		~Socket( void );
+		Socket(Socket const &cp);
+		virtual ~Socket( void );
 
 		Socket &operator=( const Socket& rhs );
 		int	get_server_socket( void ) const;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 21:52:39 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/17 21:27:06 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ class IrcServer
 
 
 		private:
+			IrcServer();
+
 			/*
 			** private member functions and variables
 			*/
