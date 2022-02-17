@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Message.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 14:22:55 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 22:39:47 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:07:55 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void Message::print(void)
 	
 	for (std::vector<std::string>::iterator it = _arguments.begin(); it != _arguments.end(); it++)
 		args = args + "'" + *it + "'" + (it != _arguments.end() - 1 ? "," : "");
-		
 	Debug("_message: " + _message);
 	Debug("_prefix: " + _prefix);
 	Debug("_command: " + _command);
@@ -240,7 +239,6 @@ bool Message::is_bnf_ipv4addr_mask(std::string const &key)
 {
 	std::vector<std::string> v;
 
-	Debug("IS_IPV4", DBG_WARNING);
 	if (!(key.size()))
 		return (false);
 	if (key[0] == '.' || key[key.size() - 1] == '.')

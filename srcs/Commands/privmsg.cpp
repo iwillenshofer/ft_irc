@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:58:13 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:08:39 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,6 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 	m["targets"] = target;
 	m["nickname"] = target;
 	m["mask"] = target;
-	Debug("PRIVMSG Process Mask", DBG_DEV);
 	if (is_targetmask == BNF_TARGETMSK_NOTOPLEVEL)
 		__priv_msg_reply(ERR_NOTOPLEVEL, m);
 	else if (is_targetmask && is_targetmask == BNF_TARGETMSK_WILDTOPLEVEL)
@@ -176,20 +175,15 @@ void	Commands::__priv_msg_process_mask(std::string &target)
 			if ((masktype == '#' && Mask::match_raw(it->second.hostname, target))
 			|| (masktype == '$' && Mask::match_raw(_server->servername(), target)))
 				targets.push_back(it->second.nickname);
-			Debug("we are here 1", DBG_FATAL);
 		}
 		if (targets.size() > SRV_MAXTARGETS && !(_sender->is_operator()))
 			__priv_msg_reply(ERR_TOOMANYTARGETS, m);
 		else if (!(targets.size()) && masktype == '#')
 			__priv_msg_reply(ERR_NOSUCHCHANNEL, m);
 		else if (!(targets.size()) && masktype == '$')
-		{
-			Debug("we are here", DBG_FATAL);
 			__priv_msg_reply(ERR_NOSUCHNICK, m);
-		}
 		else
 		{
-			Debug("we are here2", DBG_FATAL);
 			for (std::vector<std::string>::iterator it = targets.begin(); it != targets.end(); it++)
 				__priv_msg_send(*it);
 		}
@@ -201,7 +195,6 @@ void	Commands::__priv_msg_process_channel(std::string &target)
 	Channel *channel;
 	std::map<std::string, std::string> m;
 
-	Debug("PRIVMSG Process Channel", DBG_DEV);
 	m["channel name"] = target;
 	channel = _get_channel_by_name(target);
 	if (!(channel))
@@ -220,7 +213,6 @@ void	Commands::__priv_msg_process_nick(std::string &target)
 	
 	m["nickname"] = target;
 	m["nick"] = target;
-	Debug("PRIVMSG Process Nick", DBG_DEV);
 	if (!(Message::is_bnf_nickname(targetmap["nick"])) || (targetmap["server"] != "" && targetmap["server"] != _server->servername()))
 		__priv_msg_reply(ERR_NOSUCHNICK, m);
 	else
@@ -247,7 +239,6 @@ void	Commands::_cmd_privmsg(void)
 	std::string target;
 	std::map<std::string, std::string> m;
 	
-	Debug("PRIVMSG", DBG_DEV);
 	m["command"] = _message.command();
 	if (!(_message.arguments().size()))
 		__priv_msg_reply(ERR_NORECIPIENT, m);

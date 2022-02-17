@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 22:05:51 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:58:36 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void Client::set_hangup(bool v, std::string msg)
 	_hangup_message = msg;
 	if (v)
 	{
+		Debug("Hangup set for <" + nickname + ">. Reason: " + msg, DBG_WARNING);
 		_send_queue.clear();
 		_send_queue.push_back("ERROR :" + msg + MSG_ENDLINE);
 	}
@@ -82,7 +83,7 @@ void Client::set_fd(int fd)
 void Client::read(void)
 {
 	std::vector<std::string> tmp;
-	Debug("Read", DBG_DEV);
+	Debug("Read: " + nickname, DBG_DEV);
 	bzero(_buffer, BUFFERSIZE + 1);
 	ssize_t rc = recv( _fd, _buffer, BUFFERSIZE, 0);
 	if (rc > 0)
@@ -104,12 +105,8 @@ void Client::read(void)
 	}
 	else if (rc <= 0)
 	{
-		Debug("Read Error", (rc == 0 ? DBG_WARNING : DBG_ERROR));
 		if (rc == 0)
-		{
-			Debug("HANGUP", DBG_WARNING);
 			set_hangup(true, Commands::generate_errormsg(ERR_EOFFROMCLIENT));
-		}
 	}
 }
 
@@ -164,7 +161,6 @@ int		Client::get_idle(void)
 
 void	Client::activate_mode(char flag)
 {
-	Debug("Activating Mode " + std::string() + flag);
     if (flag == 'i')
         set_invisible();
     else if (flag == 's')
@@ -172,7 +168,7 @@ void	Client::activate_mode(char flag)
     else if (flag == 'w')
         set_receive_wallops();
     else if (flag == 'o')
-        throw (-1);	// User can't do MODE himself +o. User need to call OPER USER PASS
+        throw (-1);
 }
 
 void	Client::deactivate_mode(char flag)

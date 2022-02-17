@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Debug.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 20:10:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/30 12:42:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 17:03:17 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ Debug::Debug(void) { }
 Debug::Debug(Debug const &c) { *this = c; }
 
 Debug::Debug(std::string s, int level)
-: _text(s), _msg_level(level) {	_print(); }
+: _text(s), _msg_level(level)
+{
+	ft::replace_string(_text, "\r\n", "");
+	_print();
+}
 
 Debug::~Debug() { }
 

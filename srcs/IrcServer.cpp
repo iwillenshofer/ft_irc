@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 21:18:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:06:03 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void IrcServer::_init(int port)
 
 void IrcServer::_accept_connections(int fd)
 {
-	Debug("Accept FD?", DBG_DEV);
 	int acc_fd;
 	while ((acc_fd = accept(fd, NULL, NULL)) > 0 )
 	{

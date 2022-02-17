@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 19:04:20 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/17 16:08:04 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	Commands::_cmd_join(void)
 	std::vector<std::string> p;
 	std::map<std::string, std::string> m;
 
-	_message.print();
 	if (!(_message.arguments().size()))
 	{
 		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
@@ -89,7 +88,6 @@ void	Commands::_cmd_join(void)
 	}
 	if (_message.arguments(0) == "0")
 	{
-		Debug("ARGUMENT: " + _message.arguments(0), DBG_ERROR);
 		for (Commands::channel_iterator it = _channels->begin(); it != _channels->end(); it++)
 		{
 			if (it->second.is_user(*_sender))

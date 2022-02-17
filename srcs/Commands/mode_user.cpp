@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_user.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:58:45 by roman             #+#    #+#             */
-/*   Updated: 2022/02/16 22:32:17 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:59:10 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	Commands::__perform_mode_user(char mode, char prefix)
 
 	try
 	{
-		Debug(std::string("PREFIX ") + prefix + mode, DBG_ERROR);
 		if (prefix == '+')
 			_sender->activate_mode(mode);
 		else

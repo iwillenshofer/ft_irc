@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 23:22:08 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:44:49 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,7 @@ Commands::Commands(std::string message, Client *sender, std::map<int, Client> *c
 { 
 	try
 	{
+		Debug(sender->nickname + " --> " + message, DBG_INFO);
 		_message = Message(message);
 	}
 	catch (const Message::EmptyMessage &e)
@@ -298,7 +299,6 @@ void Commands::_run_command(std::string &cmd_name)
 {
 	std::map<std::string, cmd_type>::iterator cmd_it;
 	
-	Debug("Looking for command", DBG_DEV);
 	cmd_it = _commands.find(cmd_name);
 	if (cmd_it == _commands.end())
 		_cmd_unknown();
@@ -426,6 +426,7 @@ void Commands::_message_user(std::string msg, std::string const &nickname)
 
 void Commands::_message_user(std::string msg, Client *client)
 {
+	Debug(client->nickname + " <-- " + msg, DBG_INFO);
 	client->get_send_queue().push_back(msg);
 }
 
@@ -434,7 +435,6 @@ void Commands::_message_user(std::string msg, Client *client)
 */
 void Commands::_register_user(void)
 {
-	Debug("User Registered", DBG_ERROR);
 	std::map<std::string, std::string> v;
 	std::string msg;
 
@@ -477,8 +477,7 @@ void Commands::_truncate_nick(std::string &nickname)
 
 void Commands::_cmd_unknown(void)
 {
-	Debug("User " + _sender->nickname + " sent an Unknown Command: " + _message.command(), DBG_INFO);
-	_message_user(":server 421  " + _message.command() + " :Unknown command\r\n", _sender);
+	_message_user(":server 421 " + _message.command() + " :Unknown command\r\n", _sender);
 }
 
 /*

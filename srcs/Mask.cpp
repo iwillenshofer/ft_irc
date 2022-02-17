@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Mask.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 12:05:41 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 19:29:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:58:48 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,6 @@ bool	Mask::match(std::string target, std::string mask)
 
 bool	Mask::match(Maskparts &target, Maskparts &mask)
 {
-	Debug("Matching username: " + target.username + "  -  " + mask.username + " : " + (_match(target.username.begin(),mask.username.begin(), target.username.end(),mask.username.end()) ? "TRUE" : "FALSE"), DBG_DEV);
-	Debug("Matching nickname: " + target.nickname + "  -  " + mask.nickname + " : " + (_match(target.nickname.begin(),mask.nickname.begin(), target.nickname.end(),mask.nickname.end()) ? "TRUE" : "FALSE"), DBG_DEV);
-	Debug("Matching hostname: " + target.hostname + "  -  " + mask.hostname + " : " + (_match(target.hostname.begin(),mask.hostname.begin(), target.hostname.end(),mask.hostname.end()) ? "TRUE" : "FALSE"), DBG_DEV);
 	if (!(_match(target.hostname.begin(),mask.hostname.begin(), target.hostname.end(),mask.hostname.end())))
 	return (false);
 	if (!(_match(target.nickname.begin(),mask.nickname.begin(), target.nickname.end(),mask.nickname.end())))
@@ -128,7 +125,6 @@ bool	Mask::match(Maskparts &target, Maskparts &mask)
 */
 bool	Mask::match_raw(std::string target, std::string mask)
 {
-	Debug("Match: " + target + " to " + mask, DBG_ERROR);
 	return (_match(target.begin(), mask.begin(), target.end(), mask.end()));
 }
 

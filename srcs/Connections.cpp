@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Connections.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 16:12:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 16:55:22 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,10 @@ void	Connections::remove_queued()
 		{
 			prev = it++;
 			disconnect_client(&(prev->second));
-			Debug("FD to Remove: " + ft::to_string(prev->second.get_fd()), DBG_ERROR);
+			Debug("Removing file descriptor " + ft::to_string(prev->second.get_fd()), DBG_DEV);
 			remove(prev->second.get_fd());
 			clients.erase(prev);
-			Debug("Clients size: " + ft::to_string(clients.size()) + "FDS size: " + ft::to_string(_fds.size()), DBG_ERROR);
+			Debug("Current Clients: " + ft::to_string(clients.size()), DBG_INFO);
 		}
 		else
 			it++;
@@ -172,13 +172,11 @@ void	Connections::pingpong(void)
 			}
 			else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))
 			{
-				Debug("HANGUP", DBG_WARNING);
 				it->second.set_hangup(true, Commands::generate_errormsg(ERR_PINGTIMEOUT));
 			}
 		}
 		else if (now - it->second.joined_time > (SRV_REGISTERWAIT))
 		{
-			Debug("HANGUP", DBG_WARNING);
 			it->second.set_hangup(true, Commands::generate_errormsg(ERR_REGISTERTIMEOUT));
 		}
 	}
