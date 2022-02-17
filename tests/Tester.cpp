@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 19:20:32 by roman             #+#    #+#             */
-/*   Updated: 2022/02/17 17:04:45 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 18:19:52 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,40 +83,40 @@ void Tester::description(std::string s)
 
 void Tester::perform_tests(void)
 {
-	test_registration();
-	test_admin();
-	test_connect();
-	test_error();
-	test_info();
-	test_invite();
-	test_join();
-	test_kick();
-	test_kill();
-	test_links();
-	test_list();
-	test_lusers();
+	//test_registration();
+	//test_admin();
+	//test_connect();
+	//test_error();
+	//test_info();
+	//test_invite();
+	//test_join();
+	//test_kick();
+	//test_kill();
+	//test_links();
+	//test_list();
+	//test_lusers();
 	test_mode_channel();
-	test_mode_user();
-	test_motd();
-	test_names();
-	test_nick();
-	test_notice();
-	test_oper();
-	test_part();
-	test_pass();
-	test_ping();
-	test_pong();
-	test_privmsg();
-	test_quit();
-	test_server();
-	test_squit();
-	test_stats();
-	test_time();
-	test_topic();
-	test_trace();
-	test_user();
-	test_version();
-	test_who();
-	test_whois();
-	test_whowas();
+	//test_mode_user();
+	//test_motd();
+	//test_names();
+	//test_nick();
+	//test_notice();
+	//test_oper();
+	//test_part();
+	//test_pass();
+	//test_ping();
+	//test_pong();
+	//test_privmsg();
+	//test_quit();
+	//test_server();
+	//test_squit();
+	//test_stats();
+	//test_time();
+	//test_topic();
+	//test_trace();
+	//test_user();
+	//test_version();
+	//test_who();
+	//test_whois();
+	//test_whowas();
 }

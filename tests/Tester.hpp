@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 22:36:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 18:16:20 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,17 @@ class Tester
 		** tests mode_channel
 		*/
 		void test_mode_channel(void);
+		void test_mode_channel_b(void);
+		void test_mode_channel_i(void);
+		void test_mode_channel_l(void);
+		void test_mode_channel_m(void);
+		void test_mode_channel_n(void);
+		void test_mode_channel_o(void);
+		void test_mode_channel_p(void);
+		void test_mode_channel_s(void);
+		void test_mode_channel_t(void);
+		void test_mode_channel_v(void);
+		void test_mode_channel_k(void);
 
 		/*
 		** tests mode_user
