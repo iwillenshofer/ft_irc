@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:07 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 13:22:14 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 22:35:02 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,16 @@ void	Commands::__perform_list(Channel &channel)
 	size_t visible = 0;
 	std::map<std::string, std::string> m;
 
+	if (!(channel.is_user(*_sender)) && (channel.is_private() || channel.is_secret()))
+		return ;
 	if (channel.is_user(*_sender))
 		visible = channel.users.size();
-	else if (channel.is_private())
-		return ;
+	else
+	{
+		for (std::vector<Client *>::iterator it = channel.users.begin(); it != channel.users.end(); it++)
+			if (!((*it)->is_invisible()) || _shared_channel(_sender, *it))
+				visible++;
+	}
 	m["channel"] = channel.get_name();
 	m["visible"] = ft::to_string(visible);
 	m["topic"] = channel.get_topic();
@@ -64,6 +70,11 @@ void	Commands::_cmd_list(void)
 	std::vector<std::string> v;
 	Channel *channel;
 
+	if (_message.arguments().size() > 1 && !(Mask::match_raw(_server->servername(), _message.arguments(1))))
+	{
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(1)), _sender);
+		return ;
+	}
 	if (!(_message.arguments().size()))
 	{
 		for (channel_iterator it = _channels->begin(); it != _channels->end(); it++)
