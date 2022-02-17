@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lusers.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:10 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 23:09:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:44:19 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,6 @@
 **			RPL_LUSERME                     ERR_NOSUCHSERVER
 */
 
-/*
-
-	replies[RPL_LUSERCLIENT] = ":There are <intusers> users and <intinvisible> invisible on <intservers> servers";
-	replies[RPL_LUSEROP] = "<integer> :operator(s) online";
-	replies[RPL_LUSERCHANNELS] = "<integer> :channels formed";
-	replies[RPL_LUSERME] = ":I have <intclients> clients and <intservers> servers";
-
-	v["intusers"] = ft::to_string(0); //TODO
-	v["intinvisible"] = ft::to_string(0); //TODO
-	v["intservers"] = ft::to_string(1);
-	v["intclients"] = ft::to_string(_clients->size() - 1);
-
-*/
 void	Commands::_cmd_lusers(void)
 {
 	int users = 0;

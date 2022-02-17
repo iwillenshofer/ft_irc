@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 22:30:59 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:26:59 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ class Commands
 	
 	private:
 		Commands(void);
-		Message							_message; // parsed command
+		Message							_message;
 		Client							*_sender;
 		std::map<int, Client>			*_clients;
 		std::map<std::string, Channel>	*_channels;

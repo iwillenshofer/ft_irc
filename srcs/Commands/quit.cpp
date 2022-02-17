@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:13:19 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:45:05 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@
 
 void	Commands::_cmd_quit(void)
 {
-	// must call _cmd_error() at the end.
 	std::string error_msg;
 	std::map<std::string, std::string> v;
 	if (_sender->get_hangup())

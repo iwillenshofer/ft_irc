@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 16:44:49 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 22:26:53 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ std::map<int, std::string> Commands::init_replies(void)
 	replies[RPL_WHOISOPERATOR] = "<nick> :is an IRC operator";
 	replies[RPL_WHOISIDLE] = "<nick> <secidle> :seconds idle";
 	replies[RPL_ENDOFWHOIS] = "<nick> :End of WHOIS list";
-	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>"; //*( ( "@" / "+" ) <channel> " " )";
+	replies[RPL_WHOISCHANNELS] = "<nick> :<channel_list>";
 	replies[RPL_WHOWASUSER] = "<nick> <user> <host> * :<real_name>";
 	replies[RPL_ENDOFWHOWAS] = "<nickname> :End of WHOWAS";
 	replies[RPL_LIST] = "<channel> <visible> :<topic>";

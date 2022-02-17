@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 21:27:06 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 22:28:03 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ class IrcServer
 			/*
 			** variables and functions for signal handler.
 			*/
-			static std::vector<IrcServer *> _instances; // instances of self to be used in SignalHandler
-			static bool 					_stop_server; 	// instances of self to be used in SignalHandler
+			static std::vector<IrcServer *> _instances;
+			static bool 					_stop_server;
 			static void 	_signalHandler( int signal );
 
 		public:

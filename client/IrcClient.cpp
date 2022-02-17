@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcClient.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/10 21:05:33 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:16:02 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** IrcClient
 */
 
-std::vector<IrcClient *> IrcClient::_instances; //static members must be defined
+std::vector<IrcClient *> IrcClient::_instances;
 bool IrcClient::_stop_clients = false;
 
 IrcClient::IrcClient(void): _fd(0), _registered(false), _register_sent(false), _joined(false)
@@ -27,7 +27,6 @@ IrcClient::IrcClient(void): _fd(0), _registered(false), _register_sent(false), _
     srand((time_t)ts.tv_nsec);
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 
-//	_instances.push_back(this);
 }
 
 IrcClient::IrcClient(IrcClient const &cp) { *this = cp; }

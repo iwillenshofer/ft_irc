@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   oper.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 22:01:52 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:44:55 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	Commands::_cmd_oper(void)
     catch(int code)
     {
         if (code == -1)
-            code = -1; //Do nothing just continue
+            code = -1;
     }
     if (flags != " +")
     {

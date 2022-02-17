@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcClient.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/05 16:30:53 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:16:28 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ class IrcClient
 		/*
 		** variables and functions for signal handler.
 		*/
-		static std::vector<IrcClient *> _instances; // instances of self to be used in SignalHandler
-		static bool 					_stop_clients; 	// instances of self to be used in SignalHandler
+		static std::vector<IrcClient *> _instances;
+		static bool 					_stop_clients;
 		static void 	_signalHandler( int signal );
 
 

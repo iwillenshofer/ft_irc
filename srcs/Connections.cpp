@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 16:55:22 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 22:27:31 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	Connections::pingpong(void)
 		{
 			if (it->second.is_ping == false && now - it->second.last_ping > (SRV_PINGWAIT))
 			{
-				it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n"); // NOt the definitive form
+				it->second.get_send_queue().push_back("PING " + it->second.nickname + "\r\n");
 				it->second.is_ping = true;
 			}
 			else if (it->second.is_ping == true && now - it->second.last_ping > (SRV_PINGWAIT + SRV_PONGWAIT))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:51 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 22:53:44 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/17 22:41:29 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,15 @@ Server &Server::operator=(Server const &cp)
 
 Server::~Server(void) { }
 
+/*
+** OPER passwords
+** iwillens: Igor123
+** roman: Roman123
+*/
 void Server::_init(void)
 {
-	_operators.insert(std::make_pair("iwillens", 229428285555564)); // Igor123
-	_operators.insert(std::make_pair("robitett", 7571527224823800)); // Roman123
+	_operators.insert(std::make_pair("iwillens", 229428285555564));
+	_operators.insert(std::make_pair("robitett", 7571527224823800));
 	std::time(&_creation_date);
 }
 

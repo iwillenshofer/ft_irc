@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_mode_user.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:21:17 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 22:44:21 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 22:45:21 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,9 @@ void Tester::test_mode_success(void)
 
 void Tester::test_mode_user(void)
 {
-
-
 	title("mode_user");
-//	test_mode_exceptions();
-//	test_mode_success();
+	test_mode_exceptions();
+	test_mode_success();
 	test_mode_o();
 	test_mode_i();
 }

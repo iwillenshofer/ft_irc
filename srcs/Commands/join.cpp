@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 16:08:04 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 22:44:09 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@
 **	:WiZ!jto@tolsun.oulu.fi JOIN #Twilight_zone ; JOIN message from WiZ
 **									on channel #Twilight_zone
 */
-
-// < :iwillens2!~iwillens2@177.73.71.99 JOIN #brasil
-//< :iwillens2!iwillens2@localhost JOIN #brasil
 
 void	Commands::_cmd_join(void)
 {
