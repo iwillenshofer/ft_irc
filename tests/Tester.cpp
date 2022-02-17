@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 19:20:32 by roman             #+#    #+#             */
-/*   Updated: 2022/02/16 19:20:58 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/16 21:26:05 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void Tester::perform_tests(void)
 //	test_list();
 //	test_lusers();
 //	test_mode_channel();
-//	test_mode_user();
+	test_mode_user();
 //	test_motd();
 //	test_names();
 //	test_nick();
