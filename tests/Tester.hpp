@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:50:04 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/16 19:06:04 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,18 @@ class Tester
 		** tests join
 		*/
 		void test_join(void);
+		void test_join_ERR_NEEDMOREPARAMS(void);
+		void test_join_ERR_INVITEONLYCHAN(void);
+		void test_join_ERR_CHANNELISFULL(void);
+		void test_join_ERR_NOSUCHCHANNEL(void);
+		void test_join_ERR_BANNEDFROMCHAN(void);
+		void test_join_ERR_BADCHANNELKEY(void);
+		void test_join_ERR_BADCHANMASK(void);
+		void test_join_ERR_TOOMANYCHANNELS(void);
+		void test_join_ERR_UNAVAILRESOURCE(void);
+		void test_join_few_channels(void);
+		void test_join_few_channels_password(void);
+		void test_join_special_argument_0(void);
 
 		/*
 		** tests kick

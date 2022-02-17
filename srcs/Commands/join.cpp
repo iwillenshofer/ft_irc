@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:08:13 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/16 19:04:20 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	Commands::_cmd_join(void)
 	for (std::vector<std::string>::iterator it = u.begin(); it != u.end(); it++)
 	{
 		m["channel name"] = *it;
+		m["channel"] = *it;
 		if (!(Message::is_bnf_channel(*it)))
 			_message_user(_generate_reply(ERR_NOSUCHCHANNEL, m), _sender);
 		else if (!(channel = _get_channel_by_name(*it)))
@@ -133,8 +134,14 @@ void	Commands::_cmd_join(void)
 			}
 			catch(int code_error)
 			{
-                _message_user(_generate_reply(code_error), _sender);
+                _message_user(_generate_reply(code_error, m), _sender);
 			}
 		}
 	}
 }
+
+/*
+** [IMPLEMENTATION NOTES]
+** As ERR_NOSUCHCHANNEL and ERR_BADCHANMASK seem to be equivalent,
+** we implemented only ERR_NOSUCHCHANNEL, just like Undernet.
+*/

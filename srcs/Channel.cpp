@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/14 22:35:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 17:59:01 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	Channel::set_password(Client &chanop, unsigned long key)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
-    if (_password != START_HASH)
+    if (_mode.k == true)
         throw (ERR_KEYSET);
     _password = key;
     _mode.k = true;
