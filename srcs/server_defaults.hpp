@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 20:55:43 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 22:18:55 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@
 */
 
 # define	MODE_CHANNEL			"-+opsitnmlbvk"
-# define	MODE_USER   			"-+aiswo"
+# define	MODE_USER   			"-+iswo"
 # define	MODE_USER_DFL			"+iw"
 
 /*

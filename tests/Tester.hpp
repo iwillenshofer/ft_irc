@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 19:06:04 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/16 22:36:53 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ class Tester
 		** tests mode_user
 		*/
 		void test_mode_user(void);
+		void test_mode_exceptions(void);
+		void test_mode_success(void);
+		void test_mode_i(void);
+		void test_mode_o(void);
 
 		/*
 		** tests motd

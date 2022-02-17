@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:58:45 by roman             #+#    #+#             */
-/*   Updated: 2022/02/16 21:17:26 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 22:32:17 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,9 @@
 **    however, on anyone `deopping' themselves (using "-o").  Numeric
 **    Replies:
 ** 
-**            ERR_NEEDMOREPARAMS              RPL_CHANNELMODEIS
-**            ERR_CHANOPRIVSNEEDED            ERR_NOSUCHNICK
-**            ERR_NOTONCHANNEL                ERR_KEYSET
-**            RPL_BANLIST                     RPL_ENDOFBANLIST
-**            ERR_UNKNOWNMODE                 ERR_NOSUCHCHANNEL
-** 
+**            ERR_NEEDMOREPARAMS             
+**            ERR_NOSUCHNICK              
+**            ERR_UNKNOWNMODE                 
 **            ERR_USERSDONTMATCH              RPL_UMODEIS
 **            ERR_UMODEUNKNOWNFLAG
 ** 
@@ -57,6 +54,29 @@
 */
 #include "Commands.hpp"
 
+
+void	Commands::__perform_mode_user(char mode, char prefix)
+{
+	std::string msg;
+
+	try
+	{
+		Debug(std::string("PREFIX ") + prefix + mode, DBG_ERROR);
+		if (prefix == '+')
+			_sender->activate_mode(mode);
+		else
+			_sender->deactivate_mode(mode);
+		msg = _sender->get_prefix() + " MODE " + _sender->nickname + " " + prefix + mode + MSG_ENDLINE;
+		_message_user(msg, _sender);
+	}
+	catch(int code_error)
+	{
+		if (code_error == -1)
+			return ;
+		_message_user(_generate_reply(code_error), _sender);
+	}
+}
+
 void	Commands::_cmd_mode_user(void)
 {
     Client     *client =  _get_client_by_nickname(_message.arguments(0));
@@ -65,10 +85,10 @@ void	Commands::_cmd_mode_user(void)
 
     if (client == NULL)
     {
-       _message_user(_generate_reply(ERR_NOSUCHNICK), _sender);
+       _message_user(_generate_reply(ERR_NOSUCHNICK, "nickname", _message.arguments(0)), _sender);
        return ;
     }
-    else if (_sender->nickname != client->nickname)
+    else if (_sender != client)
     {
         _message_user(_generate_reply(ERR_USERSDONTMATCH), _sender);
         return ;
@@ -76,53 +96,10 @@ void	Commands::_cmd_mode_user(void)
     for (size_t i = 0; i < _message.arguments(1).size(); i++)
     {
         if (mode_user.find(_message.arguments(1).at(i)) == std::string::npos)
-        {
             _message_user(_generate_reply(ERR_UMODEUNKNOWNFLAG), _sender);
-            continue;
-        }
-        if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
-        {
+        else if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
             prefix = _message.arguments(1).at(i);
-            continue;
-        }
-        if (prefix == '+')
-        {
-            try
-            {
-				Debug("PREFIX +", DBG_ERROR);
-                std::string msg;
-                client->activate_mode(_message.arguments(1).at(i));
-                msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " +" + _message.arguments(1).at(i) + MSG_ENDLINE;
-	            //_message_channel(msg, _message.arguments(0), true);
-				_message_user(msg, _sender);
-            }
-            catch(int code_error)
-            {
-                if (code_error == -1)
-	            	return ;
-				    _message_user(_generate_reply(code_error), _sender);
-            }
-        }
         else
-        {
-            try
-            {
-				Debug("PREFIX -: ", DBG_ERROR);
-                std::string msg;
-                client->deactivate_mode(_message.arguments(1).at(i));
-                msg = _sender->get_prefix() + " MODE " + _message.arguments(0) + " -" + _message.arguments(1).at(i) + MSG_ENDLINE;
-//	            _message_channel(msg, _message.arguments(0), true);
-                _message_user(msg, _sender);
-
-            }
-            catch(int code_error)
-            {
-                if (code_error == -1)
-					return ;
-	                _message_user(_generate_reply(code_error), _sender);
-            }
-        }
+			__perform_mode_user(_message.arguments(1).at(i), prefix);
     }
-
-
 }

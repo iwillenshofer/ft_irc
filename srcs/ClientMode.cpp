@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 21:22:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:25:07 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 22:04:19 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** ClientMode
 */
 
-ClientMode::ClientMode(void): i(false), s(false), w(false), o(false), a(false), r(false), O(false) { }
+ClientMode::ClientMode(void): i(false), s(false), w(false), o(false), a(false) { }
 ClientMode::ClientMode(ClientMode const &cp) { *this = cp; }
 ClientMode &ClientMode::operator=(ClientMode const &cp)
 {
@@ -25,8 +25,6 @@ ClientMode &ClientMode::operator=(ClientMode const &cp)
 	w = cp.w;
 	o = cp.o;
 	a = cp.a;
-	r = cp.r;
-	O = cp.O;
 	return (*this);
 }
 ClientMode::~ClientMode() { }

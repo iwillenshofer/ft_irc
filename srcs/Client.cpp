@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:36:36 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 22:05:51 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int		Client::get_idle(void)
 
 void	Client::activate_mode(char flag)
 {
+	Debug("Activating Mode " + std::string() + flag);
     if (flag == 'i')
         set_invisible();
     else if (flag == 's')

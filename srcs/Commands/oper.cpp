@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:46 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 21:01:05 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 22:01:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 void	Commands::_cmd_oper(void)
 {
     std::map<std::string, unsigned long>::iterator it;
-    std::string flags = " :+";
+    std::string flags = " +";
 	std::string msg;
 	std::map<std::string, std::string> m;
 
@@ -68,7 +68,7 @@ void	Commands::_cmd_oper(void)
         if (code == -1)
             code = -1; //Do nothing just continue
     }
-    if (flags != " :+")
+    if (flags != " +")
     {
         msg = _sender->get_prefix() + " MODE " + _sender->nickname + flags + MSG_ENDLINE;
 	    _message_user(msg, _sender);
