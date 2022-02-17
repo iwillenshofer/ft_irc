@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:12 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 22:48:48 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 21:22:47 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,9 @@
 
 void	Commands::_cmd_mode(void)
 {
-	if (_message.arguments(0).at(0) == '#' || _message.arguments(0).at(0) == '&')
+	if (!(_message.arguments().size()))
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", "MODE"), _sender);
+	else if (_message.arguments(0).at(0) == '#' || _message.arguments(0).at(0) == '&')
 		_cmd_mode_channel();
 	else
 		_cmd_mode_user();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   links.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:05 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/31 15:38:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 19:41:57 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,15 @@ void	Commands::_cmd_links(void)
 {
 	std::string mask;
 	std::map<std::string, std::string> m;
-
-	mask = (_message.arguments().size() ? _message.arguments(0) : std::string("*"));
+	int dst_server = 0;
+	if (_message.arguments().size() >= 2 && !(Mask::match_raw(_server->servername(), _message.arguments(0))))
+	{
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(0)), _sender);
+		return ;
+	}
+	if (_message.arguments().size() >=2)
+		dst_server = 1;
+	mask = (_message.arguments().size() ? _message.arguments(dst_server) : std::string("*"));
 	m["mask"] = mask;
 	if (Mask::match_raw(_server->servername(), mask))
 	{

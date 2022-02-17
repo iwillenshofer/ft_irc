@@ -3,13 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   mode_user.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:58:45 by roman             #+#    #+#             */
-/*   Updated: 2022/01/31 16:27:27 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 21:17:26 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+**
+** 4.2.3.2 User modes
+** 
+** Parameters: <nickname> {[+|-]|i|w|s|o}
+** 
+**    The user MODEs are typically changes which affect either how the
+**    client is seen by others or what 'extra' messages the client is sent.
+**    A user MODE command may only be accepted if both the sender of the
+**    message and the nickname given as a parameter are both the same.
+** 
+**    The available modes are as follows:
+** 
+**            i - marks a users as invisible;
+**            s - marks a user for receipt of server notices;
+**            w - user receives wallops;
+**            o - operator flag.
+** 
+**    Additional modes may be available later on.
+** 
+**    If a user attempts to make themselves an operator using the "+o"
+**    flag, the attempt should be ignored.  There is no restriction,
+**    however, on anyone `deopping' themselves (using "-o").  Numeric
+**    Replies:
+** 
+**            ERR_NEEDMOREPARAMS              RPL_CHANNELMODEIS
+**            ERR_CHANOPRIVSNEEDED            ERR_NOSUCHNICK
+**            ERR_NOTONCHANNEL                ERR_KEYSET
+**            RPL_BANLIST                     RPL_ENDOFBANLIST
+**            ERR_UNKNOWNMODE                 ERR_NOSUCHCHANNEL
+** 
+**            ERR_USERSDONTMATCH              RPL_UMODEIS
+**            ERR_UMODEUNKNOWNFLAG
+** 
+**    Examples:
+** :MODE WiZ -w                    ; turns reception of WALLOPS messages
+**                                 off for WiZ.
+** :Angel MODE Angel +i            ; Message from Angel to make themselves
+**                                 invisible.
+** MODE WiZ -o                     ; WiZ 'deopping' (removing operator
+**                                 status).  The plain reverse of this
+**                                 command ("MODE WiZ +o") must not be
+**                                 allowed from users since would bypass
+**                                 the OPER command.
+*/
 #include "Commands.hpp"
 
 void	Commands::_cmd_mode_user(void)
@@ -28,7 +73,6 @@ void	Commands::_cmd_mode_user(void)
         _message_user(_generate_reply(ERR_USERSDONTMATCH), _sender);
         return ;
     }
-	Debug("Message Size: " + ft::to_string(_message.arguments(1).size()), DBG_ERROR);
     for (size_t i = 0; i < _message.arguments(1).size(); i++)
     {
         if (mode_user.find(_message.arguments(1).at(i)) == std::string::npos)

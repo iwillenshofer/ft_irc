@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:56:13 by roman            ###   ########.fr       */
-=======
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 20:53:03 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 21:47:34 by coder            ###   ########.fr       */
->>>>>>> commands
+/*   Updated: 2022/02/16 21:19:27 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +93,10 @@ void Tester::perform_tests(void)
 //	test_kick();
 //	test_kill();
 //	test_links();
-<<<<<<< HEAD
 //	test_list();
-=======
-	test_list();
->>>>>>> commands
 //	test_lusers();
 //	test_mode_channel();
-//	test_mode_user();
+	test_mode_user();
 //	test_motd();
 //	test_names();
 //	test_nick();

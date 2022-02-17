@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/06 13:28:11 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/16 21:00:45 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ void	Commands::_cmd_kick(void)
 					{
 						_message_channel(_sender->get_prefix() + " KICK " + channel->get_name() + " " + *uit + " :" + reason + MSG_ENDLINE, channel->get_name(), true);
 						channel->remove_user(*client);
-						if (channel->is_empty())
-							_channels->erase(channel->get_name());
 					}
 				}
+				if (channel->is_empty())
+					_channels->erase(channel->get_name());
 			}
 		}
 	}
