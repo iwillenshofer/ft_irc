@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode_channel.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/09 19:27:56 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/17 20:55:22 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 	catch(int code_error)
 	{
 		if (code_error != ERR_SILENT)
-			_message_user(_generate_reply(code_error), _sender);
+			_message_user(_generate_reply(code_error, m), _sender);
 	}
 }
 
