@@ -27,9 +27,17 @@ class Tester
 		Tester &operator=(Tester const &cp);
 		virtual ~Tester();
 
+	private:
+		typedef  void (Tester::*cmd_type)(void);
+		typedef std::map<std::string, cmd_type>			sub_map_type;
+		typedef std::map<std::string, sub_map_type >	map_type;
+		typedef sub_map_type::iterator					sub_map_iterator;
+		typedef map_type::iterator						map_iterator;
+
 		std::string 	_host;
 		int				_port;
 		std::string		_password;
+		map_type		_map;
 
 		/*
 		** tester helper functions
@@ -38,11 +46,19 @@ class Tester
 	private:
 		Tester(void);
 		std::vector<std::string> _break_line(std::string s);
-			
+
 	public:
 		void title(std::string s);
 		void description(std::string s);
 		void perform_tests(void);
+	
+		void _run_command(size_t level, size_t command)
+		sub_map_type *_get_submap(int level);
+		void feed_prompt(void);
+		void prompt(int level);
+		void loop(void);
+	
+
 
 
 		/*
@@ -51,6 +67,11 @@ class Tester
 		void test_admin(void);
 		void test_admin_ircop(void);
 		void test_admin_no_ircop(void);
+
+		/*
+		**
+		*/
+		void test_away(void);
 
 		/*
 		** tests connect [done]

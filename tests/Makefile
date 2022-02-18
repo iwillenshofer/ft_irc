@@ -34,6 +34,7 @@ CLIENT_SRCS =			${CLIENT_DIR}/IrcClient.cpp \
 						${CLIENT_DIR}/main.cpp \
 						${CLIENT_DIR}/srcs/test_registration.cpp \
 						$(CLIENT_DIR)/srcs/test_admin.cpp \
+						$(CLIENT_DIR)/srcs/test_away.cpp \
 						$(CLIENT_DIR)/srcs/test_connect.cpp \
 						$(CLIENT_DIR)/srcs/test_error.cpp \
 						$(CLIENT_DIR)/srcs/test_info.cpp \
