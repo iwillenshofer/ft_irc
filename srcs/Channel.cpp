@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 18:41:52 by roman             #+#    #+#             */
-/*   Updated: 2022/02/16 17:59:01 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/17 19:18:11 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,16 @@ std::string	Channel::get_topic(void) const
     return _topic;
 }
 
-bool		Channel::match_password(unsigned long password) const
+bool		Channel::match_password(std::string password) const
 {
 	if (_mode.k && password != _password)
 		return (false);
 	return (true);
 }
 
-void	Channel::set_password(Client &chanop, unsigned long key)
+void	Channel::set_password(Client &chanop, std::string key)
 {
-    if (key == START_HASH)
+    if (key.empty() == true)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
@@ -100,15 +100,15 @@ void	Channel::set_password(Client &chanop, unsigned long key)
     _mode.k = true;
 }
 
-void	Channel::unset_password(Client &chanop, unsigned long key)
+void	Channel::unset_password(Client &chanop, std::string key)
 {
-    if (key == START_HASH)
+    if (key.empty() == true)
         throw (ERR_NEEDMOREPARAMS);
     if (is_operator(chanop) == false)
         throw (ERR_CHANOPRIVSNEEDED);
     if (key != _password)
         throw (ERR_KEYSET);
-    _password = START_HASH;
+    _password = "";
     _mode.k = false;
 }
 
@@ -205,7 +205,7 @@ void	Channel::activate_mode(Client &nick, char flag, std::string arg, Client *ta
     else if (flag == 't')
         set_change_topic(nick);
     else if (flag == 'k')
-        set_password(nick, ft::hash(arg.c_str()));
+        set_password(nick, arg);
     else if (flag == 'v')
         add_voice(nick, target);
 }
@@ -231,7 +231,7 @@ void	Channel::deactivate_mode(Client &nick, char flag, std::string arg, Client *
     else if (flag == 't')
         unset_change_topic(nick);
     else if (flag == 'k')
-        unset_password(nick, ft::hash(arg.c_str()));
+        unset_password(nick, arg);
     else if (flag == 'v')
         remove_voice(nick, target);
 }
@@ -269,7 +269,7 @@ bool Channel::is_user(Client &nick)
     return false;
 }
 
-void Channel::add_user(Client &nick, unsigned long password)
+void Channel::add_user(Client &nick, std::string password)
 {
     if (is_invitation(nick) == true)
         users.push_back(&nick);

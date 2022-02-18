@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:44:09 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/17 19:17:22 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	Commands::_cmd_join(void)
 				continue ;
 			try
 			{
-				channel->add_user(*_sender, ft::hash(p[it - u.begin()].c_str()));
+				channel->add_user(*_sender, p[it - u.begin()]);
 				_message_channel(_sender->get_prefix() + " JOIN " + *it + MSG_ENDLINE, *it, true);
 				__perform_names(*channel);
 			}
