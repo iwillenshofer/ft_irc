@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 18:16:20 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/18 20:26:05 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "Debug.hpp"
 
 # define LINE_WIDTH 80
+# define MENU_WIDTH 30
 
 class Tester
 {
@@ -52,12 +53,16 @@ class Tester
 		void description(std::string s);
 		void perform_tests(void);
 	
-		void _run_command(size_t level, size_t command)
+		void _clear_screen(void);
+		void _run_all_commands(size_t level);
+		void _run_command(size_t level, size_t command);
 		sub_map_type *_get_submap(int level);
 		void feed_prompt(void);
-		void prompt(int level);
+		void prompt(int level, bool error = false, bool clear = true);
 		void loop(void);
-	
+		void prompt_menu_title(std::string s, bool center = true);
+		void prompt_menu_item(std::string choice, std::string description);
+
 
 
 

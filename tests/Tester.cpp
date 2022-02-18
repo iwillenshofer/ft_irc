@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 19:20:32 by roman             #+#    #+#             */
-/*   Updated: 2022/02/17 21:16:08 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/18 20:26:30 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void Tester::feed_prompt(void)
 	tmp["Admin"] = &Tester::test_admin;
 	tmp["Info"] = &Tester::test_info;
 	tmp["Lusers"] = &Tester::test_admin;
-	tmp["Motd"] = &Tester::test_info;
+	tmp["Motd"] = &Tester::test_motd;
 	_map["Server queries and commands"] = tmp;
 	tmp.clear();
 	tmp["Private messages"] = &Tester::test_privmsg;
@@ -138,8 +138,44 @@ void Tester::feed_prompt(void)
 	_map["Miscellaneous messages"] = tmp;
 	tmp.clear();
 	tmp["Away"] = &Tester::test_away;
-	tmp["Registration"] = &Tester::test_away;
+	tmp["Registration"] = &Tester::test_registration;
 	_map["Optional/Others"] = tmp;
+}
+
+
+void Tester::prompt_menu_title(std::string s, bool center)
+{
+	std::string str;
+
+	if (center)
+	{
+		ft::uppercase(s);
+		while (s.size() < MENU_WIDTH)
+			s = " " + s + " ";
+		if (s.size() > MENU_WIDTH)
+			s.erase(0, 1);
+	}
+	str += std::string("\033[");
+	str += ft::to_string(CLR_BOLD) +  ";";
+	str += ft::to_string(CLR_BLUE) + "m";
+	std::cout << str << s << std::string("\033[0m") << std::endl;
+}
+
+void Tester::prompt_menu_item(std::string choice, std::string description)
+{
+	std::string str;
+
+	str += std::string("\033[");
+	str += ft::to_string(CLR_BOLD) +  ";";
+	if (choice == "A")
+		str += ft::to_string(CLR_GREEN) + "m";
+	else if (choice == "B")
+		str += ft::to_string(CLR_YELLOW) + "m";
+	else if (choice == "E")
+		str += ft::to_string(CLR_RED) + "m";
+	else
+		str += ft::to_string(CLR_CYAN) + "m";
+	std::cout << str << choice << std::string("\033[37m") <<  "  - " << description  << std::string("\033[0m")<<  std::endl;
 }
 
 Tester::sub_map_type *Tester::_get_submap(int level)
@@ -152,58 +188,111 @@ Tester::sub_map_type *Tester::_get_submap(int level)
 	return (&(mit->second));
 }
 
-void Tester::prompt(int level)
+
+void Tester::_clear_screen()
+{
+	std::cout << "\033[2J" << std::endl;
+	std::cout << "\033[H" << std::endl;
+
+}
+void Tester::prompt(int level, bool error, bool clear)
 {
 	int i = 1;
 	sub_map_type *smap;
-	std::cout << std::endl << "This is a prompt:" << std::endl;
+
+	if (clear)
+		_clear_screen();
 	if (!level)
 	{
+		prompt_menu_title("--- Main Menu ---", true);
 		for (map_iterator it = _map.begin(); it != _map.end(); it++, i++)
-			std::cout << "( " << i << " ) " << it->first << std::endl;
+			prompt_menu_item(std::to_string(i), it->first);	}
+	else
+	{
+		prompt_menu_title("--- Commands ---", true);
+		smap = _get_submap(level - 1);
+		for (sub_map_iterator it = smap->begin(); it != smap->end(); it++, i++)
+			prompt_menu_item(std::to_string(i), it->first);
+	}
+	prompt_menu_item("A", "All");
+	if (level)
+		prompt_menu_item("B", "Back");
+	prompt_menu_item("E", "Exit");
+	if (error)
+		std::cout << "\033[1;31m*  *  * Invalid Command *  *  *\033[0m" << std::endl;
+	std::cout << ": ";
+}
+
+void Tester::_run_command(size_t level, size_t command)
+{
+	sub_map_type *smap = _get_submap(--level);
+	sub_map_iterator sit = smap->begin();
+
+	for (size_t i = 0; i < command - 1; i++)
+		sit++;
+	(*this.*(sit->second))();
+}
+
+void Tester::_run_all_commands(size_t level)
+{
+	sub_map_type *smap = NULL;
+
+	if (!level)
+	{
+		for (map_iterator it = _map.begin(); it != _map.end(); it++)
+			for (sub_map_iterator sit = it->second.begin(); sit != it->second.end(); sit++)
+				(*this.*(sit->second))();
 	}
 	else
 	{
 		smap = _get_submap(--level);
-		for (sub_map_iterator it = smap->begin(); it != smap->end(); it++, i++)
-			std::cout << "( " << i << " ) " << it->first << std::endl;
+		for (sub_map_iterator sit = smap->begin(); sit != smap->end(); sit++)
+			(*this.*(sit->second))();
 	}
-	std::cout << "Type the desired number: ";
 }
 
-void _run_command(size_t level, size_t command)
-{
-	sub_map_type *smap = _get_submap(--level);
-
-}
 
 void Tester::loop(void)
 {
-	std::string command;
-	size_t level = 0;
-	size_t nb = 0;
+	std::string	command;
+	bool 		error = false;
+	size_t		level = 0;
+	size_t		nb = 0;
+	bool		clear = true;
 
 	while (1)
 	{
-		prompt(level);
+		prompt(level, error, clear);
+		error = false;
+		clear = true;
+		command.clear();
 		std::cin >> command;
 		nb = std::atoi(command.c_str());
-		if ((!nb && command != "E" && command != "B")
+		if ((command.size() > 1 && !(ft::is_numeric(command)))
+			|| (!nb && command != "E" && command != "A" && command != "B")
 			|| (!level && command == "B")
 			|| (!level && nb && nb > _map.size())
-			|| (level && nb && !(_get_submap(nb))))
+			|| (level && nb && nb > (_get_submap(level - 1)->size())))
 		{
-			std::cout << "Invalid Command" << std::endl;
+			error = true;
 			continue ;
 		}
 		if (command == "E")
 			break;
 		else if (command == "B")
 			level = 0;
+		else if (command == "A")
+		{
+			_run_all_commands(level);
+			clear = false;
+		}
 		else if (!level)
 			level = nb;
 		else
+		{
 			_run_command(level, nb);
+			clear = false;
+		}
 	}
 }
 
