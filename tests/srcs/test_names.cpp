@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:21:22 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:37:43 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/18 21:03:49 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void Tester::test_names_general(void)
 
 void Tester::test_names(void)
 {
+	title("names");
 	test_names_secret();
 	test_names_visible();
 	test_names_invisible();
