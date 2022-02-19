@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:28:03 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:38:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRCSERVER_HPP
 # define IRCSERVER_HPP
 
-# include <vector>
 # include <map>
+# include <vector>
 # include <csignal>
 # include <cerrno>
+# include <poll.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <sys/ioctl.h>
 # include "Socket.hpp"
 # include "Server.hpp"
 # include "Connections.hpp"
 # include "Debug.hpp"
-# include <poll.h>
-# include <fcntl.h>
- #include <sys/ioctl.h>
- #include <unistd.h>
  
 class IrcServer
 {

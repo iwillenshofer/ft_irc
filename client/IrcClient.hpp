@@ -3,28 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   IrcClient.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:16:28 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:36:43 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IRCCLIENT_HPP
 # define IRCCLIENT_HPP
 
-# include <string>
-# include <vector>
 # include <poll.h>
 # include <fcntl.h>
-# include <signal.h>
+# include <string>
+# include <vector>
+# include <csignal>
+# include <ctime>
+# include <climits>
 # include "Debug.hpp"
 # include "Mask.hpp"
 # include "utilities.hpp"
 # include "server_defaults.hpp"
 # include "Message.hpp"
-#include <ctime>
-# include <climits>
+
 # define BUFFERSIZE 1024
 
 class IrcClient

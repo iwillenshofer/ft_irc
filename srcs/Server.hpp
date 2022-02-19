@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:38:48 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 21:28:09 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:39:00 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <string>
 # include <map>
+# include <string>
 # include "Debug.hpp"
 # include "Client.hpp"
 # include "server_defaults.hpp"
