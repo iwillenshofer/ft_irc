@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 10:23:01 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:26:53 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/18 23:28:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ std::map<std::string, Commands::cmd_type> Commands::init_commands(void)
 	cmd["PONG"] = &Commands::_cmd_pong;
 	cmd["ERROR"] = &Commands::_cmd_error;
 	cmd["AWAY"] = &Commands::_cmd_away;
+	cmd["CAP"] = &Commands::_cmd_cap;
 	return (cmd);
 }
 
@@ -289,7 +290,8 @@ void	Commands::_process()
 	
 	m["user"] = (_sender->nickname != "") ? _sender->nickname : std::string("*");
 	if (!(_sender->registered) && (cmd != "ADMIN" && cmd != "NICK" && cmd != "PASS"
-		&& cmd != "PONG" && cmd != "QUIT" && cmd != "USER" && cmd != "VERSION" && cmd != "SERVER"))
+		&& cmd != "PONG" && cmd != "QUIT" && cmd != "USER" && cmd != "VERSION" 
+		&& cmd != "CAP" && cmd != "SERVER"))
 		_message_user(_generate_reply(ERR_NOTREGISTERED, m), _sender);
 	else
 		_run_command(cmd);
@@ -477,7 +479,7 @@ void Commands::_truncate_nick(std::string &nickname)
 
 void Commands::_cmd_unknown(void)
 {
-	_message_user(":server 421 " + _message.command() + " :Unknown command\r\n", _sender);
+	_message_user(_generate_reply(ERR_UNKNOWNCOMMAND, "command", _message.command()), _sender);
 }
 
 /*

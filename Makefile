@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: roman <roman@student.42.fr>                +#+  +:+       +#+         #
+#    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/15 17:54:05 by roman            ###   ########.fr        #
+#    Updated: 2022/02/18 23:21:27 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS = 	${SRC_DIR}/main.cpp \
 			${SRC_DIR}/Client.cpp \
 			${SRC_DIR}/ClientMode.cpp \
 			${SRC_DIR}/Commands.cpp \
+			${SRC_DIR}/Commands/cap.cpp \
 			${SRC_DIR}/Commands/pass.cpp \
 			${SRC_DIR}/Commands/nick.cpp \
 			${SRC_DIR}/Commands/user.cpp \

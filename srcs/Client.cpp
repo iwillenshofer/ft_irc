@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 16:58:36 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/18 23:15:31 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void Client::read(void)
 		last_ping = time(NULL);
 		_receive_buffer += _buffer;
 		tmp = ft::split(_receive_buffer, MSG_ENDLINE);
+		if (!(tmp.size()))
+			tmp = ft::split(_receive_buffer, '\n');
 		if (_receive_buffer.size() > MSG_MAXMSGSIZE * 2)
 		{
 			Commands commands(ERR_INPUTTOOLONG, this);
