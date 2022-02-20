@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 00:21:31 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 18:06:15 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/19 21:21:13 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void Tester::test_whowas_clients(void)
 		c[i].command("PASS " + _password + "\r\n", false);
 		c[i].command("USER " + nick + " 8 * :Client Name\r\n", false);
 		c[i].command("NICK " + nick + "\r\n", false);
+		c[i].listen(false);
+		c[i].command("QUIT :bye\r\n", false);
 		c[i].listen(false);
 	}
 	c0.command("PASS " + _password + "\r\n");

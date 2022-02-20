@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 19:20:32 by roman             #+#    #+#             */
-/*   Updated: 2022/02/18 20:26:30 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/19 21:10:03 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,13 +188,12 @@ Tester::sub_map_type *Tester::_get_submap(int level)
 	return (&(mit->second));
 }
 
-
 void Tester::_clear_screen()
 {
 	std::cout << "\033[2J" << std::endl;
 	std::cout << "\033[H" << std::endl;
-
 }
+
 void Tester::prompt(int level, bool error, bool clear)
 {
 	int i = 1;
