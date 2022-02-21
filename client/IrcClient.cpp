@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:16:02 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/21 21:00:05 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ bool IrcClient::_stop_clients = false;
 
 IrcClient::IrcClient(void): _fd(0), _registered(false), _register_sent(false), _joined(false)
 {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    srand((time_t)ts.tv_nsec);
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	srand((time_t)ts.tv_nsec);
 	signal(SIGINT, _signalHandler);
 	signal(SIGQUIT, _signalHandler); 
 }
@@ -84,8 +84,8 @@ void	IrcClient::connect_socket( std::string address, int port, std::string passw
 	if (server == NULL)
 		throw std::runtime_error("No Such Host.");
 	bcopy((char *)server->h_addr, 
-         (char *)&_server_address.sin_addr.s_addr,
-         server->h_length);
+		 (char *)&_server_address.sin_addr.s_addr,
+		 server->h_length);
 	_server_address.sin_port = htons(_port);
 	ret = connect(_fd, (struct sockaddr *) &_server_address, sizeof(_server_address));	
 	if (ret == -1)

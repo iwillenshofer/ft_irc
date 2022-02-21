@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/18 23:15:31 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/21 20:51:36 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,26 +163,26 @@ int		Client::get_idle(void)
 
 void	Client::activate_mode(char flag)
 {
-    if (flag == 'i')
-        set_invisible();
-    else if (flag == 's')
-        set_receive_notices();
-    else if (flag == 'w')
-        set_receive_wallops();
-    else if (flag == 'o')
-        throw (-1);
+	if (flag == 'i')
+		set_invisible();
+	else if (flag == 's')
+		set_receive_notices();
+	else if (flag == 'w')
+		set_receive_wallops();
+	else if (flag == 'o')
+		throw (-1);
 }
 
 void	Client::deactivate_mode(char flag)
 {
-    if (flag == 'i')
-        unset_invisible();
-    else if (flag == 's')
-        unset_receive_notices();
-    else if (flag == 'w')
-        unset_receive_wallops();
-    else if (flag == 'o')
-        unset_operator();
+	if (flag == 'i')
+		unset_invisible();
+	else if (flag == 's')
+		unset_receive_notices();
+	else if (flag == 'w')
+		unset_receive_wallops();
+	else if (flag == 'o')
+		unset_operator();
 }
 
 bool	Client::is_invisible(void) const

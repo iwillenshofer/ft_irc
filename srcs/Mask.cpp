@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 12:05:41 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 16:58:48 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/21 20:52:33 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,15 @@ void Mask::Maskparts::_strip(std::string string)
 
 bool	Mask::_match(std::string::iterator target, std::string::iterator mask, std::string::iterator t_end, std::string::iterator m_end)
 {
-    if (mask == m_end && target == t_end)
-        return true;
-    if (mask != m_end && (mask + 1) != m_end && target == t_end && *mask == '*')
-        return false;
-    if (mask != m_end && target != t_end && (*mask == '?' || *mask == *target))
-        return (_match(target + 1, mask + 1, t_end, m_end));
-    if (mask != m_end && *mask == '*')
-        return (_match(target, mask + 1, t_end, m_end) || _match(target + 1, mask, t_end, m_end));
-    return false;
+	if (mask == m_end && target == t_end)
+		return true;
+	if (mask != m_end && (mask + 1) != m_end && target == t_end && *mask == '*')
+		return false;
+	if (mask != m_end && target != t_end && (*mask == '?' || *mask == *target))
+		return (_match(target + 1, mask + 1, t_end, m_end));
+	if (mask != m_end && *mask == '*')
+		return (_match(target, mask + 1, t_end, m_end) || _match(target + 1, mask, t_end, m_end));
+	return false;
 }
 
 bool	Mask::match(Client &client, std::string mask)
