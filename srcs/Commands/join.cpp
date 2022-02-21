@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 19:17:22 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/21 20:54:28 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	Commands::_cmd_join(void)
 			}
 			catch(int code_error)
 			{
-                _message_user(_generate_reply(code_error, m), _sender);
+				_message_user(_generate_reply(code_error, m), _sender);
 			}
 		}
 	}

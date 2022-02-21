@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_mode_channel.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:21:14 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 21:40:05 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/21 20:58:25 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,217 +227,217 @@ void Tester::test_mode_channel_o(void)
 
 void Tester::test_mode_channel_t(void)
 {
-    IrcClient c(_host, _port);
-    IrcClient c1(_host, _port);
+	IrcClient c(_host, _port);
+	IrcClient c1(_host, _port);
 
-    description("Set channel topic and check mode");
-    c.command("PASS " + _password + "\r\n");
-    c.command("USER client1 8 * :Client1 Name\r\n");
-    c.command("NICK client1\r\n");
-    c.listen(false);
-    c1.command("PASS " + _password + "\r\n");
-    c1.command("USER client2 8 * :Client2 Name\r\n");
-    c1.command("NICK client2\r\n");
-    c1.listen(false);
-    c.command("MODE #channel +t\r\n");
-    c.listen();
-    c.command("JOIN #channel\r\n");
-    c.listen(false);
-    c1.command("JOIN #channel\r\n");
-    c.listen(false);
-    c1.listen(false);
-    c1.command("TOPIC #channel :this is a new topic\r\n");
-    c1.listen();
-    c.listen();
-    c.command("MODE #channel +t\r\n");
-    c.listen(false);
-    c1.listen(false);
-    c1.command("TOPIC #channel :trying to change topic again\r\n");
-    c1.listen();
-    c.listen(false);
-    c.command("TOPIC #channel :Only I can change the topic\r\n");
-    c.listen();
-    c1.listen(false);
-    c.command("MODE #channel -t\r\n");
-    c.listen();
-    c1.listen(false);
-    c1.command("TOPIC #channel :Now I can change topic again\r\n");
-    c1.listen();
-    c.listen(false);
+	description("Set channel topic and check mode");
+	c.command("PASS " + _password + "\r\n");
+	c.command("USER client1 8 * :Client1 Name\r\n");
+	c.command("NICK client1\r\n");
+	c.listen(false);
+	c1.command("PASS " + _password + "\r\n");
+	c1.command("USER client2 8 * :Client2 Name\r\n");
+	c1.command("NICK client2\r\n");
+	c1.listen(false);
+	c.command("MODE #channel +t\r\n");
+	c.listen();
+	c.command("JOIN #channel\r\n");
+	c.listen(false);
+	c1.command("JOIN #channel\r\n");
+	c.listen(false);
+	c1.listen(false);
+	c1.command("TOPIC #channel :this is a new topic\r\n");
+	c1.listen();
+	c.listen();
+	c.command("MODE #channel +t\r\n");
+	c.listen(false);
+	c1.listen(false);
+	c1.command("TOPIC #channel :trying to change topic again\r\n");
+	c1.listen();
+	c.listen(false);
+	c.command("TOPIC #channel :Only I can change the topic\r\n");
+	c.listen();
+	c1.listen(false);
+	c.command("MODE #channel -t\r\n");
+	c.listen();
+	c1.listen(false);
+	c1.command("TOPIC #channel :Now I can change topic again\r\n");
+	c1.listen();
+	c.listen(false);
 }
 
 void Tester::test_mode_channel_v(void)
 {
-    IrcClient c(_host, _port);
-    IrcClient c1(_host, _port);
+	IrcClient c(_host, _port);
+	IrcClient c1(_host, _port);
 
-    description("Set channel to moderated and  to channel");
-    c.command("PASS " + _password + "\r\n");
-    c.command("USER client1 8 * :Client1 Name\r\n");
-    c.command("NICK client1\r\n");
-    c.listen(false);
+	description("Set channel to moderated and  to channel");
+	c.command("PASS " + _password + "\r\n");
+	c.command("USER client1 8 * :Client1 Name\r\n");
+	c.command("NICK client1\r\n");
+	c.listen(false);
 
-    c1.command("PASS " + _password + "\r\n");
-    c1.command("USER client2 8 * :Client2 Name\r\n");
-    c1.command("NICK client2\r\n");
-    c1.listen(false);
-    c1.command("JOIN #test1\r\n");
-    c1.listen(false);
+	c1.command("PASS " + _password + "\r\n");
+	c1.command("USER client2 8 * :Client2 Name\r\n");
+	c1.command("NICK client2\r\n");
+	c1.listen(false);
+	c1.command("JOIN #test1\r\n");
+	c1.listen(false);
 
-    c.command("MODE #test1 +v\r\n");
-    c.listen();
+	c.command("MODE #test1 +v\r\n");
+	c.listen();
 
-    c.command("MODE #test1 +v unknown_user\r\n");
-    c.listen();
+	c.command("MODE #test1 +v unknown_user\r\n");
+	c.listen();
 
-    c.command("MODE #test1 +v client2\r\n");
-    c.listen();
+	c.command("MODE #test1 +v client2\r\n");
+	c.listen();
 
-    c.command("MODE #test +v\r\n");
-    c.listen();
+	c.command("MODE #test +v\r\n");
+	c.listen();
 
-    c.command("MODE #test +v unknown_user\r\n");
-    c.listen();
+	c.command("MODE #test +v unknown_user\r\n");
+	c.listen();
 
-    c.command("MODE #test +v client2\r\n");
-    c.listen();
+	c.command("MODE #test +v client2\r\n");
+	c.listen();
 
-    c.command("JOIN #test\r\n");
-    c.listen(false);
+	c.command("JOIN #test\r\n");
+	c.listen(false);
 
-    c.command("MODE #test +v\r\n");
-    c.listen();
+	c.command("MODE #test +v\r\n");
+	c.listen();
 
-    c.command("MODE #test +v unknown_user\r\n");
-    c.listen();
+	c.command("MODE #test +v unknown_user\r\n");
+	c.listen();
 
-    c.command("MODE #test +v client2\r\n");
-    c.listen();
-    
-    c1.command("JOIN #test\r\n");
-    c1.listen();
+	c.command("MODE #test +v client2\r\n");
+	c.listen();
+	
+	c1.command("JOIN #test\r\n");
+	c1.listen();
 
-    c.command("MODE #test +m\r\n");
-    c.listen();
-    c1.listen();
+	c.command("MODE #test +m\r\n");
+	c.listen();
+	c1.listen();
 
-    c1.command("PRIVMSG #test :trying to speak\r\n");
-    c1.listen();
+	c1.command("PRIVMSG #test :trying to speak\r\n");
+	c1.listen();
 
-    c.command("MODE #test +v client2\r\n");
-    c.listen();
-    c1.listen();
+	c.command("MODE #test +v client2\r\n");
+	c.listen();
+	c1.listen();
 
-    c1.command("PRIVMSG #test :now I can speak\r\n");
-    c.listen();
-    c1.listen();
+	c1.command("PRIVMSG #test :now I can speak\r\n");
+	c.listen();
+	c1.listen();
 
-    c1.command("MODE #test\r\n");
-    c1.listen();
+	c1.command("MODE #test\r\n");
+	c1.listen();
 
-    c1.command("MODE #test -v\r\n");
-    c1.listen();
+	c1.command("MODE #test -v\r\n");
+	c1.listen();
 
-    c1.command("MODE #test -m\r\n");
-    c1.listen();
+	c1.command("MODE #test -m\r\n");
+	c1.listen();
 
-    c.command("MODE #test -v client2\r\n");
-    c.listen();
-    c1.listen();
+	c.command("MODE #test -v client2\r\n");
+	c.listen();
+	c1.listen();
 
-    c1.command("PRIVMSG #test :trying to speak\r\n");
-    c1.listen();
+	c1.command("PRIVMSG #test :trying to speak\r\n");
+	c1.listen();
 
-    c.command("MODE #test -m\r\n");
-    c.listen();
-    c1.listen();
+	c.command("MODE #test -m\r\n");
+	c.listen();
+	c1.listen();
 
-    c1.command("PRIVMSG #test :now I can speak\r\n");
-    c1.listen();
+	c1.command("PRIVMSG #test :now I can speak\r\n");
+	c1.listen();
 }
 
 void Tester::test_mode_channel_k(void)
 {
-    IrcClient c(_host, _port);
-    IrcClient c1(_host, _port);
+	IrcClient c(_host, _port);
+	IrcClient c1(_host, _port);
 
-    description("Set the user key to channel");
-    c.command("PASS " + _password + "\r\n");
-    c.command("USER client1 8 * :Client1 Name\r\n");
-    c.command("NICK client1\r\n");
-    c.listen(false);
+	description("Set the user key to channel");
+	c.command("PASS " + _password + "\r\n");
+	c.command("USER client1 8 * :Client1 Name\r\n");
+	c.command("NICK client1\r\n");
+	c.listen(false);
 
-    c1.command("PASS " + _password + "\r\n");
-    c1.command("USER client2 8 * :Client2 Name\r\n");
-    c1.command("NICK client2\r\n");
-    c1.listen(false);
-    c1.command("JOIN #test1\r\n");
-    c1.listen(false);
+	c1.command("PASS " + _password + "\r\n");
+	c1.command("USER client2 8 * :Client2 Name\r\n");
+	c1.command("NICK client2\r\n");
+	c1.listen(false);
+	c1.command("JOIN #test1\r\n");
+	c1.listen(false);
 
-    c.command("MODE #test +k pass\r\n");
-    c.listen();
+	c.command("MODE #test +k pass\r\n");
+	c.listen();
 
-    c.command("MODE #test1 +k pass\r\n");
-    c.listen();
+	c.command("MODE #test1 +k pass\r\n");
+	c.listen();
 
-    c.command("JOIN #test\r\n");
-    c.listen(false);
+	c.command("JOIN #test\r\n");
+	c.listen(false);
 
-    c.command("MODE\r\n");
-    c.listen();
+	c.command("MODE\r\n");
+	c.listen();
 
-    c.command("MODE #test\r\n");
-    c.listen();
+	c.command("MODE #test\r\n");
+	c.listen();
 
-    c.command("MODE #test +k\r\n");
-    c.listen();
+	c.command("MODE #test +k\r\n");
+	c.listen();
 
-    c.command("MODE #test +k pass\r\n");
-    c.listen();
+	c.command("MODE #test +k pass\r\n");
+	c.listen();
 
-    c.command("MODE #test\r\n");
-    c.listen();
+	c.command("MODE #test\r\n");
+	c.listen();
 
-    c1.command("JOIN #test\r\n");
-    c1.listen();
+	c1.command("JOIN #test\r\n");
+	c1.listen();
 
-    c1.command("JOIN #test wrong_pass\r\n");
-    c1.listen();
+	c1.command("JOIN #test wrong_pass\r\n");
+	c1.listen();
 
-    c1.command("JOIN #test pass\r\n");
-    c1.listen();
+	c1.command("JOIN #test pass\r\n");
+	c1.listen();
 
-    c1.command("PART #test\r\n");
-    c1.listen();
-    c.listen(false);
+	c1.command("PART #test\r\n");
+	c1.listen();
+	c.listen(false);
 
-    c1.command("JOIN #test\r\n");
-    c1.listen();
+	c1.command("JOIN #test\r\n");
+	c1.listen();
 
-    c.command("MODE #test -k\r\n");
-    c.listen();
+	c.command("MODE #test -k\r\n");
+	c.listen();
 
-    c.command("MODE #test -k wrong_pass\r\n");
-    c.listen();
+	c.command("MODE #test -k wrong_pass\r\n");
+	c.listen();
 
-    c.command("MODE #test -k pass\r\n");
-    c.listen();
+	c.command("MODE #test -k pass\r\n");
+	c.listen();
 
-    c1.command("JOIN #test\r\n");
-    c1.listen();
+	c1.command("JOIN #test\r\n");
+	c1.listen();
 
-    c.command("MODE #test +k pass\r\n");
-    c.listen();
-    c1.listen();
+	c.command("MODE #test +k pass\r\n");
+	c.listen();
+	c1.listen();
 
-    c1.command("MODE #test -k pass\r\n");
-    c1.listen();
+	c1.command("MODE #test -k pass\r\n");
+	c1.listen();
 
-    c1.command("MODE #test +k pass\r\n");
-    c1.listen();
+	c1.command("MODE #test +k pass\r\n");
+	c1.listen();
 
-    c1.command("MODE #test +k\r\n");
-    c1.listen();
+	c1.command("MODE #test +k\r\n");
+	c1.listen();
 }
 
 void Tester::test_mode_channel(void)

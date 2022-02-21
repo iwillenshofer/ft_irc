@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IrcServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:37:36 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 19:07:46 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:00:30 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void IrcServer::RunServer(void)
 	{
 		int rc = 0;
 		int fd = 0;
-    	rc = poll(_connections.list(), _connections.size(), 1000);
+		rc = poll(_connections.list(), _connections.size(), 1000);
 		if (rc)
 		{
 			for (size_t idx = 0; idx < _connections.size(); idx++)

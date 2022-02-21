@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:01:32 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/09 20:20:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/21 20:53:25 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 std::string ft::left_trim( const std::string& str )
 {
-    size_t start = str.find_first_not_of(' ');
+	size_t start = str.find_first_not_of(' ');
 
 	if (start == std::string::npos)
 		return ("");
@@ -24,7 +24,7 @@ std::string ft::left_trim( const std::string& str )
  
 std::string ft::right_trim( const std::string& str )
 {
-    size_t end = str.find_last_not_of(' ');
+	size_t end = str.find_last_not_of(' ');
 
 	if (end == std::string::npos)
 		return ("");
@@ -34,13 +34,13 @@ std::string ft::right_trim( const std::string& str )
  
 std::string ft::trim( const std::string& str )
 {
-    return right_trim(left_trim(str));
+	return right_trim(left_trim(str));
 }
 
 void ft::trimString(std::string& str)
 {
 	str.erase(str.find_last_not_of(' ') + 1);
-    str.erase(0, str.find_first_not_of(' '));
+	str.erase(0, str.find_first_not_of(' '));
 }
 
 bool ft::is_numeric(std::string& s)
@@ -91,15 +91,15 @@ std::vector<std::string> ft::split(std::string &s, std::string separator)
 }
 
 std::string ft::get_str_between_two_str(const std::string &s,
-        const std::string &start_delim,
-        const std::string &stop_delim)
+		const std::string &start_delim,
+		const std::string &stop_delim)
 {
-    unsigned first_delim_pos = s.find(start_delim);
-    unsigned end_pos_of_first_delim = first_delim_pos + start_delim.length();
-    unsigned last_delim_pos = s.find_first_of(stop_delim, end_pos_of_first_delim);
-    
-    return s.substr(end_pos_of_first_delim,
-            last_delim_pos - end_pos_of_first_delim);
+	unsigned first_delim_pos = s.find(start_delim);
+	unsigned end_pos_of_first_delim = first_delim_pos + start_delim.length();
+	unsigned last_delim_pos = s.find_first_of(stop_delim, end_pos_of_first_delim);
+	
+	return s.substr(end_pos_of_first_delim,
+			last_delim_pos - end_pos_of_first_delim);
 }
 
 std::string	ft::get_current_date( void )
@@ -147,12 +147,12 @@ std::string ft::load_file(std::string filename)
 
 unsigned long ft::hash(const char *str)
 {
-    unsigned long	hash = START_HASH;
-    int 			c;
+	unsigned long	hash = START_HASH;
+	int 			c;
 
-    while ((c = *str++))
-        hash = ((hash << 5) + hash) + c;
-    return hash;
+	while ((c = *str++))
+		hash = ((hash << 5) + hash) + c;
+	return hash;
 }
 
 void ft::replace_string(std::string &s, std::string find, std::string replace)

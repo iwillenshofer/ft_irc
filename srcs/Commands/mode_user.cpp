@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:58:45 by roman             #+#    #+#             */
-/*   Updated: 2022/02/17 16:59:10 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/21 20:55:31 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,27 +78,27 @@ void	Commands::__perform_mode_user(char mode, char prefix)
 
 void	Commands::_cmd_mode_user(void)
 {
-    Client     *client =  _get_client_by_nickname(_message.arguments(0));
-    std::string mode_user = MODE_USER;
-    char        prefix = '+';
+	Client     *client =  _get_client_by_nickname(_message.arguments(0));
+	std::string mode_user = MODE_USER;
+	char        prefix = '+';
 
-    if (client == NULL)
-    {
-       _message_user(_generate_reply(ERR_NOSUCHNICK, "nickname", _message.arguments(0)), _sender);
-       return ;
-    }
-    else if (_sender != client)
-    {
-        _message_user(_generate_reply(ERR_USERSDONTMATCH), _sender);
-        return ;
-    }
-    for (size_t i = 0; i < _message.arguments(1).size(); i++)
-    {
-        if (mode_user.find(_message.arguments(1).at(i)) == std::string::npos)
-            _message_user(_generate_reply(ERR_UMODEUNKNOWNFLAG), _sender);
-        else if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
-            prefix = _message.arguments(1).at(i);
-        else
+	if (client == NULL)
+	{
+	   _message_user(_generate_reply(ERR_NOSUCHNICK, "nickname", _message.arguments(0)), _sender);
+	   return ;
+	}
+	else if (_sender != client)
+	{
+		_message_user(_generate_reply(ERR_USERSDONTMATCH), _sender);
+		return ;
+	}
+	for (size_t i = 0; i < _message.arguments(1).size(); i++)
+	{
+		if (mode_user.find(_message.arguments(1).at(i)) == std::string::npos)
+			_message_user(_generate_reply(ERR_UMODEUNKNOWNFLAG), _sender);
+		else if (_message.arguments(1).at(i) == '+' || _message.arguments(1).at(i) == '-')
+			prefix = _message.arguments(1).at(i);
+		else
 			__perform_mode_user(_message.arguments(1).at(i), prefix);
-    }
+	}
 }
