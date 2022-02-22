@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:46:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/19 20:27:06 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/22 20:01:10 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,5 @@ void Tester::test_registration(void)
 	test_registration_full();
 	test_registration_nicknameinuse();
 	test_registration_nicknameinuse_retry();
-//	test_registration_timeout();
+	test_registration_timeout();
 }
