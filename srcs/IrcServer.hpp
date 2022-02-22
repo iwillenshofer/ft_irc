@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 15:40:08 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/19 19:38:24 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/22 20:56:22 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <map>
 # include <vector>
 # include <csignal>
-# include <cerrno>
 # include <poll.h>
 # include <fcntl.h>
 # include <unistd.h>
