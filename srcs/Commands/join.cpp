@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:58 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/21 20:54:28 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/22 20:14:28 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	Commands::_cmd_join(void)
 
 	if (!(_message.arguments().size()))
 	{
-		_message_user(_generate_reply(ERR_NEEDMOREPARAMS), _sender);
+		_message_user(_generate_reply(ERR_NEEDMOREPARAMS, "command", "JOIN"), _sender);
 		return ;
 	}
 	if (_message.arguments(0) == "0")

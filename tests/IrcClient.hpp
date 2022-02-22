@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/19 21:18:39 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/22 20:26:24 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 # define LOG_SEND 0
 # define LOG_RECV 1
-# define READ_WAIT_TIME 150000
+# define READ_WAIT_TIME 75000
 
 class IrcClient
 {
