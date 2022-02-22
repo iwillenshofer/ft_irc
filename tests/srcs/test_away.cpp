@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_error.cpp                                     :+:      :+:    :+:   */
+/*   test_away.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/12 20:20:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/21 20:48:03 by coder            ###   ########.fr       */
+/*   Created: 2022/02/12 20:20:43 by iwillens          #+#    #+#             */
+/*   Updated: 2022/02/21 20:47:51 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Tester.hpp"
 
-void Tester::test_error(void)
+
+void Tester::test_away(void)
 {
-	title("error");
+	title("away");
 
 }

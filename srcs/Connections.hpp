@@ -13,14 +13,14 @@
 #ifndef CONNECTIONS_HPP
 # define CONNECTIONS_HPP
 
-# include "Debug.hpp"
-# include "Client.hpp"
 # include <poll.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/ioctl.h>
-# include "Commands.hpp"
 # include "Server.hpp"
+# include "Debug.hpp"
+# include "Client.hpp"
+# include "Commands.hpp"
 
 class Connections
 {

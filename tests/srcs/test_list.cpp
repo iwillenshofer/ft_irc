@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_list.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:21:09 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/16 23:03:22 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/19 21:04:58 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void Tester::test_list(void)
 {
-	IrcClient c[10];
 	std::string nick;
 
 	title("list");
+
+	IrcClient c[4];
 	description("Testing list, before and after joining a channel, being client2 visible,"
 				"and #channel1 secret.");
 	for (int i = 0; i < 4; i++)
@@ -56,5 +57,4 @@ void Tester::test_list(void)
 	c[0].listen(false);
 	c[0].command("LIST\r\n");
 	c[0].listen();
-
 }

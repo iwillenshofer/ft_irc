@@ -3,25 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   Socket.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:35:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/17 22:42:10 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:39:25 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SOCKET_H
 # define SOCKET_H
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <cstring>
-
-struct config_data
-{
-	int	port;
-};
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <cstring>
 
 class Socket
 {

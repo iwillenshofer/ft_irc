@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:30:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 21:33:14 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/21 21:01:00 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@
 
 void	Commands::_cmd_ping(void)
 {
-    if (_message.arguments().size() >= 1)
-    {
-        std::string msg = ":" + std::string(SRV_SERVERNAME) + " PONG " + std::string(SRV_SERVERNAME) + " :" + _message.arguments(0) + MSG_ENDLINE;
-        _message_user(msg, _sender);
-    }
-    else
-        _message_user(std::string("PONG") + MSG_ENDLINE, _sender);
+	if (_message.arguments().size() >= 1)
+	{
+		std::string msg = ":" + std::string(SRV_SERVERNAME) + " PONG " + std::string(SRV_SERVERNAME) + " :" + _message.arguments(0) + MSG_ENDLINE;
+		_message_user(msg, _sender);
+	}
+	else
+		_message_user(std::string("PONG") + MSG_ENDLINE, _sender);
 }

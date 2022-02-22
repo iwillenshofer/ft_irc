@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/12 17:46:37 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/19 21:08:18 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,11 @@ void	IrcClient::_log(std::string s, bool kind, bool output)
 
 void	IrcClient::_create_socket( void )
 {
-	_fd = socket(PF_INET, SOCK_STREAM, 0);
 	int enable = 1;
+
+	_fd = socket(PF_INET, SOCK_STREAM, 0);
 	setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
-	if (_fd == -1)
+	if (_fd == -1 || !_fd)
 		throw std::runtime_error("Unable to create socket.");
 	return ;
 }
@@ -114,6 +115,8 @@ void	IrcClient::_start()
 	struct sockaddr_in		_server_address;
 	int						ret;
 
+	if (!_fd)
+		return ;
 	std::memset(&_server_address, 0, sizeof(_server_address));
 	_server_address.sin_family = AF_INET;
 	server = gethostbyname(_address.c_str());
@@ -168,12 +171,16 @@ void IrcClient::_write(bool verbose)
 
 void IrcClient::command(std::string command, bool verbose)
 {
+	if (!_fd)
+		return ;
 	_send_queue.push_back(command);
 	_write(verbose);
 }
 
 void IrcClient::listen(bool verbose, int rate)
 {
+	if (!_fd)
+		return ;
 	for (int i = 0; i < 4; i++)
 	{
 		usleep(rate);
@@ -183,7 +190,8 @@ void IrcClient::listen(bool verbose, int rate)
 
 void IrcClient::end(void)
 {
-	close(_fd);
+	if (_fd)
+		close(_fd);
 }
 
 bool IrcClient::is_connected(void) { return (_connected); }

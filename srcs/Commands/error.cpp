@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/01/22 08:28:28 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:00:45 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 
 void	Commands::_cmd_error(void)
 {
-    /*
-    ** not to be implemented. that is server to server communication
-    */
+	/*
+	** not to be implemented. that is server to server communication
+	*/
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   whois.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:31:25 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/14 21:59:44 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/21 20:57:02 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,13 @@ void	Commands::_cmd_whois(void)
 		_message_user(_generate_reply(ERR_NONICKNAMEGIVEN), _sender);
 		return ;
 	}
-    if (_message.arguments().size() >= 2 && (_message.arguments(0) != _server->servername()))
-    {
-        _message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(0)), _sender);
-        return ;
-    }
-    if (_message.arguments().size() >= 2)
-	    first_arg = 1;
+	if (_message.arguments().size() >= 2 && (_message.arguments(0) != _server->servername()))
+	{
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(0)), _sender);
+		return ;
+	}
+	if (_message.arguments().size() >= 2)
+		first_arg = 1;
 	masks = ft::split(_message.arguments(first_arg), ',');
 	for (std::vector<std::string>::iterator it = masks.begin(); it != masks.end(); it++)
 	{

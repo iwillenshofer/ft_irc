@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   server_defaults.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 20:43:49 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 19:18:49 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/21 21:02:08 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_DEFAULTS_HPP
 # define SERVER_DEFAULTS_HPP
-
 
 /*
 ** Message Defaults
@@ -227,4 +226,5 @@
 # define	ERR_INPUTTOOLONG		417
 # define    ERR_WHOISTOOMANY		416
 # define    PRIVMSG					999
+
 #endif

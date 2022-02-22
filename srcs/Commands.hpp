@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   Commands.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
 /*   Updated: 2022/02/18 16:45:25 by roman            ###   ########.fr       */
+=======
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/11 21:07:16 by iwillens          #+#    #+#             */
+/*   Updated: 2022/02/19 19:37:35 by iwillens         ###   ########.fr       */
+>>>>>>> bb55e0e28aad1a28c180cdd1479dd6023ec800b8
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMANDS_HPP
 # define COMMANDS_HPP
-
 
 # include <map>
 # include <set>
@@ -138,7 +144,7 @@ class Commands
 		** Optional
 		*/
 		void _cmd_away(void);
-
+		void _cmd_cap(void);
 		/*
 		** command helpers
 		*/

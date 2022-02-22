@@ -6,7 +6,7 @@
 /*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:29:44 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:43:55 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/21 20:53:36 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@
 
 void	Commands::_cmd_admin(void)
 {
-    bool    match = true;
-    
-    if (_message.arguments().empty() == false)
-    {
-        match = Mask::match_raw(_server->servername(), _message.arguments(0));
-        if (match == false && _sender->is_operator() == false)
-        {
-            _message_user(_generate_reply(ERR_NOPRIVILEGES, "", ""), _sender);
-            return ;
-        }
-    }
-    if (match == true)
-    {
-        _message_user(_generate_reply(RPL_ADMINME, "server", SRV_SERVERNAME), _sender);
-        _message_user(_generate_reply(RPL_ADMINLOC1, "info1",MSG_NAME_SERVER), _sender);
-        _message_user(_generate_reply(RPL_ADMINLOC2, "info2", ""), _sender);
-        _message_user(_generate_reply(RPL_ADMINEMAIL, "email", MSG_ADMIN1), _sender);
-        _message_user(_generate_reply(RPL_ADMINEMAIL, "email", MSG_ADMIN2), _sender);
-    }
-    else
-        _message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(0)), _sender);
+	bool    match = true;
+	
+	if (_message.arguments().empty() == false)
+	{
+		match = Mask::match_raw(_server->servername(), _message.arguments(0));
+		if (match == false && _sender->is_operator() == false)
+		{
+			_message_user(_generate_reply(ERR_NOPRIVILEGES, "", ""), _sender);
+			return ;
+		}
+	}
+	if (match == true)
+	{
+		_message_user(_generate_reply(RPL_ADMINME, "server", SRV_SERVERNAME), _sender);
+		_message_user(_generate_reply(RPL_ADMINLOC1, "info1",MSG_NAME_SERVER), _sender);
+		_message_user(_generate_reply(RPL_ADMINLOC2, "info2", ""), _sender);
+		_message_user(_generate_reply(RPL_ADMINEMAIL, "email", MSG_ADMIN1), _sender);
+		_message_user(_generate_reply(RPL_ADMINEMAIL, "email", MSG_ADMIN2), _sender);
+	}
+	else
+		_message_user(_generate_reply(ERR_NOSUCHSERVER, "server name", _message.arguments(0)), _sender);
 }

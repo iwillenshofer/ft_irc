@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Tester.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:52:59 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 18:16:20 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/18 20:26:05 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "Debug.hpp"
 
 # define LINE_WIDTH 80
+# define MENU_WIDTH 30
 
 class Tester
 {
@@ -27,9 +28,17 @@ class Tester
 		Tester &operator=(Tester const &cp);
 		virtual ~Tester();
 
+	private:
+		typedef  void (Tester::*cmd_type)(void);
+		typedef std::map<std::string, cmd_type>			sub_map_type;
+		typedef std::map<std::string, sub_map_type >	map_type;
+		typedef sub_map_type::iterator					sub_map_iterator;
+		typedef map_type::iterator						map_iterator;
+
 		std::string 	_host;
 		int				_port;
 		std::string		_password;
+		map_type		_map;
 
 		/*
 		** tester helper functions
@@ -38,11 +47,23 @@ class Tester
 	private:
 		Tester(void);
 		std::vector<std::string> _break_line(std::string s);
-			
+
 	public:
 		void title(std::string s);
 		void description(std::string s);
 		void perform_tests(void);
+	
+		void _clear_screen(void);
+		void _run_all_commands(size_t level);
+		void _run_command(size_t level, size_t command);
+		sub_map_type *_get_submap(int level);
+		void feed_prompt(void);
+		void prompt(int level, bool error = false, bool clear = true);
+		void loop(void);
+		void prompt_menu_title(std::string s, bool center = true);
+		void prompt_menu_item(std::string choice, std::string description);
+
+
 
 
 		/*
@@ -51,6 +72,11 @@ class Tester
 		void test_admin(void);
 		void test_admin_ircop(void);
 		void test_admin_no_ircop(void);
+
+		/*
+		**
+		*/
+		void test_away(void);
 
 		/*
 		** tests connect [done]

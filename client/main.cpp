@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 11:37:22 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/08 18:48:09 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/21 21:02:25 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <pthread.h>
 #include <iostream>
 #include <csignal>
-#include <signal.h>
 
 #define THREAD_SIZE 500
 
@@ -67,7 +66,7 @@ int main(int argc, char **argv)
 	for (int i = 0; i < quantity; i++)
 		pthread_create( &(threads[i]), NULL, startClient, (void*)&args);
 	for (int i = 0; i < quantity; i++)
-	    pthread_join(threads[i], NULL);
+		pthread_join(threads[i], NULL);
 	delete [] threads;
-    return 0;
+	return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 14:02:23 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/09 20:20:16 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/21 21:00:39 by coder            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ namespace ft
 	void uppercase(std::string &s);
 
 	std::string get_str_between_two_str(const std::string &s,
-        const std::string &start_delim,
-        const std::string &stop_delim);
+		const std::string &start_delim,
+		const std::string &stop_delim);
 
 	std::string	get_current_date( void );
 	std::string	format_date( time_t rawtime );
