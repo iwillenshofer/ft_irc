@@ -6,22 +6,11 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 20:46:23 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/22 20:01:10 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/22 20:10:29 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Tester.hpp"
-
-void Tester::test_registration_timeout(void)
-{
-	IrcClient c0(_host, _port);
-
-	description("Stalling in Registration until timeout");
-	c0.command("PASS " + _password + "\r\n");
-	c0.command("NICK client\r\n");
-	while (c0.is_connected())
-		c0.listen();
-}
 
 void Tester::test_registration_nicknameinuse_retry(void)
 {
@@ -93,5 +82,4 @@ void Tester::test_registration(void)
 	test_registration_full();
 	test_registration_nicknameinuse();
 	test_registration_nicknameinuse_retry();
-	test_registration_timeout();
 }
