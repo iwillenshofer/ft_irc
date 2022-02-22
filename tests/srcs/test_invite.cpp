@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:20:57 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/15 22:49:42 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/18 15:46:04 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void Tester::test_invite_away(void)
 
 	IrcClient c(_host, _port);
 	IrcClient c1(_host, _port);
-	description("Performs tests when arguments are valid and sender is chanop");
+	description("Performs tests when arguments are valid nick is away");
 
 	c.command("PASS " + _password + "\r\n");
 	c.command("USER client 8 * :Client Name\r\n");
@@ -160,7 +160,7 @@ void Tester::test_invite_away(void)
 	c.command("JOIN #channel\r\n");
 	c.listen(false);
 
-	c1.command("AWAY I'm away\r\n");
+	c1.command("AWAY :I'm away\r\n");
 	c1.listen(false);
 
 	c.command("INVITE client1 #channel\r\n");

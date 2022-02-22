@@ -6,7 +6,7 @@
 /*   By: roman <roman@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 19:55:52 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 20:55:22 by roman            ###   ########.fr       */
+/*   Updated: 2022/02/18 16:46:45 by roman            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,11 @@ void	Commands::__perform_mode_ban(Channel *channel, char prefix, std::string arg
 void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, std::string argument)
 {
 	Client *client;
+	std::map<std::string, std::string> m;
 
+	m["channel"] = channel->get_name();
+	m["command"] = _message.command() + " " + prefix + mode;
+	m["nickname"] = argument;
 	if (mode == 'b')
 	{
 		__perform_mode_ban(channel, prefix, argument);
@@ -141,7 +145,7 @@ void	Commands::__perform_mode_channel(Channel *channel, char mode, char prefix, 
 	catch(int code_error)
 	{
 		if (code_error != ERR_SILENT)
-			_message_user(_generate_reply(code_error), _sender);
+			_message_user(_generate_reply(code_error, m), _sender);
 	}
 }
 
@@ -184,7 +188,8 @@ void	Commands::_cmd_mode_channel(void)
 			prefix = *it;
 		else if (_message.arguments().size() > 2)
 			__perform_mode_channel(chan, *it, prefix, _message.arguments(2));
+			
 		else
-			__perform_mode_channel(chan, *it, prefix);
+			__perform_mode_channel(chan, *it, prefix);	
 	}
 }
