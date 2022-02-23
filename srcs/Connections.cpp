@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Connections.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coder <coder@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/06 14:24:00 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/17 22:27:31 by coder            ###   ########.fr       */
+/*   Updated: 2022/02/22 22:41:12 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	Connections::add(int fd)
 {
 	pollfd tmp;
 
-	fcntl(fd, F_SETFL, O_NONBLOCK);
 	tmp.fd = fd;
 	tmp.events = POLLIN;
 	tmp.revents = 0x0;

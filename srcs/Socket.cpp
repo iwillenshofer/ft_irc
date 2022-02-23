@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:36:18 by romanbtt          #+#    #+#             */
-/*   Updated: 2022/02/17 19:06:57 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/22 22:41:02 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ Socket &Socket::operator=( const Socket& rhs )
 
 void	Socket::_create_socket( void )
 {
-	_server_socket = socket(PF_INET6, SOCK_STREAM, 0);
+	_server_socket = socket(PF_INET6, SOCK_STREAM | SOCK_NONBLOCK, 0);
 	int enable = 1;
 	setsockopt(_server_socket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int));
 	if (_server_socket == -1)

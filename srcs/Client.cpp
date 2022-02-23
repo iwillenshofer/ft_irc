@@ -6,7 +6,7 @@
 /*   By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 14:55:35 by iwillens          #+#    #+#             */
-/*   Updated: 2022/02/22 21:15:01 by iwillens         ###   ########.fr       */
+/*   Updated: 2022/02/22 22:41:52 by iwillens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void Client::read(void)
 	std::vector<std::string> tmp;
 	Debug("Read: " + nickname, DBG_DEV);
 	bzero(_buffer, BUFFERSIZE + 1);
-	ssize_t rc = recv( _fd, _buffer, BUFFERSIZE, 0);
+	ssize_t rc = recv( _fd, _buffer, BUFFERSIZE, MSG_DONTWAIT);
 	if (rc > 0)
 	{
 		is_ping = false;
@@ -124,7 +124,7 @@ void Client::write(void)
 
 	if (!(_send_queue.size()))
 		return;
-	rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), MSG_NOSIGNAL);
+	rc = send(_fd, _send_queue.at(0).c_str(), _send_queue.at(0).size(), MSG_NOSIGNAL | MSG_DONTWAIT);
 	if (rc > 0)
 		_send_queue.at(0).erase(0, rc);
 	if (_send_queue.size() && !(_send_queue.at(0).size()))
