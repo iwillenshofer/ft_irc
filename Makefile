@@ -6,14 +6,14 @@
 #    By: iwillens <iwillens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/25 13:47:20 by iwillens          #+#    #+#              #
-#    Updated: 2022/02/18 23:21:27 by iwillens         ###   ########.fr        #
+#    Updated: 2022/02/22 22:46:42 by iwillens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ircserv
 
 CC = clang++
-CCFLAGS = -Wall -Werror -Wextra -g -std=c++98 -pedantic -fsanitize=address
+CCFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./build
