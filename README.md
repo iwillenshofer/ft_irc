@@ -1,6 +1,6 @@
 <p align="center">
-	<img width="130px;" src="https://game.42sp.org.br/static/assets/images/42_logo_black.svg" align="center" alt="42" />&nbsp;&nbsp;&nbsp;
-	<img width="130px" src="https://game.42sp.org.br/static/assets/achievements/ft_ircm.png" align="center" alt="ft_irc" />
+	<img width="130px;" src="https://raw.githubusercontent.com/iwillenshofer/resources/main/images/42_logo_black.svg" align="center" alt="42" />&nbsp;&nbsp;&nbsp;
+	<img width="130px" src="https://raw.githubusercontent.com/iwillenshofer/resources/main/achievements/ft_irc.png" align="center" alt="ft_irc" />
 	<h1 align="center">ft_irc</h1>
 </p>
 <p align="center">
@@ -23,7 +23,7 @@
 
 > _Create your own IRC server in C++, fully compatible with an official client._
 
-[Download the Subject ⤓](en.subject.pdf)
+
 
 <br>
 
